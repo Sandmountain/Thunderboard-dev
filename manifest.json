@@ -1,0 +1,10 @@
+{
+  "manifest_version": 2,
+  "name": "React Extension Dashboard",
+  "description": " A Dashboard with all your favorite applications",
+  "version": "0.1.0",
+  "content_security_policy": "script-src 'self' https://apis.google.com; object-src 'self'",
+  "chrome_url_overrides": {
+    "newtab": "build/index.html"
+  }
+}
