@@ -12,7 +12,7 @@ const translate = setCORS('http://cors-anywhere.herokuapp.com/');
 
 export const defineText = async (text, defaultCurrency, language) => {
   try {
-    const splitInput = text.trim().match(/[\d\.]+|\D+/g);
+    const splitInput = text.trim().match(/[\d.]+|\D+/g);
     const units = splitInput[1].match(/\b[^\s]+\b/g);
     console.log(units);
     if (units !== null) {
@@ -128,7 +128,7 @@ const translateText = async (text, language) => {
 };
 
 const mathEval = (exp) => {
-  var reg = /(?:[a-z$_][a-z0-9$_]*)|(?:[;={}\[\]"'!&<>^\\?:])/gi,
+  var reg = /(?:[a-z$_][a-z0-9$_]*)|(?:[;={}[\]"'!&<>^\\?:])/gi,
     valid = true;
 
   // Detect valid JS identifier names and replace them

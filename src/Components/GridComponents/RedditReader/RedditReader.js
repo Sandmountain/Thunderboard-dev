@@ -63,7 +63,7 @@ export default function RedditReader({ data, isDraggable }) {
           .then((res) => res.data.data.icon_img);
       });
 
-      const poopCode = setTimeout(() => {
+      setTimeout(() => {
         setContentLoaded(true);
         setRedditInfo(subRedditInfo);
         setRedditData(result);

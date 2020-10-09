@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Box, makeStyles, Card } from '@material-ui/core';
+import { Typography, makeStyles, Card } from '@material-ui/core';
 
 import { parseDate } from './functions/timeDateFunctions.js';
 

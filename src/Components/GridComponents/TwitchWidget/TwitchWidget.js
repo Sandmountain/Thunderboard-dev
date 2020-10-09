@@ -1,7 +1,6 @@
-import { Button, Card, makeStyles } from '@material-ui/core';
+import { Card, makeStyles } from '@material-ui/core';
 import axios from 'axios';
-import React, { useState, useEffect, useContext } from 'react';
-import { openInNewTab } from '../../helperFunctions';
+import React, { useEffect } from 'react';
 
 const useStyles = makeStyles({
   universalConvContainer: {
@@ -13,13 +12,8 @@ const useStyles = makeStyles({
   },
 });
 
-function htmlDecode(input) {
-  var doc = new DOMParser().parseFromString(input, 'text/html');
-  return doc.documentElement.textContent;
-}
-
 export default function TwitchWidget() {
-  const [twitchData, setTwitchData] = useState({});
+  //const [twitchData, setTwitchData] = useState({});
   //https://id.twitch.tv/oauth2/validate
   useEffect(() => {
     getTwitchData();

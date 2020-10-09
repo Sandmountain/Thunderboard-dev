@@ -1,9 +1,9 @@
 import React from 'react';
-import { Icon, Tooltip, SvgIcon } from '@material-ui/core';
+import { Tooltip, SvgIcon } from '@material-ui/core';
 
 const colorDay = 'rgb(153, 153, 153, 0.87)';
 const colorNight = 'rgba(68, 72, 77, 1)';
-const colorNight2 = '#ebc150';
+//const colorNight2 = '#ebc150';
 
 const weatherIconList = {
   '01d': {

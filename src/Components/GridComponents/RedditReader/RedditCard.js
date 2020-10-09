@@ -14,7 +14,6 @@ import {
   Avatar,
   Tooltip,
 } from '@material-ui/core';
-import Image from '../../Image/Image';
 
 import RedditCardContent from './RedditCardContent';
 

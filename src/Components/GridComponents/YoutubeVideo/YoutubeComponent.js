@@ -1,4 +1,4 @@
-import { Card, CircularProgress, Grid, makeStyles } from '@material-ui/core';
+import { Card, CircularProgress, makeStyles } from '@material-ui/core';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import YoutubeVideo from './YoutubeVideo';
@@ -32,7 +32,7 @@ export default function YoutubeComponent({ credentials, isProduction, nrOfVideos
   const [youtubeUserData, setYoutubeUserData] = useState(null);
   const [youtubeList, setYoutubeList] = useState(null);
   const classes = useStyles();
-  console.log(showInfo);
+
   useEffect(() => {
     fetchYoutubeData(credentials);
 

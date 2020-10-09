@@ -14,5 +14,5 @@ export const parseDate = (date) => {
     return then.getDay() + ' ' + months[then.getMonth()];
   }
 
-  //console.log(date);
+  //TODO : Shows wrong date
 };

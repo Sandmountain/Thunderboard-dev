@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import DashboardSettings from '../DashboardSettings/DashboardSettings.js';
 import GoogleAutentication from '../Authentication/GoogleAuthentication';
@@ -9,7 +9,7 @@ import WeatherWidget from '../GridComponents/WeatherWidget/WeatherWidget';
 import TimeDate from '../GridComponents/TimeDate/TimeDate';
 import UniversalConverter from '../GridComponents/UniversalConverter/UniversalConverter';
 import TwitchWidget from '../GridComponents/TwitchWidget/TwitchWidget';
-import WallpaperComponent from '../WallpaperComponent/WallpaperComponent';
+import WallpaperComponent from '../GridComponents/WallpaperComponent/WallpaperComponent';
 
 import { Alert } from '@material-ui/lab';
 
@@ -18,6 +18,7 @@ import RGL, { WidthProvider } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 
 import { Button, Card, CircularProgress, Icon, IconButton, makeStyles, Snackbar } from '@material-ui/core';
+import { SettingsContext } from '../../Context/SettingsContext.js';
 
 // Reddit Variables, move to menu afterwards
 const subreddits = ['politics', 'RocketLeague', 'cursedcomments'];
@@ -26,14 +27,14 @@ const shufflePosts = true;
 const redditData = { subreddits, postLimit, shufflePosts };
 
 // Youtube Variables
-const nrOfVideos = 8;
-const showInfo = { showChannel: true, showViews: true, showUpload: true };
+//const nrOfVideos = 8;
+//const showInfo = { showChannel: true, showViews: true, showUpload: true };
 
 // Gmail variables
-const nrOfMails = 10;
+//const nrOfMails = 10;
 
 // Twitch
-const twitchToken = '';
+//const twitchToken = '';
 const authTwitch = false;
 
 // Wallpaper
@@ -60,17 +61,23 @@ export default function MainDashboard() {
   const classes = useStyles();
 
   //Wallpaper
-  const [windowSize, setWindowSize] = useState([1920, 1080]);
-  const [collectionID, setCollectionID] = useState('8602161');
+  // const [windowSize, setWindowSize] = useState([1920, 1080]);
+  // const [collectionID, setCollectionID] = useState('8602161');
 
   //User variables changes
-  const [isDraggable, setIsDraggable] = useState(true);
+  //const [isDraggable, setIsDraggable] = useState(true);
 
   const [loggedIn, setIsLoggedIn] = useState(false);
   const [gridLayout, setGridLayout] = useState(layout);
   const [credentials, setCredentials] = useState(null);
 
+  const { settings, setSettings } = useContext(SettingsContext);
+  const { isDraggable, nrOfCols, gridSpacing, compactType, rowHeight, nrOfMails, nrOfVideos, youtubeInfo } = settings;
   const isProduction = false;
+
+  useEffect(() => {
+    console.log(settings);
+  }, [settings]);
 
   //Settings
   const childRef = useRef();
@@ -81,11 +88,11 @@ export default function MainDashboard() {
 
   const handleCloseDraggable = () => {
     //Save to chrome storage (the layout)
-    setIsDraggable(false);
+    setSettings({ ...settings, isDraggable: false });
   };
   const handleSaveDraggable = () => {
     //Save to chrome storage (the layout)
-    setIsDraggable(false);
+    setSettings({ ...settings, isDraggable: false });
   };
 
   return (
@@ -108,10 +115,12 @@ export default function MainDashboard() {
               layout={gridLayout}
               className="layout"
               onLayoutChange={(e) => onLayoutChange(e)}
-              cols={12}
-              containerPadding={[10, 10]}
-              rowHeight={30}
-              width={'100vw'}>
+              cols={nrOfCols}
+              margin={gridSpacing}
+              containerPadding={gridSpacing}
+              rowHeight={rowHeight}
+              compactType={compactType === 'default' ? null : compactType}
+              width={'100%'}>
               {/* All Grid Components here */}
               <div key="1" className={classes.gridItemCards}>
                 <YoutubeComponent
@@ -119,7 +128,7 @@ export default function MainDashboard() {
                   isProduction={isProduction}
                   isDraggable={isDraggable}
                   nrOfVideos={nrOfVideos}
-                  showInfo={showInfo}
+                  showInfo={youtubeInfo}
                 />
               </div>
               <div key="2" className={classes.gridItemCards}>

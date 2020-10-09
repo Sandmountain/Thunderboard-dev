@@ -1,7 +1,5 @@
-import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
-import { Divider, Typography, Button, Card, makeStyles, IconButton, Icon } from '@material-ui/core';
-
-import axios from 'axios';
+import React, { useState, forwardRef, useImperativeHandle } from 'react';
+import { Button, makeStyles, Icon } from '@material-ui/core';
 
 import '../../App.css';
 
@@ -49,7 +47,6 @@ const DashboardSettings = forwardRef(({ settingsOptions }, ref) => {
   const classes = useStyles();
 
   const openSettings = (setting) => {
-    console.log(setting);
     setOpen(true);
   };
 

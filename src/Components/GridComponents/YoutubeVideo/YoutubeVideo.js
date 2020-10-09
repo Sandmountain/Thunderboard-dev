@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, Typography, Button, CardActionArea, Dialog } from '@material-ui/core';
+import { Typography, CardActionArea, Dialog } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { viewsCount } from './functions/youtubeFunctions';
@@ -99,7 +99,7 @@ export default function YoutubeVideo(props) {
   const { thumbnails, channelTitle, title, publishedAt, channelId } = props.data.snippet;
   const { viewCount } = props.data.statistics;
 
-  const { showChannel, showViews, showUpload } = props.showInfo;
+  const { showTitle, showChannel, showViews, showUpload } = props.showInfo;
 
   const imageURL = thumbnails.maxres ? thumbnails.maxres : thumbnails.standard;
   const duration = parseDuration(props.data.contentDetails.duration);
@@ -135,7 +135,7 @@ export default function YoutubeVideo(props) {
       </div>
       <div className={classes.youtubeContent}>
         <Typography variant="subtitle2" style={{ fontSize: '0.8rem' }} className={classes.listTitleText}>
-          {title}
+          {showTitle && title}
         </Typography>
 
         <Typography
