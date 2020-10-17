@@ -9,8 +9,8 @@ import {
   Slider,
   Typography,
 } from '@material-ui/core';
-import React, { useContext, useEffect, useState } from 'react';
-import { SettingsContext } from '../../../Context/SettingsContext';
+import { Warning } from '@material-ui/icons';
+import React, { useState } from 'react';
 
 const marks = (min, max) => {
   return [
@@ -26,13 +26,9 @@ const marks = (min, max) => {
 };
 
 export default function DashboardTab(props) {
-  const { settings, testChanges, setSettings, toggleMovement } = props;
-  const { isDraggable, nrOfCols, rowHeight, gridSpacing, compactType } = settings;
-
-  const handleToggle = () => {
-    setSettings({ ...settings, isDraggable: !settings.isDraggable });
-    toggleMovement(!settings.isDraggable);
-  };
+  const { settings, setSettings, toggleMovement } = props;
+  const { isDraggable, nrOfCols, rowHeight, gridSpacing, compactType } = settings.dashboardSettings;
+  console.log(settings.dashboardSettings);
 
   const [cols, setCols] = useState(nrOfCols);
   const [height, setHeight] = useState(rowHeight);
@@ -47,6 +43,13 @@ export default function DashboardTab(props) {
       method(event.target.value);
     }
   };
+  const handleToggle = () => {
+    setSettings({
+      ...settings,
+      dashboardSettings: { ...settings.dashboardSettings, isDraggable: !settings.isDraggable },
+    });
+    toggleMovement(!settings.dashboardSettings.isDraggable);
+  };
 
   const setStatesToTest = () => {
     console.log({
@@ -57,10 +60,13 @@ export default function DashboardTab(props) {
     });
     setSettings({
       ...settings,
-      nrOfCols: cols,
-      rowHeight: height,
-      gridSpacing: [spacingX, spacingY],
-      compactType: compType,
+      dashboardSettings: {
+        ...settings.dashboardSettings,
+        nrOfCols: cols,
+        rowHeight: height,
+        gridSpacing: [spacingX, spacingY],
+        compactType: compType,
+      },
     });
     //testChanges();
   };
@@ -76,7 +82,9 @@ export default function DashboardTab(props) {
           </Button>
         </div>
       </DialogTitle>
-
+      <Typography align="center" style={{ marginBottom: 10, color: '#dc3545' }}>
+        <Warning style={{ verticalAlign: 'text-bottom' }} /> Setting wont change if you don't test them first!
+      </Typography>
       <DialogContent>
         <DialogContentText>Unlock the dashboard by pressing the button below</DialogContentText>
         <Button color="primary" variant="contained" size="small" onClick={() => handleToggle()}>

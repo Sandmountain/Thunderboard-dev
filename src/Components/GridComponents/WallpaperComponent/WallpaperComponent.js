@@ -25,14 +25,13 @@ export default function WallpaperComponent() {
   const classes = useStyles();
 
   const { settings } = useContext(SettingsContext);
-  const { collectionID, windowSize, customURL, imageType } = settings;
+  const { collectionID, windowSize, customURL, imageType } = settings.wallPaperSettings;
   const [imageURL, setImageURL] = useState('');
 
   useEffect(() => {
     loadCustomBackground();
 
     async function loadCustomBackground() {
-      console.log(imageType);
       if (imageType === 'unisplash' || customURL === '') {
         const res = await axios.get(
           `https://source.unsplash.com/collection/${collectionID}/${windowSize[0]}x${windowSize[1]}`

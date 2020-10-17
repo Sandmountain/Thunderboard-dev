@@ -15,14 +15,20 @@ const marks = (min, max) => {
 };
 
 export default function GmailTab({ settings, testChanges, setSettings, toggleMovement }) {
-  const { nrOfMails } = settings;
+  const { nrOfMails } = settings.gMailSettings;
 
   const [mails, setNrOfMails] = useState(nrOfMails);
 
   const handleChange = (e, val) => {
     setNrOfMails(val);
     if (val !== settings.nrOfMails) {
-      setSettings({ ...settings, nrOfMails: mails });
+      setSettings({
+        ...settings,
+        gMailSettings: {
+          ...settings.gMailSettings,
+          nrOfMails: mails,
+        },
+      });
     }
   };
 

@@ -35,9 +35,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function RedditReader({ data, isDraggable }) {
-  const { subreddits, postLimit, shufflePosts } = data;
-
+export default function RedditReader({ subreddits, nrOfPosts, shufflePosts, isDraggable }) {
   const [redditData, setRedditData] = useState([]);
   const [redditInfo, setRedditInfo] = useState({});
   const [activeFilter, setActiveFilter] = useState({ type: 'hot', time: 'today' });
@@ -53,16 +51,17 @@ export default function RedditReader({ data, isDraggable }) {
         result.push(
           ...(await axios
             .get(
-              `https://www.reddit.com/r/${subreddit}/${activeFilter.type}.json?t=${activeFilter.time}&limit=${postLimit}`
+              `https://www.reddit.com/r/${subreddit.name}/${activeFilter.type}.json?t=${activeFilter.time}&limit=${nrOfPosts}`
             )
             .then((res) => res.data.data.children))
         );
-        // comments can be retrived from like: https://www.reddit.com/r/cursedcomments/comments/itacb7/.json
-        subRedditInfo[subreddit] = await axios
-          .get(`https://www.reddit.com/r/${subreddit}/about.json`)
+        // comments can be retriaw  ved from like: https://www.reddit.com/r/cursedcomments/comments/itacb7/.json
+        subRedditInfo[subreddit.name] = await axios
+          .get(`https://www.reddit.com/r/${subreddit.name}/about.json`)
           .then((res) => res.data.data.icon_img);
       });
 
+      //TODO: Remove this code
       setTimeout(() => {
         setContentLoaded(true);
         setRedditInfo(subRedditInfo);
@@ -71,7 +70,7 @@ export default function RedditReader({ data, isDraggable }) {
     } catch (error) {
       console.log(error);
     }
-  }, [activeFilter, subreddits, postLimit]);
+  }, [activeFilter, subreddits, nrOfPosts]);
 
   useEffect(() => {
     setContentLoaded(false);

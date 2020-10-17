@@ -8,15 +8,33 @@ const times = [
   ['year', 31536000],
 ];
 
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
 export const openInNewTab = (id, baseURL = '') => {
   const newWindow = window.open(baseURL + id, '_blank', 'noopener,noreferrer');
   if (newWindow) newWindow.opener = null;
 };
 
+export const parseDate = (date) => {
+  const now = new Date();
+  const then = new Date(date);
+
+  if (now.getDay() === then.getDay()) {
+    let minutes = then.getMinutes();
+    let hours = then.getHours();
+    hours = hours < 10 ? '0' + hours : hours;
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    return hours + ':' + minutes;
+  } else {
+    return then.getDate() + ' ' + months[then.getMonth()];
+  }
+
+  //TODO : Shows wrong date
+};
+
 export const timeSince = (date) => {
   const now = new Date();
   var diff = Math.round((now - date) / 1000);
-
   return getDiff(diff);
 };
 

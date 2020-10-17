@@ -10,7 +10,6 @@ export const shuffleArray = (shuffleArray) => {
 };
 
 export const scoreParser = (score) => {
-  //console.log(score);
   if (score > 100000) {
     return Math.round(score / 1000) + 'k';
   } else if (score > 1000) {

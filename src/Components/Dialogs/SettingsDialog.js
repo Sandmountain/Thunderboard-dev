@@ -8,8 +8,7 @@ import WallpaperTab from './SettingsTabs/WallpaperTab';
 import YoutubeTab from './SettingsTabs/YoutubeTab';
 import DashboardTab from './SettingsTabs/DashboardTab';
 import GmailTab from './SettingsTabs/GmailTab';
-import RedditTab from './SettingsTabs/RedditTab'
-
+import RedditTab from './SettingsTabs/RedditTab';
 
 function a11yProps(index) {
   return {
@@ -29,7 +28,7 @@ export default function SettingsDialog(props) {
     setTempSettings({ ...settings });
   }, [settings]);
 
-  const [prevSettings, setPrevSettings] = useState({ ...settings });
+  const [prevSettings] = useState({ ...settings });
   const [tempSettings, setTempSettings] = useState({ ...settings });
 
   const handleClose = () => {
@@ -38,7 +37,6 @@ export default function SettingsDialog(props) {
   };
 
   const testChanges = () => {
-    console.log(tempSettings);
     setSettings({ ...tempSettings });
   };
 
@@ -52,7 +50,13 @@ export default function SettingsDialog(props) {
   };
 
   const toggleMovement = (isDraggable) => {
-    setSettings({ ...tempSettings, isDraggable });
+    setSettings({
+      ...tempSettings,
+      dashboardSettings: {
+        ...tempSettings.dashboardSettings,
+        isDraggable,
+      },
+    });
     onClose();
   };
 
@@ -60,17 +64,17 @@ export default function SettingsDialog(props) {
     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
       <AppBar position="static">
         <Tabs value={currentTab} onChange={handleChange} scrollButtons="on" variant="scrollable">
-          <Tab label="Dashboard" {...a11yProps(4)} />
+          <Tab label="Dashboard" {...a11yProps(0)} />
           <Tab label="Wallpaper" {...a11yProps(1)} />
           <Tab label="Google Mail" {...a11yProps(2)} />
           <Tab label="Youtube" {...a11yProps(3)} />
-          <Tab label="Reddit" {...a11yProps(0)} />
+          <Tab label="Reddit" {...a11yProps(4)} />
           <Tab label="Twitch" {...a11yProps(5)} />
           <Tab label="Universal Converter" {...a11yProps(6)} />
           <Tab label="Weather Widget" {...a11yProps(7)} />
         </Tabs>
       </AppBar>
-      <TabPanel value={currentTab} index={4}>
+      <TabPanel value={currentTab} index={0}>
         <DashboardTab
           settings={tempSettings}
           testChanges={testChanges}
@@ -87,7 +91,7 @@ export default function SettingsDialog(props) {
       <TabPanel value={currentTab} index={3}>
         <YoutubeTab settings={tempSettings} testChanges={testChanges} setSettings={setTempSettings} />
       </TabPanel>
-      <TabPanel value={currentTab} index={0}>
+      <TabPanel value={currentTab} index={4}>
         <RedditTab settings={tempSettings} testChanges={testChanges} setSettings={setTempSettings} />
       </TabPanel>
       <DialogActions>

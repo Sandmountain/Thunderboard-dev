@@ -6,7 +6,6 @@ import { List } from '@material-ui/core';
 
 export default function GoogleMailComponent({ credentials, isProduction, nrOfMails, isDraggable }) {
   const [mailData, setMailData] = useState(null);
-  console.log(nrOfMails);
   useEffect(() => {
     fetchGoogleMailData(credentials);
 

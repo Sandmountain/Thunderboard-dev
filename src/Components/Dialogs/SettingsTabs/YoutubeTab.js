@@ -7,11 +7,10 @@ import {
   FormControl,
   FormControlLabel,
   FormGroup,
-  FormLabel,
   Slider,
   Typography,
 } from '@material-ui/core';
-import { CheckBox } from '@material-ui/icons';
+
 import React, { useState } from 'react';
 
 const marks = (min, max) => {
@@ -28,24 +27,26 @@ const marks = (min, max) => {
 };
 
 export default function YoutubeTab({ settings, testChanges, setSettings, toggleMovement }) {
-  const { nrOfVideos, youtubeInfo } = settings;
+  const { nrOfVideos, youtubeVideoInfo } = settings.youtubeSettings;
 
   const [videos, setNrOfVideos] = useState(nrOfVideos);
-  const [ytbInfo, setYoutubeInfo] = useState(youtubeInfo);
+  const [ytbInfo, setYoutubeInfo] = useState(youtubeVideoInfo);
   const handleChange = (e, val) => {
     setNrOfVideos(val);
     if (val !== settings.nrOfMails) {
-      setSettings({ ...settings, nrOfVideos: videos });
+      setSettings({ ...settings, youtubeSettings: { ...settings.youtubeSettings, nrOfVideos: videos } });
     }
   };
 
   const testValue = () => {
     testChanges();
   };
-  // Blir inverterade ibland
+  //TODO: Funkar inte med checkboxarna, lös. Den blir inverterad mot vad som visas på skärm
   const handleCheckboxes = (type) => {
+    console.log(type);
     setYoutubeInfo({ ...ytbInfo, [type]: !ytbInfo[type] });
-    setSettings({ ...settings, youtubeInfo: ytbInfo });
+    console.log(ytbInfo);
+    setSettings({ ...settings, youtubeSettings: { ...settings.youtubeSettings, youtubeVideoInfo: ytbInfo } });
   };
 
   return (

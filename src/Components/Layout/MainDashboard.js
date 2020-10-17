@@ -10,6 +10,7 @@ import TimeDate from '../GridComponents/TimeDate/TimeDate';
 import UniversalConverter from '../GridComponents/UniversalConverter/UniversalConverter';
 import TwitchWidget from '../GridComponents/TwitchWidget/TwitchWidget';
 import WallpaperComponent from '../GridComponents/WallpaperComponent/WallpaperComponent';
+import RSSreader from '../GridComponents/RSSreader/RSSreader';
 
 import { Alert } from '@material-ui/lab';
 
@@ -19,19 +20,6 @@ import 'react-grid-layout/css/styles.css';
 
 import { Button, Card, CircularProgress, Icon, IconButton, makeStyles, Snackbar } from '@material-ui/core';
 import { SettingsContext } from '../../Context/SettingsContext.js';
-
-// Reddit Variables, move to menu afterwards
-const subreddits = ['politics', 'RocketLeague', 'cursedcomments'];
-const postLimit = 5;
-const shufflePosts = true;
-const redditData = { subreddits, postLimit, shufflePosts };
-
-// Youtube Variables
-//const nrOfVideos = 8;
-//const showInfo = { showChannel: true, showViews: true, showUpload: true };
-
-// Gmail variables
-//const nrOfMails = 10;
 
 // Twitch
 //const twitchToken = '';
@@ -49,6 +37,7 @@ const layout = [
   { w: 2, h: 2, x: 10, y: 0, i: '5' },
   { w: 7, h: 2, x: 0, y: 7, i: '6' },
   { w: 7, h: 2, x: 0, y: 10, i: '7' },
+  { w: 4, h: 4, x: 0, y: 12, i: '8' },
 ];
 
 const useStyles = makeStyles({
@@ -60,20 +49,15 @@ export default function MainDashboard() {
   const ReactGridLayout = WidthProvider(RGL);
   const classes = useStyles();
 
-  //Wallpaper
-  // const [windowSize, setWindowSize] = useState([1920, 1080]);
-  // const [collectionID, setCollectionID] = useState('8602161');
-
-  //User variables changes
-  //const [isDraggable, setIsDraggable] = useState(true);
-
   const [loggedIn, setIsLoggedIn] = useState(false);
-  const [gridLayout, setGridLayout] = useState(layout);
+  //const [gridLayout, setGridLayout] = useState(layout);
   const [credentials, setCredentials] = useState(null);
 
   const { settings, setSettings } = useContext(SettingsContext);
-  const { isDraggable, nrOfCols, gridSpacing, compactType, rowHeight, nrOfMails, nrOfVideos, youtubeInfo } = settings;
+  const { rssReader, gMailSettings, dashboardSettings, redditSettings, youtubeSettings } = settings;
   const isProduction = false;
+
+  let newLayout = dashboardSettings.layout;
 
   useEffect(() => {
     console.log(settings);
@@ -81,18 +65,42 @@ export default function MainDashboard() {
 
   //Settings
   const childRef = useRef();
+  const rssRef = useRef();
 
   const onLayoutChange = (layout) => {
-    setGridLayout(gridLayout);
+    if (layout !== newLayout) {
+      newLayout = layout;
+    }
+    // setSettings({
+    //   ...settings,
+    //   dashboardSettings: {
+    //     ...settings.dashboardSettings,
+    //     isDraggable: false,
+    //   },
+    // });
   };
 
   const handleCloseDraggable = () => {
     //Save to chrome storage (the layout)
-    setSettings({ ...settings, isDraggable: false });
+
+    setSettings({
+      ...settings,
+      dashboardSettings: {
+        ...settings.dashboardSettings,
+        isDraggable: false,
+      },
+    });
   };
   const handleSaveDraggable = () => {
     //Save to chrome storage (the layout)
-    setSettings({ ...settings, isDraggable: false });
+    setSettings({
+      ...settings,
+      dashboardSettings: {
+        ...settings.dashboardSettings,
+        isDraggable: false,
+        layout: newLayout,
+      },
+    });
   };
 
   return (
@@ -110,50 +118,55 @@ export default function MainDashboard() {
         {loggedIn && credentials ? (
           <>
             <ReactGridLayout
-              isDraggable={isDraggable}
-              isResizable={isDraggable}
-              layout={gridLayout}
+              isDraggable={dashboardSettings.isDraggable}
+              isResizable={dashboardSettings.isDraggable}
+              layout={dashboardSettings.layout}
               className="layout"
               onLayoutChange={(e) => onLayoutChange(e)}
-              cols={nrOfCols}
-              margin={gridSpacing}
-              containerPadding={gridSpacing}
-              rowHeight={rowHeight}
-              compactType={compactType === 'default' ? null : compactType}
+              cols={dashboardSettings.nrOfCols}
+              margin={dashboardSettings.gridSpacing}
+              containerPadding={dashboardSettings.gridSpacing}
+              rowHeight={dashboardSettings.rowHeight}
+              compactType={dashboardSettings.compactType === 'default' ? null : dashboardSettings.compactType}
               width={'100%'}>
               {/* All Grid Components here */}
               <div key="1" className={classes.gridItemCards}>
                 <YoutubeComponent
                   credentials={credentials}
                   isProduction={isProduction}
-                  isDraggable={isDraggable}
-                  nrOfVideos={nrOfVideos}
-                  showInfo={youtubeInfo}
+                  isDraggable={dashboardSettings.isDraggable}
+                  nrOfVideos={youtubeSettings.nrOfVideos}
+                  showInfo={youtubeSettings.youtubeVideoInfo}
                 />
               </div>
               <div key="2" className={classes.gridItemCards}>
                 <GoogleMailComponent
                   credentials={credentials}
                   isProduction={isProduction}
-                  nrOfMails={nrOfMails}
-                  isDraggable={isDraggable}
+                  nrOfMails={gMailSettings.nrOfMails}
+                  isDraggable={dashboardSettings.isDraggable}
                 />
               </div>
               <div key="3" className={classes.gridItemCards}>
-                <RedditReader data={redditData} isDraggable={isDraggable} />
+                <RedditReader
+                  subreddits={redditSettings.subreddits}
+                  nrOfPosts={redditSettings.nrOfPosts}
+                  shufflePosts={redditSettings.shufflePosts}
+                  isDraggable={dashboardSettings.isDraggable}
+                />
               </div>
               <div key="4" className={classes.gridItemCards}>
-                <WeatherWidget city={'Stockholm'} isDraggable={isDraggable} />
+                <WeatherWidget city={'Stockholm'} isDraggable={dashboardSettings.isDraggable} />
               </div>
               <div key="5" className={classes.gridItemCards}>
-                <TimeDate isDraggable={isDraggable} />
+                <TimeDate isDraggable={dashboardSettings.isDraggable} />
               </div>
               <div key="6" className={classes.gridItemCards}>
-                <UniversalConverter isDraggable={isDraggable} />
+                <UniversalConverter isDraggable={dashboardSettings.isDraggable} />
               </div>
               <div key="7" className={classes.gridItemCards}>
                 {authTwitch ? (
-                  <TwitchWidget isDraggable={isDraggable} />
+                  <TwitchWidget isDraggable={dashboardSettings.isDraggable} />
                 ) : (
                   <Card className={classes.twitchAuthButton}>
                     <Button
@@ -166,13 +179,28 @@ export default function MainDashboard() {
                   </Card>
                 )}
               </div>
+              <div key="8" className={classes.gridItemCards} ref={rssRef}>
+                <RSSreader
+                  rssRef={rssRef}
+                  url={rssReader.url}
+                  nrOfArticles={rssReader.nrOfArticles}
+                  showContent={rssReader.showContent}
+                  showImage={rssReader.showImage}
+                  showTitle={rssReader.showTitle}
+                  margin={rssReader.margin}
+                  layout={rssReader.layout}
+                  anchorOriginVertical={rssReader.anchorOriginVertical}
+                  anchorOriginHorizontal={rssReader.anchorOriginHorizontal}
+                  isDraggable={dashboardSettings.isDraggable}
+                />
+              </div>
             </ReactGridLayout>
           </>
         ) : (
           <CircularProgress />
         )}
       </div>
-      <Snackbar open={isDraggable}>
+      <Snackbar open={dashboardSettings.isDraggable}>
         <Alert
           severity="info"
           variant="filled"

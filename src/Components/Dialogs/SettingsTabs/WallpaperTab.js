@@ -14,27 +14,45 @@ import {
 
 export default function WallpaperTab(props) {
   const { settings, setSettings, testChanges } = props;
-  const { collectionID, windowSize, customURL, imageType } = settings;
+  const { collectionID, windowSize, customURL, imageType } = settings.wallPaperSettings;
 
   const [url, setUrl] = useState(customURL);
   const [colID, setColID] = useState(collectionID);
-
   const [imgType, setImgType] = useState(imageType);
 
   const handleUnisplashID = (event) => {
     setColID(event.target.value);
-    setSettings({ ...settings, collectionID: event.target.value, imageType: 'unisplash' });
+    setSettings({
+      ...settings,
+      wallPaperSettings: {
+        ...settings.wallPaperSettings,
+        collectionID: event.target.value,
+        imageType: 'unisplash',
+      },
+    });
   };
 
   const handleCustomURL = (event) => {
     setUrl(event.target.value);
-    setSettings({ ...settings, customURL: event.target.value, imageType: 'custom' });
+    setSettings({
+      ...settings,
+      wallPaperSettings: {
+        ...settings.wallPaperSettings,
+        customURL: event.target.value,
+        imageType: 'custom',
+      },
+    });
   };
 
   const handleRadioInput = (e) => {
-    console.log(e.target.value);
     setImgType(e.target.value);
-    setSettings({ ...settings, imageType: e.target.value });
+    setSettings({
+      ...settings,
+      wallPaperSettings: {
+        ...settings.wallPaperSettings,
+        imageType: e.target.value,
+      },
+    });
   };
 
   return (
@@ -58,7 +76,8 @@ export default function WallpaperTab(props) {
             justifyContent: 'space-between',
             marginBottom: 20,
           }}>
-          <TextField label={`Width`} value={windowSize[0]}></TextField>
+          {/* TODO: THESE VALUES CAN'T BE CHANGED*/}
+          <TextField label="Width" value={windowSize[0]}></TextField>
           <TextField label="Height" value={windowSize[1]}></TextField>
         </div>
       </DialogContent>
@@ -75,13 +94,13 @@ export default function WallpaperTab(props) {
             <FormControlLabel
               value="custom"
               control={<Radio color="primary" />}
-              label=" Use custom Image"
+              label="Use custom Image"
               labelPlacement="end"
             />
           </RadioGroup>
         </FormGroup>
         <div>
-          {imgType === 'unisplash' ? (
+          {imageType === 'unisplash' ? (
             <>
               <Typography style={{ marginBottom: 12 }}>
                 Entering a{' '}

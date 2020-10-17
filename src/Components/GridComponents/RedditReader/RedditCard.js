@@ -181,7 +181,7 @@ export default function RedditCard(props) {
         </div>
         <div className={classes.postContainer}>
           <Typography className={classes.postDetails}>
-            <a className={classes.subRedditLink} href={`http://reddit.com/'${subreddit_name_prefixed}`}>
+            <a className={classes.subRedditLink} href={`http://reddit.com/${subreddit_name_prefixed}`}>
               <span className={classes.avatarContainer}>
                 <img className={classes.redditAvatar} src={info[subreddit]} alt={''}></img>{' '}
               </span>

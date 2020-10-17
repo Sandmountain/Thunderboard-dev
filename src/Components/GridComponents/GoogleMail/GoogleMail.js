@@ -4,9 +4,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ArchiveIcon from '@material-ui/icons/Archive';
 import AttachmentIcon from '@material-ui/icons/AttachmentOutlined';
 
-import { parseDate } from './gmailFunctions/gmailFunctions.js';
-
-import { openInNewTab } from '../../helperFunctions.js';
+import { openInNewTab, parseDate } from '../../helperFunctions.js';
 
 const parseMailData = (data) => {
   let tempObj = {
@@ -97,6 +95,12 @@ const useStyles = makeStyles({
   readMailCard: {
     background: 'rgba(242,245,245,0.8)',
   },
+  endIcon: {
+    fontSize: '1rem',
+    position: 'relative',
+    top: '2px',
+    paddingRight: '3px',
+  },
 });
 
 export default function GoogleMail({ data, credentials, isProduction, isDraggable }) {
@@ -105,49 +109,43 @@ export default function GoogleMail({ data, credentials, isProduction, isDraggabl
   const [isHover, setIsHover] = useState(false);
 
   return (
-    <>
-      <Card
-        className={` ${classes.mailCard} ${!mailData.unread && classes.readMailCard} ${
-          isHover && classes.mailCardHover
-        } 
+    <Card
+      className={` ${classes.mailCard} ${!mailData.unread && classes.readMailCard} ${isHover && classes.mailCardHover} 
         `}
-        onMouseEnter={() => setIsHover(true)}
-        onMouseLeave={() => setIsHover(false)}>
-        <Typography variant="body2" component="div" className={classes.mailGrid}>
-          <Box
-            fontWeight={mailData.unread ? 'fontWeightBold' : 'fontWeightLight'}
-            className={classes.mailText}
-            onClick={() => openInNewTab(mailData.id, 'https://mail.google.com/mail/u/0/#inbox/')}>
-            {mailData.fromName}
-          </Box>
-          <Box
-            fontWeight={mailData.unread ? 'fontWeightBold' : 'fontWeightLight'}
-            className={classes.mailText}
-            onClick={() => openInNewTab(mailData.id, 'https://mail.google.com/mail/u/0/#inbox/')}>
-            {mailData.subject}
-          </Box>
-          {isHover ? (
-            <CardActions disableSpacing className={classes.iconContainer}>
-              <IconButton size="small" edge="end" aria-label="archive">
-                <ArchiveIcon style={{ fontSize: '1.4rem' }} />
-              </IconButton>
-              <IconButton size="small" edge="end" aria-label="delete">
-                <DeleteIcon style={{ fontSize: '1.4rem' }} />
-              </IconButton>
-            </CardActions>
-          ) : (
-            <>
-              <div className={classes.mailDate}>
-                {mailData.attachment && (
-                  <AttachmentIcon style={{ fontSize: '1rem', position: 'relative', top: '2px', paddingRight: '3px' }} />
-                )}
-                <Box fontWeight={mailData.unread ? 'fontWeightBold' : 'fontWeightLight'}>{mailData.date}</Box>
-              </div>
-            </>
-          )}
-        </Typography>
-      </Card>
-    </>
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}>
+      <Typography variant="body2" component="div" className={classes.mailGrid}>
+        <Box
+          fontWeight={mailData.unread ? 'fontWeightBold' : 'fontWeightLight'}
+          className={classes.mailText}
+          onClick={() => openInNewTab(mailData.id, 'https://mail.google.com/mail/u/0/#inbox/')}>
+          {mailData.fromName}
+        </Box>
+        <Box
+          fontWeight={mailData.unread ? 'fontWeightBold' : 'fontWeightLight'}
+          className={classes.mailText}
+          onClick={() => openInNewTab(mailData.id, 'https://mail.google.com/mail/u/0/#inbox/')}>
+          {mailData.subject}
+        </Box>
+        {isHover ? (
+          <CardActions disableSpacing className={classes.iconContainer}>
+            <IconButton size="small" edge="end" aria-label="archive">
+              <ArchiveIcon style={{ fontSize: '1.4rem' }} />
+            </IconButton>
+            <IconButton size="small" edge="end" aria-label="delete">
+              <DeleteIcon style={{ fontSize: '1.4rem' }} />
+            </IconButton>
+          </CardActions>
+        ) : (
+          <>
+            <div className={classes.mailDate}>
+              {mailData.attachment && <AttachmentIcon className={classes.endIcon} />}
+              <Box fontWeight={mailData.unread ? 'fontWeightBold' : 'fontWeightLight'}>{mailData.date}</Box>
+            </div>
+          </>
+        )}
+      </Typography>
+    </Card>
   );
 }
 

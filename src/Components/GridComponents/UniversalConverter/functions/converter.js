@@ -14,7 +14,6 @@ export const defineText = async (text, defaultCurrency, language) => {
   try {
     const splitInput = text.trim().match(/[\d.]+|\D+/g);
     const units = splitInput[1].match(/\b[^\s]+\b/g);
-    console.log(units);
     if (units !== null) {
       const exchangeCurrencies = { base: validateCurrency(units[0]) };
       // Exchange
