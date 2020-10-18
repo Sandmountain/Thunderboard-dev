@@ -9,6 +9,7 @@ import YoutubeTab from './SettingsTabs/YoutubeTab';
 import DashboardTab from './SettingsTabs/DashboardTab';
 import GmailTab from './SettingsTabs/GmailTab';
 import RedditTab from './SettingsTabs/RedditTab';
+import TwitchTab from './SettingsTabs/TwitchTab';
 
 function a11yProps(index) {
   return {
@@ -20,13 +21,20 @@ function a11yProps(index) {
 export default function SettingsDialog(props) {
   const { onClose, open } = props;
   const [currentTab, setCurrentTab] = useState(0);
-
   const { settings, setSettings } = useContext(SettingsContext);
 
   // If the settings changes, update the temp settings.
   useEffect(() => {
     setTempSettings({ ...settings });
   }, [settings]);
+
+  useEffect(() => {
+    if (props.openTab !== '') {
+      handleChange(null, props.openTab);
+    } else {
+      handleChange(null, 0);
+    }
+  }, [props.openTab]);
 
   const [prevSettings] = useState({ ...settings });
   const [tempSettings, setTempSettings] = useState({ ...settings });
@@ -93,6 +101,9 @@ export default function SettingsDialog(props) {
       </TabPanel>
       <TabPanel value={currentTab} index={4}>
         <RedditTab settings={tempSettings} testChanges={testChanges} setSettings={setTempSettings} />
+      </TabPanel>
+      <TabPanel value={currentTab} index={5}>
+        <TwitchTab settings={tempSettings} testChanges={testChanges} setSettings={setTempSettings} />
       </TabPanel>
       <DialogActions>
         <Button className="noBorderRadius" onClick={handleClose} color="default">

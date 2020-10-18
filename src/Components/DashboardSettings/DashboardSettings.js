@@ -43,10 +43,12 @@ const DashboardSettings = forwardRef(({ settingsOptions }, ref) => {
   }));
 
   const [open, setOpen] = useState(false);
+  const [openTab, setOpenTab] = useState('');
 
   const classes = useStyles();
 
   const openSettings = (setting) => {
+    setOpenTab(setting);
     setOpen(true);
   };
 
@@ -72,7 +74,7 @@ const DashboardSettings = forwardRef(({ settingsOptions }, ref) => {
         </div>
       </div>
 
-      <SettingsDialog open={open} onClose={handleChangeCollectionClose} />
+      <SettingsDialog openTab={openTab} open={open} onClose={handleChangeCollectionClose} />
     </>
   );
 });

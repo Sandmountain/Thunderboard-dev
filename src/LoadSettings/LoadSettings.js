@@ -54,7 +54,7 @@ export const LoadSettings = () => {
         { w: 1, h: 2, x: 9, y: 0, i: '4' },
         { w: 2, h: 2, x: 10, y: 0, i: '5' },
         { w: 7, h: 2, x: 0, y: 7, i: '6' },
-        { w: 7, h: 2, x: 0, y: 10, i: '7' },
+        { w: 7, h: 4, x: 0, y: 10, i: '7' },
         { w: 5, h: 4, x: 7, y: 2, i: '8' },
       ],
     },
@@ -65,7 +65,11 @@ export const LoadSettings = () => {
       imageType: 'unisplash',
     },
     twitchSettings: {
-      auth: false,
+      authenticated: true,
+      authKey: 'x00a4jrx01ps8ehf2yq4b3qob9kkrp',
+      nrOfStreams: 6,
+      streamType: 'topGames',
+      followedUser: '',
     },
   };
 

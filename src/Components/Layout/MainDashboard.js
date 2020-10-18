@@ -20,25 +20,11 @@ import 'react-grid-layout/css/styles.css';
 
 import { Button, Card, CircularProgress, Icon, IconButton, makeStyles, Snackbar } from '@material-ui/core';
 import { SettingsContext } from '../../Context/SettingsContext.js';
+import { openInNewTab } from '../helperFunctions.js';
 
 // Twitch
 //const twitchToken = '';
-const authTwitch = false;
-
-// Wallpaper
-
-// Dashboard
-
-const layout = [
-  { w: 7, h: 5, x: 0, y: 0, i: '1' },
-  { w: 7, h: 6, x: 0, y: 5, i: '2' },
-  { w: 5, h: 14, x: 7, y: 2, i: '3' },
-  { w: 1, h: 2, x: 9, y: 0, i: '4' },
-  { w: 2, h: 2, x: 10, y: 0, i: '5' },
-  { w: 7, h: 2, x: 0, y: 7, i: '6' },
-  { w: 7, h: 2, x: 0, y: 10, i: '7' },
-  { w: 4, h: 4, x: 0, y: 12, i: '8' },
-];
+const authTwitch = true;
 
 const useStyles = makeStyles({
   gridItemCards: {},
@@ -54,7 +40,7 @@ export default function MainDashboard() {
   const [credentials, setCredentials] = useState(null);
 
   const { settings, setSettings } = useContext(SettingsContext);
-  const { rssReader, gMailSettings, dashboardSettings, redditSettings, youtubeSettings } = settings;
+  const { rssReader, gMailSettings, dashboardSettings, redditSettings, youtubeSettings, twitchSettings } = settings;
   const isProduction = false;
 
   let newLayout = dashboardSettings.layout;
@@ -101,6 +87,10 @@ export default function MainDashboard() {
         layout: newLayout,
       },
     });
+  };
+
+  const authTwitch = () => {
+    childRef.current.openSettings(5);
   };
 
   return (
@@ -165,14 +155,20 @@ export default function MainDashboard() {
                 <UniversalConverter isDraggable={dashboardSettings.isDraggable} />
               </div>
               <div key="7" className={classes.gridItemCards}>
-                {authTwitch ? (
-                  <TwitchWidget isDraggable={dashboardSettings.isDraggable} />
+                {twitchSettings.authenticated ? (
+                  <TwitchWidget
+                    authKey={twitchSettings.authKey}
+                    nrOfStreams={twitchSettings.nrOfStreams}
+                    streamType={twitchSettings.streamType}
+                    followedUser={twitchSettings.followedUser}
+                    isDraggable={dashboardSettings.isDraggable}
+                  />
                 ) : (
                   <Card className={classes.twitchAuthButton}>
                     <Button
                       variant="text"
                       onClick={() => {
-                        childRef.current.openSettings('twitch');
+                        authTwitch();
                       }}>
                       Authorize Twitch
                     </Button>

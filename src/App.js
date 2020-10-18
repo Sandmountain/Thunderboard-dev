@@ -5,6 +5,15 @@ import { SettingsContext } from './Context/SettingsContext';
 
 import MainDashboard from './Components/Layout/MainDashboard';
 import { LoadSettings } from './LoadSettings/LoadSettings';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core';
+
+const theme = createMuiTheme({
+  palette: {
+    warning: { main: '#ffc107' },
+    error: { main: '#dc3545' },
+    success: { main: '#28a745' },
+  },
+});
 
 function App() {
   const loadSettings = LoadSettings();
@@ -12,9 +21,11 @@ function App() {
 
   return (
     <div>
-      <SettingsContext.Provider value={{ settings, setSettings }}>
-        <MainDashboard />
-      </SettingsContext.Provider>
+      <ThemeProvider theme={theme}>
+        <SettingsContext.Provider value={{ settings, setSettings }}>
+          <MainDashboard />
+        </SettingsContext.Provider>
+      </ThemeProvider>
     </div>
   );
 }

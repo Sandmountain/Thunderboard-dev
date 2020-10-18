@@ -4,6 +4,7 @@ import {
   DialogContentText,
   DialogTitle,
   FormControl,
+  makeStyles,
   MenuItem,
   Select,
   Slider,
@@ -25,10 +26,17 @@ const marks = (min, max) => {
   ];
 };
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    color: theme.palette.warning.main,
+  },
+}));
+
 export default function DashboardTab(props) {
   const { settings, setSettings, toggleMovement } = props;
   const { isDraggable, nrOfCols, rowHeight, gridSpacing, compactType } = settings.dashboardSettings;
-  console.log(settings.dashboardSettings);
+
+  const classes = useStyles();
 
   const [cols, setCols] = useState(nrOfCols);
   const [height, setHeight] = useState(rowHeight);
@@ -82,7 +90,7 @@ export default function DashboardTab(props) {
           </Button>
         </div>
       </DialogTitle>
-      <Typography align="center" style={{ marginBottom: 10, color: '#dc3545' }}>
+      <Typography className={classes.root} align="center" style={{ marginBottom: 10 }}>
         <Warning style={{ verticalAlign: 'text-bottom' }} /> Setting wont change if you don't test them first!
       </Typography>
       <DialogContent>

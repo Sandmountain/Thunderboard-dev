@@ -115,7 +115,7 @@ export default function RssCard({
       <Typography variant="body2" component="div">
         <Box className={classes.articleText} onClick={() => openInNewTab(url)}>
           <div className={classes.articleListItem}>
-            <Box fontWeight={'fontWeightBold'}>{date + ':'}</Box>
+            <Box fontWeight={'fontWeightBold'}>{date}</Box>
             <Box component="a" className={classes.articleListItemText}>
               <strong>{title}</strong>
               <span className={classes.articleListItemTextGray}>{content}</span>
@@ -165,7 +165,9 @@ export default function RssCard({
               )}
             </div>
             <div className={classes.popoverContentInnerContainer}>
-              <Typography variant="caption">{content}</Typography>
+              <Typography align="left" variant="body2">
+                {content}
+              </Typography>
             </div>
           </div>
         </div>

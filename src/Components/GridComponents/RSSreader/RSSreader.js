@@ -64,7 +64,6 @@ export default function RSSreader({
     loadRSS();
   }, [url]);
 
-  console.log(layout);
   return (
     <Card className={classes.wrapperCard} ref={cardRef}>
       {data && (
