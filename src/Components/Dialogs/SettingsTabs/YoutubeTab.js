@@ -27,10 +27,12 @@ const marks = (min, max) => {
 };
 
 export default function YoutubeTab({ settings, testChanges, setSettings, toggleMovement }) {
-  const { nrOfVideos, youtubeVideoInfo } = settings.youtubeSettings;
+  const { nrOfVideos, scrollbar, youtubeVideoInfo } = settings.youtubeSettings;
+
+  const { showTitle, showChannel, showViews, showUpload } = youtubeVideoInfo;
 
   const [videos, setNrOfVideos] = useState(nrOfVideos);
-  const [ytbInfo, setYoutubeInfo] = useState(youtubeVideoInfo);
+
   const handleChange = (e, val) => {
     setNrOfVideos(val);
     if (val !== settings.nrOfMails) {
@@ -38,15 +40,28 @@ export default function YoutubeTab({ settings, testChanges, setSettings, toggleM
     }
   };
 
+  const handleToggleScrollbar = () => {
+    setSettings({
+      ...settings,
+      youtubeSettings: { ...settings.youtubeSettings, scrollbar: !settings.youtubeSettings.scrollbar },
+    });
+  };
+
   const testValue = () => {
     testChanges();
   };
   //TODO: Funkar inte med checkboxarna, lös. Den blir inverterad mot vad som visas på skärm
   const handleCheckboxes = (type) => {
-    console.log(type);
-    setYoutubeInfo({ ...ytbInfo, [type]: !ytbInfo[type] });
-    console.log(ytbInfo);
-    setSettings({ ...settings, youtubeSettings: { ...settings.youtubeSettings, youtubeVideoInfo: ytbInfo } });
+    setSettings({
+      ...settings,
+      youtubeSettings: {
+        ...settings.youtubeSettings,
+        youtubeVideoInfo: {
+          ...settings.youtubeSettings.youtubeVideoInfo,
+          [type]: !settings.youtubeSettings.youtubeVideoInfo[type],
+        },
+      },
+    });
   };
 
   return (
@@ -67,10 +82,10 @@ export default function YoutubeTab({ settings, testChanges, setSettings, toggleM
           value={videos}
           onChange={(e, val) => handleChange(e, val)}
           valueLabelDisplay="auto"
-          marks={marks(3, 18)}
+          marks={marks(1, 25)}
           step={1}
-          min={3}
-          max={18}
+          min={1}
+          max={25}
         />
       </DialogContent>
       <DialogContent>
@@ -78,36 +93,31 @@ export default function YoutubeTab({ settings, testChanges, setSettings, toggleM
         <FormControl>
           <FormGroup>
             <FormControlLabel
-              control={
-                <Checkbox checked={ytbInfo.showTitle} onChange={() => handleCheckboxes('showTitle')} name="channel" />
-              }
+              control={<Checkbox checked={showTitle} onChange={() => handleCheckboxes('showTitle')} name="channel" />}
               label="Show the video title"
             />
             <FormControlLabel
               control={
-                <Checkbox
-                  checked={ytbInfo.showChannel}
-                  onChange={() => handleCheckboxes('showChannel')}
-                  name="channel"
-                />
+                <Checkbox checked={showChannel} onChange={() => handleCheckboxes('showChannel')} name="channel" />
               }
               label="Show channel name"
             />
             <FormControlLabel
-              control={
-                <Checkbox checked={ytbInfo.showViews} onChange={() => handleCheckboxes('showViews')} name="views" />
-              }
+              control={<Checkbox checked={showViews} onChange={() => handleCheckboxes('showViews')} name="views" />}
               label="Show views"
             />
 
             <FormControlLabel
-              control={
-                <Checkbox checked={ytbInfo.showUpload} onChange={() => handleCheckboxes('showUpload')} name="upload" />
-              }
-              label="Show upload time"
+              control={<Checkbox checked={showUpload} onChange={() => handleCheckboxes('showUpload')} name="upload" />}
+              label="Show upload date"
             />
           </FormGroup>
         </FormControl>
+        <FormControlLabel
+          control={<Checkbox checked={scrollbar} onChange={() => handleToggleScrollbar()} name="scrollbar" />}
+          label="Use auto scrollbar"
+          labelPlacement="end"
+        />
       </DialogContent>
     </>
   );

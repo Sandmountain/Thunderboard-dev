@@ -3,11 +3,9 @@ import {
   Button,
   ButtonGroup,
   Checkbox,
-  Dialog,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  FormControl,
   FormControlLabel,
   FormGroup,
   ListItem,
@@ -50,14 +48,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function YoutubeTab({ settings, testChanges, setSettings }) {
-  const { authenticated, nrOfStreams, authKey, streamType, followedUser } = settings.twitchSettings;
+  const { authenticated, nrOfStreams, authKey, streamType, scrollbar } = settings.twitchSettings;
 
   const [authToken, setAuthToken] = useState(authKey);
   const [isAuth, setIsAuth] = useState(authenticated);
   const [errorMessage, setErrorMessage] = useState({ isError: false, message: '' });
 
   const [strmType, setStrmType] = useState(streamType);
-  const [flwdUser, setFlwdUser] = useState(followedUser);
 
   const [authedUser, setAuthedUser] = useState('');
 
@@ -69,6 +66,13 @@ export default function YoutubeTab({ settings, testChanges, setSettings }) {
     if (val !== settings.nrOfMails) {
       setSettings({ ...settings, twitchSettings: { ...settings.twitchSettings, nrOfStreams: val } });
     }
+  };
+
+  const handleToggleScrollbar = () => {
+    setSettings({
+      ...settings,
+      twitchSettings: { ...settings.twitchSettings, scrollbar: !settings.twitchSettings.scrollbar },
+    });
   };
 
   useEffect(() => {
@@ -227,6 +231,11 @@ export default function YoutubeTab({ settings, testChanges, setSettings }) {
             step={1}
             min={3}
             max={18}
+          />
+          <FormControlLabel
+            control={<Checkbox checked={scrollbar} onChange={() => handleToggleScrollbar()} name="scrollbar" />}
+            label="Use auto scrollbar"
+            labelPlacement="end"
           />
         </DialogContent>
       )}

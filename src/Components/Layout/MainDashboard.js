@@ -20,11 +20,9 @@ import 'react-grid-layout/css/styles.css';
 
 import { Button, Card, CircularProgress, Icon, IconButton, makeStyles, Snackbar } from '@material-ui/core';
 import { SettingsContext } from '../../Context/SettingsContext.js';
-import { openInNewTab } from '../helperFunctions.js';
 
 // Twitch
 //const twitchToken = '';
-const authTwitch = true;
 
 const useStyles = makeStyles({
   gridItemCards: {},
@@ -36,13 +34,20 @@ export default function MainDashboard() {
   const classes = useStyles();
 
   const [loggedIn, setIsLoggedIn] = useState(false);
-  //const [gridLayout, setGridLayout] = useState(layout);
   const [credentials, setCredentials] = useState(null);
 
   const { settings, setSettings } = useContext(SettingsContext);
-  const { rssReader, gMailSettings, dashboardSettings, redditSettings, youtubeSettings, twitchSettings } = settings;
-  const isProduction = false;
-
+  const {
+    rssReader,
+    gMailSettings,
+    dashboardSettings,
+    redditSettings,
+    youtubeSettings,
+    twitchSettings,
+    calenderSettings,
+  } = settings;
+  const isProduction = process.env.NODE_ENV !== 'production' ? false : true;
+  //console.log(process.env.NODE_ENV);
   let newLayout = dashboardSettings.layout;
 
   useEffect(() => {
@@ -54,6 +59,7 @@ export default function MainDashboard() {
   const rssRef = useRef();
 
   const onLayoutChange = (layout) => {
+    console.log(layout);
     if (layout !== newLayout) {
       newLayout = layout;
     }
@@ -89,8 +95,8 @@ export default function MainDashboard() {
     });
   };
 
-  const authTwitch = () => {
-    childRef.current.openSettings(5);
+  const openSettings = (val) => {
+    childRef.current.openSettings(val);
   };
 
   return (
@@ -98,18 +104,21 @@ export default function MainDashboard() {
       <WallpaperComponent />
       <DashboardSettings ref={childRef}></DashboardSettings>
       <div style={{ position: 'relative', zIndex: '2' }}>
-        <GoogleAutentication
-          loggedIn={loggedIn}
-          setIsLoggedIn={setIsLoggedIn}
-          setCredentials={setCredentials}
-          isProduction={isProduction}
-        />
+        {!loggedIn && (
+          <GoogleAutentication
+            loggedIn={loggedIn}
+            setIsLoggedIn={setIsLoggedIn}
+            setCredentials={setCredentials}
+            isProduction={isProduction}
+          />
+        )}
 
         {loggedIn && credentials ? (
-          <>
+          <div style={{ paddingTop: 60 }}>
             <ReactGridLayout
               isDraggable={dashboardSettings.isDraggable}
               isResizable={dashboardSettings.isDraggable}
+              isBounded
               layout={dashboardSettings.layout}
               className="layout"
               onLayoutChange={(e) => onLayoutChange(e)}
@@ -122,15 +131,18 @@ export default function MainDashboard() {
               {/* All Grid Components here */}
               <div key="1" className={classes.gridItemCards}>
                 <YoutubeComponent
+                  openSettings={openSettings}
                   credentials={credentials}
                   isProduction={isProduction}
                   isDraggable={dashboardSettings.isDraggable}
                   nrOfVideos={youtubeSettings.nrOfVideos}
+                  scrollbar={youtubeSettings.scrollbar}
                   showInfo={youtubeSettings.youtubeVideoInfo}
                 />
               </div>
               <div key="2" className={classes.gridItemCards}>
                 <GoogleMailComponent
+                  openSettings={openSettings}
                   credentials={credentials}
                   isProduction={isProduction}
                   nrOfMails={gMailSettings.nrOfMails}
@@ -139,6 +151,7 @@ export default function MainDashboard() {
               </div>
               <div key="3" className={classes.gridItemCards}>
                 <RedditReader
+                  openSettings={openSettings}
                   subreddits={redditSettings.subreddits}
                   nrOfPosts={redditSettings.nrOfPosts}
                   shufflePosts={redditSettings.shufflePosts}
@@ -149,7 +162,12 @@ export default function MainDashboard() {
                 <WeatherWidget city={'Stockholm'} isDraggable={dashboardSettings.isDraggable} />
               </div>
               <div key="5" className={classes.gridItemCards}>
-                <TimeDate isDraggable={dashboardSettings.isDraggable} />
+                <TimeDate
+                  calenders={calenderSettings.calenders}
+                  isDraggable={dashboardSettings.isDraggable}
+                  isProduction={isProduction}
+                  credentials={credentials}
+                />
               </div>
               <div key="6" className={classes.gridItemCards}>
                 <UniversalConverter isDraggable={dashboardSettings.isDraggable} />
@@ -157,9 +175,11 @@ export default function MainDashboard() {
               <div key="7" className={classes.gridItemCards}>
                 {twitchSettings.authenticated ? (
                   <TwitchWidget
+                    openSettings={openSettings}
                     authKey={twitchSettings.authKey}
                     nrOfStreams={twitchSettings.nrOfStreams}
                     streamType={twitchSettings.streamType}
+                    scrollbar={twitchSettings.scrollbar}
                     followedUser={twitchSettings.followedUser}
                     isDraggable={dashboardSettings.isDraggable}
                   />
@@ -168,7 +188,7 @@ export default function MainDashboard() {
                     <Button
                       variant="text"
                       onClick={() => {
-                        authTwitch();
+                        openSettings(5);
                       }}>
                       Authorize Twitch
                     </Button>
@@ -177,6 +197,7 @@ export default function MainDashboard() {
               </div>
               <div key="8" className={classes.gridItemCards} ref={rssRef}>
                 <RSSreader
+                  openSettings={openSettings}
                   rssRef={rssRef}
                   url={rssReader.url}
                   nrOfArticles={rssReader.nrOfArticles}
@@ -191,7 +212,7 @@ export default function MainDashboard() {
                 />
               </div>
             </ReactGridLayout>
-          </>
+          </div>
         ) : (
           <CircularProgress />
         )}

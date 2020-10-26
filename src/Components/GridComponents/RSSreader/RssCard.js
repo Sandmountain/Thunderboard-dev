@@ -1,4 +1,4 @@
-import { Card, CardActionArea, makeStyles, Typography } from '@material-ui/core';
+import { CardActionArea, makeStyles, Typography } from '@material-ui/core';
 import React from 'react';
 import { openInNewTab } from '../../helperFunctions';
 import Image from '../../Image/Image';

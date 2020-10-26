@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Typography, makeStyles, Card } from '@material-ui/core';
 
-import { parseDate } from './functions/timeDateFunctions.js';
+import { getMinMaxDate, parseDate, mockData } from './functions/timeDateFunctions.js';
+
+import axios from 'axios';
+import CalenderPopUp from './CalenderPopUp.js';
+import Clock from './Clock.js';
 
 const useStyles = makeStyles({
   wrapperCard: {
@@ -13,54 +17,70 @@ const useStyles = makeStyles({
     padding: '0 5px',
     height: '100%',
     display: 'flex',
-    alignContent: 'center',
+
     justifyContent: 'flex-end',
   },
   timeText: {
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
     margin: 0,
+    lineHeight: '1 !important',
     padding: 0,
     fontWeight: 600,
     fontSize: 'calc(3.75rem + 1px)',
   },
   dateContainer: {
-    position: 'relative',
-    top: '0.8rem',
-    paddingLeft: 2,
-    lineHeight: 1.05,
-    fontWeight: 200,
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    placeContent: 'center',
   },
   dateTexts: {
     paddingLeft: 2,
-    lineHeight: 1.05,
+    lineHeight: 1,
     fontWeight: 200,
   },
 });
 
-export default function TimeDate({ isDraggable }) {
-  const [date, setDate] = useState(parseDate(new Date()));
-  const classes = useStyles();
-  useEffect(() => {
-    let timerID = setInterval(() => tick(), 1000);
-    return () => {
-      clearInterval(timerID);
-    };
-  });
+export default function TimeDate({ calenders, isDraggable, credentials, isProduction }) {
+  const [gCalenderData, setGCalenderData] = useState(null);
 
-  const tick = () => {
-    setDate(parseDate(new Date()));
-  };
+  const classes = useStyles();
+
+  useEffect(() => {
+    async function getCalenderData(credentials) {
+      const { minDate, maxDate } = getMinMaxDate();
+
+      try {
+        const calenderData = await Promise.all(
+          calenders.map(async (calender) => {
+            return await axios(
+              `https://www.googleapis.com/calendar/v3/calendars/${calender}/events?timeMax=${maxDate}&timeMin=${minDate}`,
+              credentials
+            ).then((res) => {
+              return res.data;
+            });
+          })
+        );
+        console.log(calenderData);
+        setGCalenderData(calenderData);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    if (isProduction) {
+      getCalenderData(credentials);
+    } else {
+      setGCalenderData(mockData);
+    }
+  }, [gCalenderData, isProduction, calenders, credentials]);
 
   return (
     <Card className={classes.wrapperCard}>
       <div className={`${isDraggable && 'isDraggableContainer'} ${classes.content}`}>
-        <Typography variant="h2" className={classes.timeText}>
-          {date.time}
-        </Typography>
-        <div className={classes.dateContainer}>
-          <Typography className={classes.dateTexts}>{date.weekday}</Typography>
-          <Typography className={classes.dateTexts}>{date.day + ' ' + date.month}</Typography>
-          <Typography className={classes.dateTexts}>{date.year}</Typography>
-        </div>
+        <CalenderPopUp calenders={calenders} gCalenderData={gCalenderData} />
+        <Clock />
       </div>
     </Card>
   );

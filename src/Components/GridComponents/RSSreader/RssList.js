@@ -1,9 +1,8 @@
-import { Box, Card, CardActions, Hidden, Icon, makeStyles, Popover, Typography } from '@material-ui/core';
+import { Box, Card, makeStyles, Popover, Typography } from '@material-ui/core';
 import { OpenInNew } from '@material-ui/icons';
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { SettingsContext } from '../../../Context/SettingsContext';
+import React, { useState } from 'react';
+
 import { openInNewTab } from '../../helperFunctions';
-import Image from '../../Image/Image';
 
 const useStyles = makeStyles({
   articleText: {
@@ -94,7 +93,7 @@ export default function RssCard({
 }) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [currentWidth, setCurrentWidth] = useState(rssRef.current.clientWidth);
+  const [currentWidth] = useState(rssRef.current.clientWidth);
 
   const handlePopoverClose = () => {
     setAnchorEl(null);

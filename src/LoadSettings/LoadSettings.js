@@ -37,6 +37,7 @@ export const LoadSettings = () => {
         showUpload: true,
       },
       nrOfVideos: 8,
+      scrollbar: true,
     },
     gMailSettings: {
       nrOfMails: 20,
@@ -44,18 +45,18 @@ export const LoadSettings = () => {
     dashboardSettings: {
       isDraggable: false,
       nrOfCols: 12,
-      rowHeight: 30,
+      rowHeight: 1,
       gridSpacing: [10, 10],
       compactType: 'vertical',
       layout: [
-        { w: 7, h: 5, x: 0, y: 0, i: '1' },
-        { w: 7, h: 6, x: 0, y: 5, i: '2' },
-        { w: 5, h: 14, x: 7, y: 3, i: '3' },
-        { w: 1, h: 2, x: 9, y: 0, i: '4' },
-        { w: 2, h: 2, x: 10, y: 0, i: '5' },
-        { w: 7, h: 2, x: 0, y: 7, i: '6' },
-        { w: 7, h: 4, x: 0, y: 10, i: '7' },
-        { w: 5, h: 4, x: 7, y: 2, i: '8' },
+        { w: 7, h: 21, x: 0, y: 0, i: '1', draggableHandle: '.test-handle', draggableCancel: '.content-container' },
+        { w: 7, h: 23, x: 0, y: 21, i: '2' },
+        { w: 5, h: 44, x: 7, y: 22, i: '3' },
+        { w: 1, h: 7, x: 8, y: 0, i: '4' },
+        { w: 3, h: 7, x: 10, y: 0, i: '5' },
+        { w: 7, h: 7, x: 0, y: 44, i: '6' },
+        { w: 7, h: 18, x: 0, y: 51, i: '7' },
+        { w: 5, h: 18, x: 7, y: 7, i: '8' },
       ],
     },
     wallPaperSettings: {
@@ -66,10 +67,18 @@ export const LoadSettings = () => {
     },
     twitchSettings: {
       authenticated: true,
-      authKey: 'x00a4jrx01ps8ehf2yq4b3qob9kkrp',
+      authKey: '6elpmslt5pviw30x7x6yb1xczuxwyc',
       nrOfStreams: 6,
-      streamType: 'topGames',
-      followedUser: '',
+      streamType: 'user',
+      followedUser: '240211827',
+      scrollbar: false,
+    },
+    calenderSettings: {
+      calenders: [
+        'primary',
+        'viktor.sandberg@digiexam.se',
+        '0a8ba29jl41562qj2arpjp1vl3s68o4a@import.calendar.google.com',
+      ],
     },
   };
 

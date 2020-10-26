@@ -12,7 +12,6 @@ import YouTube from 'react-youtube';
 const useStyles = makeStyles({
   listCardContainer: {
     width: '100%',
-
     padding: '5px 0',
     display: 'flex',
     flexFlow: 'column',
@@ -122,17 +121,16 @@ export default function YoutubeVideo(props) {
 
   return (
     <div className={classes.listCardContainer}>
-      <div>
-        <CardActionArea onClick={handleClickOpen}>
-          <div className={classes.listVideoThumbnailContainer}>
-            <span className={classes.timeDurationLabel}>{duration}</span>
-            <Image src={imageURL.url} />
-          </div>
-        </CardActionArea>
-        <Dialog open={open} onClose={handleClose} maxWidth={false} classes={{ paper: classes.dialog }}>
-          <YouTube videoId={id} opts={youtubeOptions} className={classes.youtubeDialog} />
-        </Dialog>
-      </div>
+      <CardActionArea onClick={handleClickOpen}>
+        <div className={classes.listVideoThumbnailContainer}>
+          <span className={classes.timeDurationLabel}>{duration}</span>
+          <Image src={imageURL.url} />
+        </div>
+      </CardActionArea>
+      <Dialog open={open} onClose={handleClose} maxWidth={false} classes={{ paper: classes.dialog }}>
+        <YouTube videoId={id} opts={youtubeOptions} className={classes.youtubeDialog} />
+      </Dialog>
+
       <div className={classes.youtubeContent}>
         <Typography variant="subtitle2" style={{ fontSize: '0.8rem' }} className={classes.listTitleText}>
           {showTitle && title}

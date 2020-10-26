@@ -120,9 +120,9 @@ export default function DashboardTab(props) {
               value={height}
               onChange={(e, val) => handleChanges(e, val, setHeight)}
               valueLabelDisplay="auto"
-              marks={marks(10, 50)}
+              marks={marks(1, 50)}
               step={1}
-              min={10}
+              min={1}
               max={50}
             />
           </div>

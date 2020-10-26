@@ -7,10 +7,11 @@ import RedditCard from './RedditCard';
 import RedditFilter from './RedditFilter';
 
 import { Card, CircularProgress, makeStyles } from '@material-ui/core';
+import CardTopLabel from '../CardTopLabel/CardTopLabel';
 
 const useStyles = makeStyles({
   innerPadding: {
-    padding: '5px',
+    padding: '45px 5px 5px',
   },
   wrapperCard: {
     height: '100%',
@@ -35,7 +36,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function RedditReader({ subreddits, nrOfPosts, shufflePosts, isDraggable }) {
+export default function RedditReader({ subreddits, nrOfPosts, shufflePosts, isDraggable, openSettings }) {
   const [redditData, setRedditData] = useState([]);
   const [redditInfo, setRedditInfo] = useState({});
   const [activeFilter, setActiveFilter] = useState({ type: 'hot', time: 'today' });
@@ -79,6 +80,7 @@ export default function RedditReader({ subreddits, nrOfPosts, shufflePosts, isDr
 
   return (
     <Card className={classes.wrapperCard}>
+      <CardTopLabel compName="Reddit" openSettings={openSettings} />
       <div className={`${isDraggable && 'isDraggableContainer'} ${classes.innerPadding}`}>
         <Card className={classes.filterContainer}>
           <RedditFilter activeFilter={activeFilter} setActiveFilter={setActiveFilter} />

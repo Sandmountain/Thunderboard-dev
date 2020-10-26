@@ -4,7 +4,8 @@ import GoogleLogin from 'react-google-login';
 
 export default function GoogleAuthentication({ loggedIn, setIsLoggedIn, setCredentials, isProduction }) {
   const SCOPES =
-    'profile email https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/gmail.labels https://www.googleapis.com/auth/gmail.readonly';
+    'profile email https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/gmail.labels https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/calendar';
+  //www.googleapis.com/auth/calendar.events';
 
   const responseGoogle = async (response) => {
     if (!loggedIn && !isProduction) {

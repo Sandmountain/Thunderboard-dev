@@ -1,16 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Avatar, Card, List, ListItem, ListItemAvatar, ListItemText, makeStyles } from '@material-ui/core';
+import { Card, List, makeStyles } from '@material-ui/core';
 
 import RssCard from './RssCard';
 import RssList from './RssList';
-import { parseDate, timeSince } from '../../helperFunctions';
+import { parseDate } from '../../helperFunctions';
+import CardTopLabel from '../CardTopLabel/CardTopLabel';
 
 let Parser = require('rss-parser');
 let parser = new Parser();
 
 const useStyles = makeStyles({
   innerPadding: {
-    padding: '0 5px ',
+    padding: '35px 5px ',
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))',
     gap: '5px',
@@ -23,7 +24,7 @@ const useStyles = makeStyles({
     backgroundColor: '#dae0e6',
   },
   noPadding: {
-    padding: 0,
+    padding: '35px 0 0',
   },
 });
 
@@ -51,9 +52,9 @@ export default function RSSreader({
   isDraggable,
   rssRef,
   margin,
+  openSettings,
 }) {
   const [data, setData] = useState(null);
-  const cardRef = useRef();
   const classes = useStyles();
 
   useEffect(() => {
@@ -65,7 +66,8 @@ export default function RSSreader({
   }, [url]);
 
   return (
-    <Card className={classes.wrapperCard} ref={cardRef}>
+    <Card className={classes.wrapperCard}>
+      <CardTopLabel compName="Aftonbladet" openSettings={openSettings} />
       {data && (
         <>
           {layout === 'card' ? (
@@ -94,6 +96,7 @@ export default function RSSreader({
               {data.map((article, idx) => {
                 if (idx < nrOfArticles) {
                   return (
+                    //TODO: ParseDate vid dagsbyten, fortsätt visa klockslag
                     <RssList
                       key={idx}
                       title={article.title}

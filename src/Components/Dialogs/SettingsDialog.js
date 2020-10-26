@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { AppBar, Button, Dialog, DialogActions, Tab, Tabs } from '@material-ui/core';
+import { AppBar, Button, Dialog, DialogActions, DialogContentText, Tab, Tabs } from '@material-ui/core';
 import TabPanel from './TabPanel/TabPanel';
 import '../../App.css';
 import { SettingsContext } from '../../Context/SettingsContext';
@@ -80,6 +80,7 @@ export default function SettingsDialog(props) {
           <Tab label="Twitch" {...a11yProps(5)} />
           <Tab label="Universal Converter" {...a11yProps(6)} />
           <Tab label="Weather Widget" {...a11yProps(7)} />
+          <Tab label="RSS reader" {...a11yProps(8)} />
         </Tabs>
       </AppBar>
       <TabPanel value={currentTab} index={0}>
@@ -104,6 +105,15 @@ export default function SettingsDialog(props) {
       </TabPanel>
       <TabPanel value={currentTab} index={5}>
         <TwitchTab settings={tempSettings} testChanges={testChanges} setSettings={setTempSettings} />
+      </TabPanel>
+      <TabPanel value={currentTab} index={6}>
+        <DialogContentText>No settings yet...</DialogContentText>
+      </TabPanel>
+      <TabPanel value={currentTab} index={7}>
+        <DialogContentText>No settings yet...</DialogContentText>
+      </TabPanel>
+      <TabPanel value={currentTab} index={8}>
+        <DialogContentText>No settings yet...</DialogContentText>
       </TabPanel>
       <DialogActions>
         <Button className="noBorderRadius" onClick={handleClose} color="default">
