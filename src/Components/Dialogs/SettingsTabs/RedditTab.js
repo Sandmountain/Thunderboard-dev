@@ -49,7 +49,6 @@ export default function RedditTab({ settings, testChanges, setSettings }) {
   const classes = useStyles();
   console.log(settings);
   const { shufflePosts, nrOfPosts, subreddits } = settings.redditSettings;
-  //const [mails, setNrOfMails] = useState(nrOfMails);
   const [loadingNewSubreddit, setLoadingNewSubreddit] = useState(false);
   const [input, setInput] = useState('');
   const [inputError, setInputError] = useState(false);

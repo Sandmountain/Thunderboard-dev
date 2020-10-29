@@ -81,6 +81,7 @@ export default function SettingsDialog(props) {
           <Tab label="Universal Converter" {...a11yProps(6)} />
           <Tab label="Weather Widget" {...a11yProps(7)} />
           <Tab label="RSS reader" {...a11yProps(8)} />
+          <Tab label="Todos" {...a11yProps(9)} />
         </Tabs>
       </AppBar>
       <TabPanel value={currentTab} index={0}>
@@ -113,6 +114,9 @@ export default function SettingsDialog(props) {
         <DialogContentText>No settings yet...</DialogContentText>
       </TabPanel>
       <TabPanel value={currentTab} index={8}>
+        <DialogContentText>No settings yet...</DialogContentText>
+      </TabPanel>
+      <TabPanel value={currentTab} index={9}>
         <DialogContentText>No settings yet...</DialogContentText>
       </TabPanel>
       <DialogActions>

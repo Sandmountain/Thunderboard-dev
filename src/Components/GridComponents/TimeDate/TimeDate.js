@@ -63,7 +63,6 @@ export default function TimeDate({ calenders, isDraggable, credentials, isProduc
             });
           })
         );
-        console.log(calenderData);
         setGCalenderData(calenderData);
       } catch (err) {
         console.log(err);

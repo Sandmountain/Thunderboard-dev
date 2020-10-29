@@ -47,7 +47,7 @@ export const getMinMaxDate = () => {
     };
   } else {
     return {
-      minDate: new Date(today.getHours()).toISOString(),
+      minDate: new Date(today.setHours(today.getHours(), 0, 0)).toISOString(),
       maxDate: new Date(tomorrow.setHours(24, 0, 0)).toISOString(),
       // minDate: new Date(tomorrow.setHours(7, 0, 0)).toISOString(),
       // maxDate: new Date(tomorrow.setHours(23, 59, 0)).toISOString(),
@@ -79,13 +79,12 @@ export const getEvents = (calenderData) => {
 
 export const sortEvents = (events) => {
   const parsedData = events.map((event) => {
-    console.log(event);
     return {
-      calenderName: findSelf(event),
+      calenderName: event.creator?.email ? findSelf(event) : null,
       name: event.summary,
-      creator: event.creator.email,
-      startTime: new Date(event.start.dateTime),
-      endTime: new Date(event.end.dateTime),
+      creator: event.creator?.email ? event.creator?.email : '',
+      startTime: new Date(event?.start?.dateTime),
+      endTime: new Date(event?.end?.dateTime),
     };
   });
 
@@ -104,16 +103,15 @@ export const sortEvents = (events) => {
 
 const findSelf = (event) => {
   if (event?.attendees) {
-    return event.attendees.find((attendee) => attendee.self).email;
+    return event.attendees.find((attendee) => attendee.self)?.email;
   } else if (event?.creator?.self) {
-    return event.creator.email;
+    return event.creator?.email;
   } else {
     return null;
   }
 };
 
 export const generateColor = (calenders) => {
-  console.log(calenders);
   return calenders.reduce((prev, curr, idx) => ({ ...prev, [curr.summary]: generateColorData(idx) }), {});
 };
 

@@ -16,7 +16,11 @@ const useStyles = makeStyles({
     display: 'flex',
     flexFlow: 'column',
   },
-
+  root: {
+    '&:hover': {
+      cursor: 'pointer',
+    },
+  },
   youtubeContent: {
     padding: 2,
     height: '100%',
@@ -40,6 +44,13 @@ const useStyles = makeStyles({
     display: '-webkit-box',
     WebkitBoxOrient: 'vertical',
     WebkitLineClamp: 2,
+  },
+  titleText: {
+    fontWeight: '450',
+    pointer: 'cursor',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
   },
   listInfoText: {
     justifySelf: 'center',
@@ -137,8 +148,12 @@ export default function YoutubeVideo(props) {
         </Typography>
 
         <Typography
+          classes={{
+            root: classes.root,
+          }}
+          component="div"
           variant="body2"
-          className={`${classes.listInfoText} ${classes.secondaryColor}`}
+          className={`${classes.listInfoText} ${classes.titleText} ${classes.secondaryColor}`}
           onClick={() => openInNewTab(`https://www.youtube.com/channel/${channelId}/`)}>
           {showChannel && cropTitleText(channelTitle)}
         </Typography>

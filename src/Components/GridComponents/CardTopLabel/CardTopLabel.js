@@ -2,23 +2,8 @@ import { Card, Divider, IconButton, makeStyles, Typography } from '@material-ui/
 import React from 'react';
 
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { AssignmentTurnedIn } from '@material-ui/icons';
 
-const getLogo = (compName) => {
-  switch (compName.toLowerCase()) {
-    case 'aftonbladet':
-      return require('./logos/aftonbladet-s.png');
-    case 'gmail':
-      return require('./logos/gmail-s.png');
-    case 'reddit':
-      return require('./logos/reddit-s.png');
-    case 'twitch':
-      return require('./logos/twitch-s.png');
-    case 'youtube':
-      return require('./logos/youtube-s.png');
-    default:
-      break;
-  }
-};
 const getSettingsTab = (compName) => {
   switch (compName.toLowerCase()) {
     case 'aftonbladet':
@@ -31,6 +16,8 @@ const getSettingsTab = (compName) => {
       return 5;
     case 'youtube':
       return 3;
+    case 'todos':
+      return 9;
     default:
       break;
   }
@@ -71,11 +58,30 @@ const useStyles = makeStyles({
 export default function CardTopLabel({ compName, openSettings }) {
   const classes = useStyles();
 
+  const getLogo = (compName) => {
+    switch (compName.toLowerCase()) {
+      case 'aftonbladet':
+        return <img src={require('./logos/aftonbladet-s.png')} alt={compName} className={classes.logoStyle} />;
+      case 'gmail':
+        return <img src={require('./logos/gmail-s.png')} alt={compName} className={classes.logoStyle} />;
+      case 'reddit':
+        return <img src={require('./logos/reddit-s.png')} alt={compName} className={classes.logoStyle} />;
+      case 'twitch':
+        return <img src={require('./logos/twitch-s.png')} alt={compName} className={classes.logoStyle} />;
+      case 'youtube':
+        return <img src={require('./logos/youtube-s.png')} alt={compName} className={classes.logoStyle} />;
+      case 'todos':
+        return <AssignmentTurnedIn htmlColor={'#979797'} fontSize="small" />;
+      default:
+        break;
+    }
+  };
+
   return (
     <div className={classes.mainContainer}>
       <Card elevation={2} className={classes.cardFlex}>
         <span className={classes.innerContainer}>
-          <img src={getLogo(compName)} alt={compName} className={classes.logoStyle}></img>
+          {getLogo(compName)}
           <Typography style={{ padding: 5 }}>{compName}</Typography>
         </span>
 

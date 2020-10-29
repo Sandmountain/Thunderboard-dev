@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Card, Typography, Grid, makeStyles } from '@material-ui/core';
+import { Card, Typography, makeStyles } from '@material-ui/core';
 
 import WeatherWidgetIcon from './WeatherWidgetIcon/WeatherWidgetIcon';
 
@@ -11,6 +11,8 @@ const useStyles = makeStyles({
   },
   innerPadding: {
     padding: 5,
+    height: 'inherit',
+    maxHeight: '-webkit-fill-available',
   },
 });
 
@@ -38,23 +40,24 @@ export default function WeatherWidget({ city, isDraggable }) {
     <Card className={classes.wrapperCard}>
       <div className={`${isDraggable && 'isDraggableContainer'} ${classes.innerPadding}`}>
         {weatherData && (
-          <Grid style={{ height: '100%' }}>
+          <div style={{ height: 'inherit' }}>
             <div style={{ position: 'relative' }}>
               <WeatherWidgetIcon icon={weatherData.weather[0].icon} id={weatherData.weather[0].id}></WeatherWidgetIcon>
             </div>
             <div
               style={{
+                height: '100%',
                 display: 'flex',
                 justifyContent: 'flex-end',
-                height: '100%',
+                alignContent: 'flex-end',
                 flexDirection: 'column',
               }}>
-              <Typography variant="h4">{Math.round(weatherData.main.temp) + '°'}</Typography>
-              <Typography variant="subtitle2" style={{ paddingRight: 20 }}>
-                {city}
+              <Typography variant="h4" style={{ lineHeight: 1 }}>
+                {Math.round(weatherData.main.temp) + '°'}
               </Typography>
+              <Typography variant="subtitle2">{city}</Typography>
             </div>
-          </Grid>
+          </div>
         )}
       </div>
     </Card>

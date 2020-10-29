@@ -11,6 +11,7 @@ import UniversalConverter from '../GridComponents/UniversalConverter/UniversalCo
 import TwitchWidget from '../GridComponents/TwitchWidget/TwitchWidget';
 import WallpaperComponent from '../GridComponents/WallpaperComponent/WallpaperComponent';
 import RSSreader from '../GridComponents/RSSreader/RSSreader';
+import Todos from '../GridComponents/Todos/Todos';
 
 import { Alert } from '@material-ui/lab';
 
@@ -45,6 +46,7 @@ export default function MainDashboard() {
     youtubeSettings,
     twitchSettings,
     calenderSettings,
+    todosSettings,
   } = settings;
   const isProduction = process.env.NODE_ENV !== 'production' ? false : true;
   //console.log(process.env.NODE_ENV);
@@ -209,6 +211,16 @@ export default function MainDashboard() {
                   anchorOriginVertical={rssReader.anchorOriginVertical}
                   anchorOriginHorizontal={rssReader.anchorOriginHorizontal}
                   isDraggable={dashboardSettings.isDraggable}
+                />
+              </div>
+              <div key="9" className={classes.gridItemCards}>
+                <Todos
+                  todos={todosSettings.todos}
+                  showTodos={todosSettings.showTodos}
+                  settings={settings}
+                  setSettings={setSettings}
+                  isDraggable={dashboardSettings.isDraggable}
+                  openSettings={openSettings}
                 />
               </div>
             </ReactGridLayout>
