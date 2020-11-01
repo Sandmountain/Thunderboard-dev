@@ -9,7 +9,7 @@ import {
   makeStyles,
   TextField,
 } from '@material-ui/core';
-import { AssignmentTurnedIn, CheckBox, Delete, Subject } from '@material-ui/icons';
+import { AssignmentTurnedIn, CheckBox, Delete, Remove, Subject } from '@material-ui/icons';
 
 import React, { useCallback, useEffect, useState } from 'react';
 import CardTopLabel from '../CardTopLabel/CardTopLabel';
@@ -18,19 +18,26 @@ const useStyles = makeStyles({
   wrapperCard: {
     borderRadius: 0,
     height: '100%',
-    overflowY: 'auto',
+    overflowY: "auto"
   },
   innerPadding: {
-    padding: '40px 5px',
+    padding: '40px 5px 5px',
     height: 'inherit',
     maxHeight: '-webkit-fill-available',
   },
+  root: {
+    height: "auto",
+    paddingTop: 5
+  },
+  done: {
+    textDecoration: "line-through",
+    color: "#8c8c8c"
+  }
 });
 
-let timer;
-export default function Todos({ todos, showTodos, openSettings, settings, setSettings, isDraggable }) {
+export default function Todos({ todos, showTodos, openSettings, notes, settings, setSettings, isDraggable }) {
   const classes = useStyles();
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState(!showTodos ? notes : "");
   const [showTodo, setShowTodo] = useState(showTodos);
   const [localTodos, setLocalTodos] = useState(todos);
 
@@ -46,8 +53,8 @@ export default function Todos({ todos, showTodos, openSettings, settings, setSet
         checked: false,
       },
     ]);
+    setInput("");
     //TODO: Din debounce suger
-    debounce();
   };
 
   const saveToState = () => {
@@ -59,43 +66,51 @@ export default function Todos({ todos, showTodos, openSettings, settings, setSet
       },
     });
   };
-  const debounce = async () => {
-    timer = setTimeout(() => {
-      saveToState();
-    }, 10000);
-  };
 
   const handleChange = (e) => {
-    if (timer) {
-      clearTimeout(timer);
-      debounce();
-    }
-
     setInput(e.target.value);
   };
 
-  const handleToggle = (value) => () => {
-    //setChecked();
-  };
 
   const handleSwitch = () => {
-    setSettings({
-      ...settings,
-      todosSettings: {
-        ...settings.todosSettings,
-      },
-    });
+    if(showTodo){
+      setSettings({
+        ...settings,
+        todosSettings: {
+          ...settings.todosSettings,
+          showTodos: !settings.todosSettings.showTodos,
+          todos: localTodos,
+        },
+      });
+    } else {
+      setSettings({
+        ...settings,
+        todosSettings: {
+          ...settings.todosSettings,
+          showTodos: !settings.todosSettings.showTodos,
+          notes: input
+        },
+      });
+    }
   };
+
+  const handeClickTodo = (key) => {
+    console.log(localTodos);
+    const wook = [...localTodos,
+      localTodos[key].checked = !localTodos[key].checked
+    ]
+    console.log(wook)
+  }
 
   return (
     <Card className={classes.wrapperCard}>
-      <CardTopLabel compName="Todos" openSettings={openSettings} />
+      <CardTopLabel compName={showTodo ? "Todos" : "Notes"} openSettings={openSettings} />
       <div className={`${isDraggable && 'isDraggableContainer'} ${classes.innerPadding}`}>
         {showTodo ? (
           <>
             <form onSubmit={handleInput}>
               <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
-                <TextField style={{ width: '100%' }} onChange={handleChange} placeholder="Enter a todo.."></TextField>
+                <TextField style={{ width: '100%' }} value={input} size="small" onChange={handleChange} placeholder="Enter a todo.."></TextField>
                 <IconButton size="small" onClick={handleSwitch}>
                   <Subject />
                 </IconButton>
@@ -104,10 +119,12 @@ export default function Todos({ todos, showTodos, openSettings, settings, setSet
             <List className={classes.root}>
               {localTodos.map((todo, key) => {
                 return (
-                  <ListItem key={key} role={undefined} dense button onClick={handleToggle(key)}>
-                    <ListItemText primary={todo.name} />
+                  <ListItem key={key} role={undefined} dense button onClick={() => handeClickTodo(key)}>
+                    <ListItemText primary={todo.name} className={todo.checked ? classes.done : ""}/>
                     <ListItemSecondaryAction>
-                      <Checkbox size="small" edge="end" onChange={handleToggle(key)} checked={todo.checked} />
+                      <IconButton size="small">
+                        <Delete size="small" edge="end"  htmlColor={"#8c8c8c"} />
+                      </IconButton>
                     </ListItemSecondaryAction>
                   </ListItem>
                 );
@@ -116,10 +133,12 @@ export default function Todos({ todos, showTodos, openSettings, settings, setSet
           </>
         ) : (
           <>
-            <TextField style={{ width: '100%' }} onChange={handleChange} placeholder="Enter a todo.."></TextField>
-            <IconButton size="small">
+           <div style={{position: "relative"}}>
+            <IconButton style={{position: "absolute", right: 0, zIndex: "10"}} size="small" onClick={handleSwitch}>
               <AssignmentTurnedIn />
             </IconButton>
+            </div>
+            <TextField style={{ width: '100%', height: "100%"}} rowsMax={6} value={input} size="small" classes={{root: classes.root}} onChange={handleChange} multiline variant="outlined" placeholder="Write your notes"></TextField>
           </>
         )}
       </div>

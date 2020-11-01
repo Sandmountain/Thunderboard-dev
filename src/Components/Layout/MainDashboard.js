@@ -217,6 +217,7 @@ export default function MainDashboard() {
                 <Todos
                   todos={todosSettings.todos}
                   showTodos={todosSettings.showTodos}
+                  notes={todosSettings.notes}
                   settings={settings}
                   setSettings={setSettings}
                   isDraggable={dashboardSettings.isDraggable}

@@ -36,3 +36,9 @@ body {
 #twitch-embed {
   margin-bottom: -4px;
 }
+
+.MuiOutlinedInput-multiline {
+  height: 100%;
+  align-items: start !important;
+  overflow: hidden;
+}

@@ -84,10 +84,10 @@ export const LoadSettings = () => {
     todosSettings: {
       showTodos: true,
       todos: [
-        { name: 'todo-1', date: '2020-10-27', checked: false },
+        { name: 'This is a longer todo', date: '2020-10-27', checked: true },
         { name: 'todo-2', date: '2020-10-28', checked: false },
       ],
-      freeText: 'Deserunt commodo ea aute sit commodo nulla amet.',
+      notes: 'Deserunt commodo ea aute sit commodo nulla amet.',
     },
   };
 

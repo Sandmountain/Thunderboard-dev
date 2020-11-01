@@ -2,7 +2,7 @@ import { Card, Divider, IconButton, makeStyles, Typography } from '@material-ui/
 import React from 'react';
 
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { AssignmentTurnedIn } from '@material-ui/icons';
+import { AssignmentTurnedIn, Subject } from '@material-ui/icons';
 
 const getSettingsTab = (compName) => {
   switch (compName.toLowerCase()) {
@@ -72,6 +72,8 @@ export default function CardTopLabel({ compName, openSettings }) {
         return <img src={require('./logos/youtube-s.png')} alt={compName} className={classes.logoStyle} />;
       case 'todos':
         return <AssignmentTurnedIn htmlColor={'#979797'} fontSize="small" />;
+      case 'notes':
+        return <Subject htmlColor={'#979797'} fontSize="small" />;
       default:
         break;
     }
