@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, makeStyles, Card } from '@material-ui/core';
+import { Typography, makeStyles, Card, useMediaQuery } from '@material-ui/core';
 
 import { getMinMaxDate, parseDate, mockData } from './functions/timeDateFunctions.js';
 
@@ -17,8 +17,8 @@ const useStyles = makeStyles({
     padding: '0 5px',
     height: '100%',
     display: 'flex',
-
     justifyContent: 'flex-end',
+    placeContent: 'center',
   },
   timeText: {
     height: '100%',
@@ -43,10 +43,12 @@ const useStyles = makeStyles({
   },
 });
 
-export default function TimeDate({ calenders, isDraggable, credentials, isProduction }) {
+export default function TimeDateContainer({ calenders, isDraggable, credentials, isProduction }) {
   const [gCalenderData, setGCalenderData] = useState(null);
-
   const classes = useStyles();
+
+  const smallScreen = useMediaQuery('(min-width:800px)');
+  const mediumScreen = useMediaQuery('(min-width:1305px)');
 
   useEffect(() => {
     async function getCalenderData(credentials) {
@@ -78,8 +80,8 @@ export default function TimeDate({ calenders, isDraggable, credentials, isProduc
   return (
     <Card className={classes.wrapperCard}>
       <div className={`${isDraggable && 'isDraggableContainer'} ${classes.content}`}>
-        <CalenderPopUp calenders={calenders} gCalenderData={gCalenderData} />
-        <Clock />
+        {smallScreen && <CalenderPopUp calenders={calenders} gCalenderData={gCalenderData} />}
+        <Clock smallScreen={smallScreen} mediumScreen={mediumScreen} />
       </div>
     </Card>
   );

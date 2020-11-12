@@ -20,6 +20,7 @@ export const parseDate = (date) => {
   let day = date.getDate();
   let weekday = days[date.getDay()];
   let month = months[date.getMonth()];
+  let monthNr = date.getMonth();
   let year = date.getFullYear();
 
   hours = hours < 10 ? '0' + hours : hours;
@@ -30,6 +31,7 @@ export const parseDate = (date) => {
     weekday,
     day,
     month,
+    monthNr,
     year,
   };
 };

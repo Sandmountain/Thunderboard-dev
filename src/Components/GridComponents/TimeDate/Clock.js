@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Typography, makeStyles } from '@material-ui/core';
+import { Typography, makeStyles, useMediaQuery } from '@material-ui/core';
 
 import { parseDate } from './functions/timeDateFunctions';
 
@@ -13,9 +13,22 @@ const useStyles = makeStyles({
     lineHeight: '1 !important',
     padding: 0,
     fontWeight: 600,
-    fontSize: 'calc(3.75rem + 1px)',
+    fontSize: '3.2vw',
   },
-  dateContainer: {
+  timeTextScaled: {
+    height: '100%',
+    display: 'flex',
+    fontWeight: 600,
+    alignItems: 'center',
+    fontSize: 'calc(4.1vw + 1px)',
+  },
+  timeTextMedium: {
+    display: 'flex',
+    fontWeight: 600,
+    lineHeight: 1,
+    fontSize: 'calc(4.1vw + 1px)',
+  },
+  dateMediumContainer: {
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
@@ -25,10 +38,11 @@ const useStyles = makeStyles({
     paddingLeft: 2,
     lineHeight: 1,
     fontWeight: 200,
+    fontSize: '0.85vw',
   },
 });
 
-export default function Clock() {
+export default function Clock({ mediumScreen, smallScreen }) {
   const [date, setDate] = useState(parseDate(new Date()));
   const classes = useStyles();
 
@@ -45,14 +59,35 @@ export default function Clock() {
 
   return (
     <>
-      <Typography variant="h2" className={classes.timeText}>
-        {date.time}
-      </Typography>
-      <div className={classes.dateContainer}>
-        <Typography className={classes.dateTexts}>{date.weekday}</Typography>
-        <Typography className={classes.dateTexts}>{date.day + ' ' + date.month}</Typography>
-        <Typography className={classes.dateTexts}>{date.year}</Typography>
-      </div>
+      {!smallScreen && !mediumScreen && (
+        <Typography variant="h2" className={classes.timeTextScaled}>
+          {date.time}
+        </Typography>
+      )}
+      {smallScreen && !mediumScreen && (
+        <div style={{ display: 'flex', flexDirection: 'column', placeContent: 'center' }}>
+          <Typography variant="h2" className={classes.timeTextMedium}>
+            {date.time}
+          </Typography>
+          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>
+            <Typography className={classes.dateTexts}>{date.weekday}</Typography>
+            <Typography className={classes.dateTexts}>{date.day + '/' + date.monthNr}</Typography>
+            <Typography className={classes.dateTexts}>{date.year}</Typography>
+          </div>
+        </div>
+      )}
+      {mediumScreen && (
+        <>
+          <Typography variant="h2" className={classes.timeText}>
+            {date.time}
+          </Typography>
+          <div className={classes.dateMediumContainer}>
+            <Typography className={classes.dateTexts}>{date.weekday}</Typography>
+            <Typography className={classes.dateTexts}>{date.day + ' ' + date.month}</Typography>
+            <Typography className={classes.dateTexts}>{date.year}</Typography>
+          </div>
+        </>
+      )}
     </>
   );
 }

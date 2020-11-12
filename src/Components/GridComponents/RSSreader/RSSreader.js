@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Card, List, makeStyles } from '@material-ui/core';
+import { Card, IconButton, List, makeStyles } from '@material-ui/core';
 
 import RssCard from './RssCard';
 import RssList from './RssList';
 import { parseDate } from '../../helperFunctions';
 import CardTopLabel from '../CardTopLabel/CardTopLabel';
+import { Refresh } from '@material-ui/icons';
 
 let Parser = require('rss-parser');
 let parser = new Parser();
@@ -39,6 +40,26 @@ const parseContent = (text) => {
   return '';
 };
 
+function useInterval(callback, delay) {
+  const savedCallback = useRef();
+
+  // Remember the latest callback.
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  // Set up the interval.
+  useEffect(() => {
+    function tick() {
+      savedCallback.current();
+    }
+    if (delay !== null) {
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
+}
+
 // https://rss.aftonbladet.se/rss2/small/pages/sections/aftonbladet/
 export default function RSSreader({
   url,
@@ -57,6 +78,11 @@ export default function RSSreader({
   const [data, setData] = useState(null);
   const classes = useStyles();
 
+  useInterval(async () => {
+    const data = await parser.parseURL(url);
+    setData(data.items);
+  }, 30000);
+
   useEffect(() => {
     async function loadRSS() {
       const data = await parser.parseURL(url);
@@ -65,9 +91,24 @@ export default function RSSreader({
     loadRSS();
   }, [url]);
 
+  const updateLink = async () => {
+    const data = await parser.parseURL(url);
+    console.log(data);
+    setData(data.items);
+  };
+
   return (
     <Card className={classes.wrapperCard}>
-      <CardTopLabel compName="Aftonbladet" openSettings={openSettings} />
+      <CardTopLabel
+        compName="Aftonbladet"
+        openSettings={openSettings}
+        additionalButton={
+          <IconButton size={'small'} onClick={() => updateLink()}>
+            {<Refresh fontSize={'small'} />}
+          </IconButton>
+        }
+      />
+
       {data && (
         <>
           {layout === 'card' ? (

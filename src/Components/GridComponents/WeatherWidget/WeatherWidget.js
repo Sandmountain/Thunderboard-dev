@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Card, Typography, makeStyles } from '@material-ui/core';
+import { Card, Typography, makeStyles, useMediaQuery } from '@material-ui/core';
 
 import WeatherWidgetIcon from './WeatherWidgetIcon/WeatherWidgetIcon';
 
@@ -14,12 +14,30 @@ const useStyles = makeStyles({
     height: 'inherit',
     maxHeight: '-webkit-fill-available',
   },
+  smallStyle: {
+    fontSize: '3vw',
+  },
+  temperatureContainer: {
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignContent: 'flex-end',
+    flexDirection: 'column',
+  },
+  cityName: {
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    display: '-webkit-box',
+    WebkitBoxOrient: 'vertical',
+    WebkitLineClamp: 1,
+  },
 });
 
 export default function WeatherWidget({ city, isDraggable }) {
   const [weatherData, setWeatherData] = useState(null);
-
   const classes = useStyles();
+
+  const smallScreen = useMediaQuery('(min-width:870px)');
 
   useEffect(() => {
     getWeatherData();
@@ -44,18 +62,13 @@ export default function WeatherWidget({ city, isDraggable }) {
             <div style={{ position: 'relative' }}>
               <WeatherWidgetIcon icon={weatherData.weather[0].icon} id={weatherData.weather[0].id}></WeatherWidgetIcon>
             </div>
-            <div
-              style={{
-                height: '100%',
-                display: 'flex',
-                justifyContent: 'flex-end',
-                alignContent: 'flex-end',
-                flexDirection: 'column',
-              }}>
-              <Typography variant="h4" style={{ lineHeight: 1 }}>
+            <div className={classes.temperatureContainer}>
+              <Typography variant="h4" style={{ lineHeight: 1 }} className={!smallScreen ? classes.smallStyle : ''}>
                 {Math.round(weatherData.main.temp) + '°'}
               </Typography>
-              <Typography variant="subtitle2">{city}</Typography>
+              <Typography className={classes.cityName} variant="subtitle2">
+                {city}
+              </Typography>
             </div>
           </div>
         )}

@@ -2,7 +2,7 @@ import { Card, Divider, IconButton, makeStyles, Typography } from '@material-ui/
 import React from 'react';
 
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { AssignmentTurnedIn, Subject } from '@material-ui/icons';
+import { AssignmentTurnedIn, Link, Subject } from '@material-ui/icons';
 
 const getSettingsTab = (compName) => {
   switch (compName.toLowerCase()) {
@@ -55,7 +55,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function CardTopLabel({ compName, openSettings }) {
+export default function CardTopLabel({ compName, additionalButton, openSettings }) {
   const classes = useStyles();
 
   const getLogo = (compName) => {
@@ -74,6 +74,8 @@ export default function CardTopLabel({ compName, openSettings }) {
         return <AssignmentTurnedIn htmlColor={'#979797'} fontSize="small" />;
       case 'notes':
         return <Subject htmlColor={'#979797'} fontSize="small" />;
+      case 'links':
+        return <Link htmlColor={'#979797'} fontSize="small" />;
       default:
         break;
     }
@@ -88,8 +90,14 @@ export default function CardTopLabel({ compName, openSettings }) {
         </span>
 
         <span className={classes.buttonsContainer}>
-          <Divider orientation="vertical" style={{ margin: '0 5px 0 10px' }} />
-
+          {additionalButton && (
+            <>
+              {' '}
+              <Divider orientation="vertical" style={{ margin: '0 5px' }} />
+              {additionalButton}
+            </>
+          )}
+          <Divider orientation="vertical" style={{ margin: '0 5px' }} />
           <IconButton size={'small'} onClick={() => openSettings(getSettingsTab(compName))}>
             <MoreVertIcon fontSize="small" />
           </IconButton>

@@ -12,6 +12,7 @@ import TwitchWidget from '../GridComponents/TwitchWidget/TwitchWidget';
 import WallpaperComponent from '../GridComponents/WallpaperComponent/WallpaperComponent';
 import RSSreader from '../GridComponents/RSSreader/RSSreader';
 import Todos from '../GridComponents/Todos/Todos';
+import Links from '../GridComponents/Links/Links';
 
 import { Alert } from '@material-ui/lab';
 
@@ -47,6 +48,7 @@ export default function MainDashboard() {
     twitchSettings,
     calenderSettings,
     todosSettings,
+    linksSettings,
   } = settings;
   const isProduction = process.env.NODE_ENV !== 'production' ? false : true;
   //console.log(process.env.NODE_ENV);
@@ -220,6 +222,13 @@ export default function MainDashboard() {
                   notes={todosSettings.notes}
                   settings={settings}
                   setSettings={setSettings}
+                  isDraggable={dashboardSettings.isDraggable}
+                  openSettings={openSettings}
+                />
+              </div>
+              <div key="10" className={classes.gridItemCards} style={{ transform: 'none' }}>
+                <Links
+                  links={linksSettings.links}
                   isDraggable={dashboardSettings.isDraggable}
                   openSettings={openSettings}
                 />

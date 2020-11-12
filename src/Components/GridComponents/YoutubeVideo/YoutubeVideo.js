@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Typography, CardActionArea, Dialog } from '@material-ui/core';
+import { Typography, CardActionArea, Dialog, Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { viewsCount } from './functions/youtubeFunctions';
@@ -111,7 +111,7 @@ export default function YoutubeVideo(props) {
 
   const { showTitle, showChannel, showViews, showUpload } = props.showInfo;
 
-  const imageURL = thumbnails.maxres ? thumbnails.maxres : thumbnails.standard;
+  const imageURL = thumbnails.maxres ? thumbnails.maxres : thumbnails.standard ? thumbnails.standard : thumbnails.high;
   const duration = parseDuration(props.data.contentDetails.duration);
 
   const youtubeOptions = {
@@ -129,13 +129,14 @@ export default function YoutubeVideo(props) {
   const handleClose = () => {
     setOpen(false);
   };
-
+  console.log(thumbnails);
   return (
     <div className={classes.listCardContainer}>
       <CardActionArea onClick={handleClickOpen}>
         <div className={classes.listVideoThumbnailContainer}>
           <span className={classes.timeDurationLabel}>{duration}</span>
-          <Image src={imageURL.url} />
+
+          <Image src={imageURL?.url} />
         </div>
       </CardActionArea>
       <Dialog open={open} onClose={handleClose} maxWidth={false} classes={{ paper: classes.dialog }}>
@@ -143,9 +144,11 @@ export default function YoutubeVideo(props) {
       </Dialog>
 
       <div className={classes.youtubeContent}>
-        <Typography variant="subtitle2" style={{ fontSize: '0.8rem' }} className={classes.listTitleText}>
-          {showTitle && title}
-        </Typography>
+        <Tooltip title={title} placement="top">
+          <Typography variant="subtitle2" style={{ fontSize: '0.8rem' }} className={classes.listTitleText}>
+            {showTitle && title}
+          </Typography>
+        </Tooltip>
 
         <Typography
           classes={{

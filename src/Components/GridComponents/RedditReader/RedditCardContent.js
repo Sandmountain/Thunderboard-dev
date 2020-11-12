@@ -1,6 +1,6 @@
 import { CircularProgress, makeStyles, Typography } from '@material-ui/core';
 import React from 'react';
-import { cleanIframe } from '../../helperFunctions.js';
+import { cleanIframe, openInNewTab } from '../../helperFunctions.js';
 
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 
@@ -24,9 +24,17 @@ const useStyles = makeStyles({
   linkText: {
     color: '#3f9ade',
     textDecoration: 'none',
+
     '&:hover': {
       textDecoration: 'underline',
     },
+  },
+  ellipsis: {
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    display: '-webkit-box',
+    WebkitBoxOrient: 'vertical',
+    WebkitLineClamp: 1,
   },
 });
 
@@ -104,13 +112,13 @@ export default function RedditCardContent(props) {
               //return <img className="card-image" src={post.thumbnail} alt={post.title} />;
               return (
                 <div className={classes.linkContainer}>
-                  <Typography variant="body2">
-                    <a href={post.url} className={classes.linkText}>
-                      {'https://' + post.domain + '/...'}
+                  <Typography variant="body2" className={classes.ellipsis}>
+                    <a href={post.url} onClick={() => openInNewTab(post.url)} className={classes.linkText}>
+                      {'https://' + post.domain + '/'}
                       <OpenInNewIcon style={{ verticalAlign: 'text-bottom' }} fontSize={'small'} />
                     </a>
                   </Typography>
-                  <img className="card-image" src={post.thumbnail} alt={post.title} />;
+                  <img className="card-image" src={post.thumbnail} alt={post.title} />
                 </div>
               );
             }

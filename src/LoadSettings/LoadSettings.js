@@ -49,7 +49,7 @@ export const LoadSettings = () => {
       gridSpacing: [10, 10],
       compactType: 'vertical',
       layout: [
-        { w: 7, h: 21, x: 0, y: 0, i: '1' }, // Youtube
+        { w: 7, h: 21, x: 0, y: 5, i: '1' }, // Youtube
         { w: 7, h: 23, x: 0, y: 21, i: '2' }, // Gmail
         { w: 5, h: 44, x: 7, y: 22, i: '3' }, // Reddit
         { w: 1, h: 7, x: 9, y: 0, i: '4' }, // Weather
@@ -58,6 +58,7 @@ export const LoadSettings = () => {
         { w: 7, h: 18, x: 0, y: 51, i: '7' }, // TwitchWidget
         { w: 2, h: 18, x: 10, y: 7, i: '8' }, // RSSreader
         { w: 3, h: 18, x: 7, y: 7, i: '9' }, // Todos
+        { w: 3, h: 5, x: 0, y: 0, i: '10' }, // Links
       ],
     },
     wallPaperSettings: {
@@ -88,6 +89,9 @@ export const LoadSettings = () => {
         { name: 'todo-2', date: '2020-10-28', checked: false },
       ],
       notes: 'Deserunt commodo ea aute sit commodo nulla amet.',
+    },
+    linksSettings: {
+      links: [],
     },
   };
 

@@ -27,8 +27,8 @@ const useStyles = makeStyles((theme) => ({
 
 const StyledBadge = withStyles((theme) => ({
   badge: {
-    right: 25,
-    top: 13,
+    right: 23,
+    top: 10,
     border: `2px solid ${theme.palette.background.paper}`,
     padding: '0 4px',
   },
@@ -71,12 +71,13 @@ export default function CalenderPopUp({ gCalenderData }) {
     <>
       {calenderData && calenderData.length > 0 && (
         <>
-          <Typography onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose}>
-            <StyledBadge badgeContent={calenderData && calenderData.length} color="secondary">
-              <EventNote />
-            </StyledBadge>
-          </Typography>
-
+          <div style={{ display: 'flex', alignItems: 'start', justifyContent: 'end' }}>
+            <Typography onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose}>
+              <StyledBadge badgeContent={calenderData && calenderData.length} color="secondary">
+                <EventNote fontSize={'small'} />
+              </StyledBadge>
+            </Typography>
+          </div>
           <Popover
             id="mouse-over-popover"
             className={classes.popover}

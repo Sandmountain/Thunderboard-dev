@@ -1,15 +1,20 @@
 import {
   Card,
   Checkbox,
+  Collapse,
+  Grow,
   IconButton,
   List,
   ListItem,
+  ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
   makeStyles,
   TextField,
+  Zoom,
 } from '@material-ui/core';
-import { AssignmentTurnedIn, CheckBox, Delete, Remove, Subject } from '@material-ui/icons';
+import { red } from '@material-ui/core/colors';
+import { Add, AssignmentTurnedIn, CheckBox, Delete, Remove, Subject } from '@material-ui/icons';
 
 import React, { useCallback, useEffect, useState } from 'react';
 import CardTopLabel from '../CardTopLabel/CardTopLabel';
@@ -18,129 +23,122 @@ const useStyles = makeStyles({
   wrapperCard: {
     borderRadius: 0,
     height: '100%',
-    overflowY: "auto"
+    overflowY: 'auto',
   },
   innerPadding: {
-    padding: '40px 5px 5px',
+    padding: '35px 0',
     height: 'inherit',
     maxHeight: '-webkit-fill-available',
   },
   root: {
-    height: "auto",
-    paddingTop: 5
+    height: 'auto',
+    paddingTop: 5,
   },
   done: {
-    textDecoration: "line-through",
-    color: "#8c8c8c"
-  }
+    textDecoration: 'line-through',
+    color: '#8c8c8c',
+  },
 });
 
-export default function Todos({ todos, showTodos, openSettings, notes, settings, setSettings, isDraggable }) {
+export default function Todos({ todos, openSettings, settings, setSettings, isDraggable }) {
   const classes = useStyles();
-  const [input, setInput] = useState(!showTodos ? notes : "");
-  const [showTodo, setShowTodo] = useState(showTodos);
+  const [input, setInput] = useState('');
   const [localTodos, setLocalTodos] = useState(todos);
-
-  const [checked, setChecked] = React.useState([0]);
+  const [openAddTodo, setOpenAddTodo] = useState(false);
 
   const handleInput = async (e) => {
     e.preventDefault();
     setLocalTodos([
-      ...localTodos,
       {
         name: input,
         date: Date.now(),
         checked: false,
       },
+      ...localTodos,
     ]);
-    setInput("");
-    //TODO: Din debounce suger
-  };
-
-  const saveToState = () => {
-    setSettings({
-      ...settings,
-      todosSettings: {
-        ...settings.todosSettings,
-        todos: localTodos,
-      },
-    });
+    setInput('');
   };
 
   const handleChange = (e) => {
     setInput(e.target.value);
   };
 
-
-  const handleSwitch = () => {
-    if(showTodo){
-      setSettings({
-        ...settings,
-        todosSettings: {
-          ...settings.todosSettings,
-          showTodos: !settings.todosSettings.showTodos,
-          todos: localTodos,
-        },
-      });
-    } else {
-      setSettings({
-        ...settings,
-        todosSettings: {
-          ...settings.todosSettings,
-          showTodos: !settings.todosSettings.showTodos,
-          notes: input
-        },
-      });
-    }
+  const handeClickTodo = (key) => {
+    const todos = localTodos.map((todo, idx) => {
+      if (idx === key) {
+        return {
+          ...todo,
+          checked: !todo.checked,
+        };
+      } else {
+        return todo;
+      }
+    });
+    setLocalTodos(todos);
   };
 
-  const handeClickTodo = (key) => {
-    console.log(localTodos);
-    const wook = [...localTodos,
-      localTodos[key].checked = !localTodos[key].checked
-    ]
-    console.log(wook)
-  }
+  const todoDelete = (key) => {
+    setLocalTodos(localTodos.filter((todo, index) => index !== key));
+  };
 
   return (
     <Card className={classes.wrapperCard}>
-      <CardTopLabel compName={showTodo ? "Todos" : "Notes"} openSettings={openSettings} />
+      <CardTopLabel
+        compName={'Todos'}
+        openSettings={openSettings}
+        additionalButton={
+          <IconButton size={'small'} onClick={() => setOpenAddTodo(!openAddTodo)}>
+            {!openAddTodo ? <Add fontSize="small" /> : <Remove fontSize="small"></Remove>}
+          </IconButton>
+        }
+      />
+
       <div className={`${isDraggable && 'isDraggableContainer'} ${classes.innerPadding}`}>
-        {showTodo ? (
-          <>
+        <Collapse in={openAddTodo}>
+          <div style={{ padding: '5px 5px 0px', borderRadius: 0 }}>
             <form onSubmit={handleInput}>
-              <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
-                <TextField style={{ width: '100%' }} value={input} size="small" onChange={handleChange} placeholder="Enter a todo.."></TextField>
-                <IconButton size="small" onClick={handleSwitch}>
-                  <Subject />
-                </IconButton>
-              </div>
+              <TextField
+                value={input}
+                style={{ width: '100%' }}
+                size="small"
+                onChange={handleChange}
+                placeholder="Enter a todo.."
+                variant="outlined"></TextField>
             </form>
-            <List className={classes.root}>
-              {localTodos.map((todo, key) => {
-                return (
-                  <ListItem key={key} role={undefined} dense button onClick={() => handeClickTodo(key)}>
-                    <ListItemText primary={todo.name} className={todo.checked ? classes.done : ""}/>
-                    <ListItemSecondaryAction>
-                      <IconButton size="small">
-                        <Delete size="small" edge="end"  htmlColor={"#8c8c8c"} />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                );
-              })}
-            </List>
-          </>
-        ) : (
-          <>
-           <div style={{position: "relative"}}>
-            <IconButton style={{position: "absolute", right: 0, zIndex: "10"}} size="small" onClick={handleSwitch}>
-              <AssignmentTurnedIn />
-            </IconButton>
-            </div>
-            <TextField style={{ width: '100%', height: "100%"}} rowsMax={6} value={input} size="small" classes={{root: classes.root}} onChange={handleChange} multiline variant="outlined" placeholder="Write your notes"></TextField>
-          </>
-        )}
+          </div>
+        </Collapse>
+        <List className={classes.root}>
+          {localTodos.map((todo, key) => {
+            return (
+              <ListItem
+                key={key}
+                role={undefined}
+                dense
+                button
+                onClick={() => handeClickTodo(key)}
+                style={{ padding: 0 }}>
+                <ListItemIcon>
+                  <Checkbox
+                    size="small"
+                    edge="end"
+                    onChange={() => handeClickTodo(key)}
+                    checked={todo.checked}
+                    tabIndex={-1}
+                    disableRipple
+                  />
+                </ListItemIcon>
+                <ListItemText primary={todo.name} className={todo.checked ? classes.done : ''} />
+                {todo.checked && (
+                  <ListItemSecondaryAction onClick={() => todoDelete(key)}>
+                    <IconButton size="small">
+                      <Delete size="small" edge="end" htmlColor={'#8c8c8c'} />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                )}
+              </ListItem>
+            );
+          })}
+        </List>
       </div>
     </Card>
   );
