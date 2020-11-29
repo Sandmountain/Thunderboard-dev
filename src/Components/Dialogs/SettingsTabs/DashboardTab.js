@@ -1,5 +1,6 @@
 import {
   Button,
+  ButtonGroup,
   DialogContent,
   DialogContentText,
   DialogTitle,
@@ -12,6 +13,7 @@ import {
 } from '@material-ui/core';
 import { Warning } from '@material-ui/icons';
 import React, { useState } from 'react';
+import { updateFirestoreCollection } from '../../../Firestore/FirestoreFunctions';
 
 const marks = (min, max) => {
   return [
@@ -27,13 +29,22 @@ const marks = (min, max) => {
 };
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    color: theme.palette.warning.main,
+  error: {
+    color: theme.palette.error.main,
+    background: '#ffeded',
+    width: '80%',
+    padding: '5px',
+    margin: '10px auto',
+    borderLeft: '3px solid' + theme.palette.error.main,
+  },
+  errorButton: {
+    color: theme.palette.error.main,
+    borderColor: theme.palette.error.main,
   },
 }));
 
 export default function DashboardTab(props) {
-  const { settings, setSettings, toggleMovement } = props;
+  const { settings, setSettings, toggleMovement, scrollToReset } = props;
   const { isDraggable, nrOfCols, rowHeight, gridSpacing, compactType } = settings.dashboardSettings;
 
   const classes = useStyles();
@@ -51,21 +62,23 @@ export default function DashboardTab(props) {
       method(event.target.value);
     }
   };
+
   const handleToggle = () => {
     setSettings({
       ...settings,
       dashboardSettings: { ...settings.dashboardSettings, isDraggable: !settings.isDraggable },
     });
+
+    updateFirestoreCollection({
+      dashboardSettings: {
+        ...settings.dashboardSettings,
+        isDraggable: !settings.isDraggable,
+      },
+    });
     toggleMovement(!settings.dashboardSettings.isDraggable);
   };
 
   const setStatesToTest = () => {
-    console.log({
-      nrOfCols: cols,
-      rowHeight: height,
-      gridSpacing: [spacingX, spacingY],
-      compactType: compType,
-    });
     setSettings({
       ...settings,
       dashboardSettings: {
@@ -76,7 +89,16 @@ export default function DashboardTab(props) {
         compactType: compType,
       },
     });
-    //testChanges();
+
+    updateFirestoreCollection({
+      dashboardSettings: {
+        ...settings.dashboardSettings,
+        nrOfCols: cols,
+        rowHeight: height,
+        gridSpacing: [spacingX, spacingY],
+        compactType: compType,
+      },
+    });
   };
 
   return (
@@ -84,14 +106,21 @@ export default function DashboardTab(props) {
       <DialogTitle>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           Dashboard settings
-          <Button variant="outlined" onClick={() => setStatesToTest()}>
-            {' '}
-            Test Changes
-          </Button>
+          <ButtonGroup aria-label="outlined primary button group">
+            <Button variant="outlined" onClick={() => setStatesToTest()}>
+              {' '}
+              Test Changes
+            </Button>
+            <Button variant="outlined" className={classes.errorButton} onClick={() => scrollToReset()}>
+              {' '}
+              Reset
+            </Button>
+          </ButtonGroup>
         </div>
       </DialogTitle>
-      <Typography className={classes.root} align="center" style={{ marginBottom: 10 }}>
-        <Warning style={{ verticalAlign: 'text-bottom' }} /> Setting wont change if you don't test them first!
+      <Typography className={classes.error} align="center" style={{ marginBottom: 10 }}>
+        <Warning style={{ verticalAlign: 'text-bottom' }} /> Setting wont change if you don't press
+        <Typography variant="button"> Test Changes! </Typography>
       </Typography>
       <DialogContent>
         <DialogContentText>Unlock the dashboard by pressing the button below</DialogContentText>

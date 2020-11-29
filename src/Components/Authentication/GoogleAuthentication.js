@@ -2,9 +2,11 @@
 import React, { useEffect } from 'react';
 import GoogleLogin from 'react-google-login';
 
-export default function GoogleAuthentication({ loggedIn, setIsLoggedIn, setCredentials, isProduction }) {
+import { initFirestore } from '../../Firestore/FirestoreFunctions';
+
+export default function GoogleAuthentication({ loggedIn, setIsLoggedIn, setCredentials, setSettings, isProduction }) {
   const SCOPES =
-    'profile email https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/gmail.labels https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/calendar';
+    'profile email https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/gmail.labels https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/datastore';
   //www.googleapis.com/auth/calendar.events';
 
   const responseGoogle = async (response) => {
@@ -19,6 +21,9 @@ export default function GoogleAuthentication({ loggedIn, setIsLoggedIn, setCrede
           },
           contentType: 'json',
         };
+
+        setSettings(await initFirestore(response.googleId));
+
         setIsLoggedIn(true);
         setCredentials(init);
       } catch (error) {
@@ -42,6 +47,10 @@ export default function GoogleAuthentication({ loggedIn, setIsLoggedIn, setCrede
 
         setIsLoggedIn(true);
         setCredentials(init);
+      });
+      chrome.identity.getProfileUserInfo(async (userInfo) => {
+        // Set ID to global state
+        setSettings(await initFirestore(userInfo.id));
       });
     } else if (!loggedIn && !isProduction) {
       // If not logged in and not

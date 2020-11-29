@@ -1,0 +1,2 @@
+To access database, make sure to activate sync in:
+chrome://settings/syncSetup"

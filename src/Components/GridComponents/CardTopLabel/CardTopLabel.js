@@ -25,7 +25,7 @@ const getSettingsTab = (compName) => {
 
 const useStyles = makeStyles({
   mainContainer: {
-    position: 'fixed',
+    position: 'absolute',
     zIndex: 5,
     width: '100%',
     height: '25px',
@@ -55,7 +55,14 @@ const useStyles = makeStyles({
   },
 });
 
-export default function CardTopLabel({ compName, additionalButton, openSettings }) {
+export default function CardTopLabel({
+  compName,
+  leftAlignedInfo,
+  centerText,
+  additionalButton,
+  additionalButtons,
+  openSettings,
+}) {
   const classes = useStyles();
 
   const getLogo = (compName) => {
@@ -84,12 +91,21 @@ export default function CardTopLabel({ compName, additionalButton, openSettings 
   return (
     <div className={classes.mainContainer}>
       <Card elevation={2} className={classes.cardFlex}>
-        <span className={classes.innerContainer}>
+        <div className={classes.innerContainer}>
           {getLogo(compName)}
           <Typography style={{ padding: 5 }}>{compName}</Typography>
-        </span>
-
-        <span className={classes.buttonsContainer}>
+          {leftAlignedInfo && (
+            <div className={classes.centerContainer}>
+              <Typography>{leftAlignedInfo}</Typography>
+            </div>
+          )}
+        </div>
+        {leftAlignedInfo && (
+          <div className={classes.centerContainer}>
+            <Typography>{centerText}</Typography>
+          </div>
+        )}
+        <div className={classes.buttonsContainer}>
           {additionalButton && (
             <>
               {' '}
@@ -97,11 +113,19 @@ export default function CardTopLabel({ compName, additionalButton, openSettings 
               {additionalButton}
             </>
           )}
+          {additionalButtons &&
+            additionalButtons.map((button, key) => {
+              return (
+                <div style={{ display: 'contents' }} key={key}>
+                  {button}
+                </div>
+              );
+            })}
           <Divider orientation="vertical" style={{ margin: '0 5px' }} />
           <IconButton size={'small'} onClick={() => openSettings(getSettingsTab(compName))}>
             <MoreVertIcon fontSize="small" />
           </IconButton>
-        </span>
+        </div>
       </Card>
     </div>
   );

@@ -25,8 +25,9 @@ export default function WallpaperComponent() {
   const classes = useStyles();
 
   const { settings } = useContext(SettingsContext);
-  const { collectionID, windowSize, customURL, imageType } = settings.wallPaperSettings;
+  const { collectionID, windowSize, customURL, imageType } = settings?.wallPaperSettings;
   const [imageURL, setImageURL] = useState('');
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
     loadCustomBackground();
@@ -43,11 +44,23 @@ export default function WallpaperComponent() {
     }
   }, [collectionID, windowSize, customURL, imageType]);
 
+  const handleLoaded = () => {
+    if (!imageLoaded) {
+      console.log('klar');
+      setImageLoaded(true);
+    }
+  };
+
   return (
     <div className={classes.backgrundContainer}>
       <div className={classes.backgroundImageContainer}>
         {imageType === 'unisplash' ? (
-          <img src={imageURL} className={classes.backgroundImage} alt="bg-img"></img>
+          <img
+            style={{ display: imageLoaded ? 'block' : 'none' }}
+            src={imageURL}
+            className={classes.backgroundImage}
+            onLoad={handleLoaded()}
+            alt="bg-img"></img>
         ) : (
           <img
             src={imageURL}

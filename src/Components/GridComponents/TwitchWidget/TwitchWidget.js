@@ -1,5 +1,6 @@
-import { Card, CircularProgress, makeStyles } from '@material-ui/core';
+import { Card, makeStyles } from '@material-ui/core';
 import React, { useCallback, useEffect, useState } from 'react';
+import ProgressBolt from '../../ProgressBolt/ProgressBolt';
 import CardTopLabel from '../CardTopLabel/CardTopLabel';
 import TwitchCard from './TwitchCard';
 
@@ -161,7 +162,7 @@ export default function TwitchWidget({
         </div>
       ) : (
         <div className={classes.spinnerContainer}>
-          <CircularProgress />
+          <ProgressBolt />
         </div>
       )}
     </Card>

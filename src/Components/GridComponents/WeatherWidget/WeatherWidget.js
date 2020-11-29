@@ -40,7 +40,6 @@ export default function WeatherWidget({ city, isDraggable }) {
   const smallScreen = useMediaQuery('(min-width:870px)');
 
   useEffect(() => {
-    getWeatherData();
     async function getWeatherData() {
       try {
         const res = await axios.get(
@@ -52,6 +51,7 @@ export default function WeatherWidget({ city, isDraggable }) {
         console.log(error);
       }
     }
+    getWeatherData();
   }, [city]);
 
   return (

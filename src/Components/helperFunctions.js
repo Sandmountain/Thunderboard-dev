@@ -28,8 +28,6 @@ export const parseDate = (date) => {
   } else {
     return then.getDate() + ' ' + months[then.getMonth()];
   }
-
-  //TODO : Shows wrong date
 };
 
 export const timeSince = (date) => {

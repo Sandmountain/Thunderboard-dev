@@ -7,26 +7,7 @@ import SettingsDialog from '../Dialogs/SettingsDialog';
 
 const useStyles = makeStyles({
   backgrundContainer: { height: '100%', width: '100%' },
-  backgroundImageContainer: {
-    position: 'absolute',
-    zIndex: 1,
-    height: '100vh',
-    width: '100vw',
-  },
-  backgroundImage: {
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center center',
-    backgroundSize: 'cover',
-  },
-  optionMenu: {
-    position: 'absolute',
-    zIndex: 5,
-    display: 'flex',
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
 
-    width: '100vw',
-  },
   optionMenuBackdrop: {
     background: 'rgba(255, 255, 255, 0.2)',
     margin: '2px',
@@ -62,16 +43,14 @@ const DashboardSettings = forwardRef(({ settingsOptions }, ref) => {
 
   return (
     <>
-      <div className={classes.optionMenu}>
-        <div className={classes.optionMenuBackdrop}>
-          <Button
-            endIcon={<Icon>settings</Icon>}
-            onClick={() => handleChangeCollectionClickOpen()}
-            className="noBorderRadius"
-            size="small">
-            Settings
-          </Button>
-        </div>
+      <div className={classes.optionMenuBackdrop}>
+        <Button
+          endIcon={<Icon>settings</Icon>}
+          onClick={() => handleChangeCollectionClickOpen()}
+          className="noBorderRadius"
+          size="small">
+          Settings
+        </Button>
       </div>
 
       <SettingsDialog openTab={openTab} open={open} onClose={handleChangeCollectionClose} />

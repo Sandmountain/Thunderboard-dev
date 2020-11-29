@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const StyledBadge = withStyles((theme) => ({
+const StyledBadgeLeft = withStyles((theme) => ({
   badge: {
     right: 23,
     top: 10,
@@ -34,7 +34,16 @@ const StyledBadge = withStyles((theme) => ({
   },
 }))(Badge);
 
-export default function CalenderPopUp({ gCalenderData }) {
+const StyledBadgeRight = withStyles((theme) => ({
+  badge: {
+    right: -3,
+    top: 13,
+    border: `2px solid ${theme.palette.background.paper}`,
+    padding: '0 4px',
+  },
+}))(Badge);
+
+export default function CalenderPopUp({ gCalenderData, right }) {
   const [parsedCalenderData, setParsedCalenderData] = useState(null);
   const [colors, getColors] = useState(null);
   const [calenderData, setCalenderDate] = useState(null);
@@ -73,9 +82,15 @@ export default function CalenderPopUp({ gCalenderData }) {
         <>
           <div style={{ display: 'flex', alignItems: 'start', justifyContent: 'end' }}>
             <Typography onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose}>
-              <StyledBadge badgeContent={calenderData && calenderData.length} color="secondary">
-                <EventNote fontSize={'small'} />
-              </StyledBadge>
+              {right ? (
+                <StyledBadgeRight badgeContent={calenderData && calenderData.length} color="secondary">
+                  <EventNote fontSize={'small'} />
+                </StyledBadgeRight>
+              ) : (
+                <StyledBadgeLeft badgeContent={calenderData && calenderData.length} color="secondary">
+                  <EventNote fontSize={'small'} />
+                </StyledBadgeLeft>
+              )}
             </Typography>
           </div>
           <Popover

@@ -72,11 +72,12 @@ export default function GoogleTranslate({ currency, language, isDraggable }) {
           value={result !== '' ? result.value : loading ? 'loading...' : input}
           style={{ width: '100%', fontSize: '11pt', margin: 0 }}
           variant="outlined"
+          size="small"
           rows={1}
           InputProps={{
             endAdornment: result !== '' && (
               <InputAdornment position="end">
-                <IconButton size="small" aria-label="toggle password visibility" onClick={() => clearInput()}>
+                <IconButton size="small" onClick={() => clearInput()}>
                   <ClearIcon />
                 </IconButton>
               </InputAdornment>

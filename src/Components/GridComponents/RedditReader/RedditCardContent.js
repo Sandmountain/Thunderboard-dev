@@ -1,8 +1,9 @@
-import { CircularProgress, makeStyles, Typography } from '@material-ui/core';
+import { makeStyles, Typography } from '@material-ui/core';
 import React from 'react';
-import { cleanIframe, openInNewTab } from '../../helperFunctions.js';
+import { cleanIframe } from '../../helperFunctions.js';
 
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
+import ProgressBolt from '../../ProgressBolt/ProgressBolt.js';
 
 const useStyles = makeStyles({
   cardImage: {},
@@ -24,7 +25,6 @@ const useStyles = makeStyles({
   linkText: {
     color: '#3f9ade',
     textDecoration: 'none',
-
     '&:hover': {
       textDecoration: 'underline',
     },
@@ -63,7 +63,7 @@ export default function RedditCardContent(props) {
                   debounce={500}
                   error="error.png"
                   src={post.url}
-                  placeholder={<CircularProgress />}
+                  placeholder={<ProgressBolt />}
                   width="100%"
                 />
               </a>
@@ -113,7 +113,7 @@ export default function RedditCardContent(props) {
               return (
                 <div className={classes.linkContainer}>
                   <Typography variant="body2" className={classes.ellipsis}>
-                    <a href={post.url} onClick={() => openInNewTab(post.url)} className={classes.linkText}>
+                    <a href={post.url} target="_blank" rel="noopener noreferrer" className={classes.linkText}>
                       {'https://' + post.domain + '/'}
                       <OpenInNewIcon style={{ verticalAlign: 'text-bottom' }} fontSize={'small'} />
                     </a>

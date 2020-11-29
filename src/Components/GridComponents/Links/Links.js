@@ -1,18 +1,22 @@
 import React, { useState, useRef } from 'react';
-import { Card, CircularProgress, makeStyles, Tooltip, Typography } from '@material-ui/core';
-import { Delete, Link } from '@material-ui/icons';
+import { Card, IconButton, makeStyles, Tooltip, Typography } from '@material-ui/core';
+import { Check, Delete, Link } from '@material-ui/icons';
 import { openInNewTab } from '../../helperFunctions';
+import { updateFirestoreCollection } from '../../../Firestore/FirestoreFunctions';
 
 const useStyles = makeStyles({
   innerPadding: {
-    padding: '5px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+    height: '100%',
   },
   wrapperCard: {
     height: '100%',
     borderRadius: 0,
     width: '100%',
     overflowY: 'auto',
-    backgroundColor: '#dae0e6',
   },
 
   droppableArea: {
@@ -25,7 +29,7 @@ const useStyles = makeStyles({
     //cursor: 'pointer',
   },
   dragWrapper: {
-    position: 'relative',
+    position: 'absolute',
     width: '100%',
     height: '100%',
     display: 'flex',
@@ -35,11 +39,18 @@ const useStyles = makeStyles({
     pointerEvents: 'none',
   },
   dragContainer: {
-    top: '50%',
     position: 'absolute',
     width: '80%',
     border: '1px dashed gray',
     background: 'white',
+    padding: 5,
+  },
+  linksGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(32px, 1fr))',
+    width: '100%',
+    gap: '5px',
+    overflow: 'hidden',
     padding: 5,
   },
   holdUrl: {
@@ -57,14 +68,13 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Links({ links, isDraggable, openSettings }) {
+export default function Links({ links, isDraggable, settings, setSettings }) {
   const cardRef = useRef();
   const cardContainer = cardRef.current && cardRef.current.getBoundingClientRect();
   const classes = useStyles();
   const [draggedOutside, setDraggedOutside] = useState(false);
   const [isHover, setIsHover] = useState(false);
   const [urls, setUrls] = useState(links);
-  const [holdingUrl, setHoldingUrl] = useState(false);
 
   const handleDragLeave = (e) => {
     e.preventDefault();
@@ -75,6 +85,16 @@ export default function Links({ links, isDraggable, openSettings }) {
     e.preventDefault();
     setIsHover(true);
     e.stopPropagation();
+  };
+
+  const saveChanges = () => {
+    setSettings({
+      ...settings,
+      linksSettings: {
+        ...settings.linksSettings,
+        links: urls,
+      },
+    });
   };
 
   const isOutside = (targetX, targetY, container) => {
@@ -109,18 +129,22 @@ export default function Links({ links, isDraggable, openSettings }) {
 
     try {
       let url = e.dataTransfer.getData('url');
-      console.log(url);
-      console.log(urls);
+
       if (!urls.find((link) => link.src === url)) {
-        let parsedUrl = new URL(url);
-        setUrls([
-          ...urls,
-          {
-            href: `https://i.olsh.me/icon?url=${parsedUrl.hostname}&size=12..120..200`,
-            src: url,
-            name: parsedUrl.hostname,
+        const parsedUrl = new URL(url);
+        const newUrl = {
+          href: `https://i.olsh.me/icon?url=${parsedUrl.hostname}&size=12..120..200`,
+          src: url,
+          name: parsedUrl.hostname,
+        };
+
+        setUrls([...urls, newUrl]);
+
+        updateFirestoreCollection({
+          linksSettings: {
+            links: [...urls, newUrl],
           },
-        ]);
+        });
       }
     } catch (err) {
       console.log(err);
@@ -155,28 +179,22 @@ export default function Links({ links, isDraggable, openSettings }) {
             </div>
           )}
           {urls.length > 0 ? (
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(32px, 1fr))',
-                gridTemplateRows: 'repeat(auto-fit)',
-                height: '100%',
-                gap: 5,
-                overflow: 'hidden',
-              }}>
+            <div className={classes.linksGrid}>
               {urls.map((url, idx) => {
                 return (
                   <Tooltip key={idx} placement="top" title={url.src}>
-                    <div className={holdingUrl ? classes.holdUrl : classes.clickUrl}>
-                      <img
-                        onClick={() => openInNewTab(url.src)}
-                        src={url.href}
-                        alt={url.href}
-                        style={{ width: '100%' }}
-                        draggable={true}
-                        onDrag={dragLink}
-                        onDragEnd={(e) => dragLinkEnd(e, url.src)}
-                      />
+                    <div className={classes.clickUrl}>
+                      <div style={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
+                        <img
+                          style={{ width: '100%', objectFit: 'contain' }}
+                          onClick={() => openInNewTab(url.src)}
+                          src={url.href}
+                          alt={url.href}
+                          draggable={true}
+                          onDrag={dragLink}
+                          onDragEnd={(e) => dragLinkEnd(e, url.src)}
+                        />
+                      </div>
                     </div>
                   </Tooltip>
                 );
@@ -192,6 +210,14 @@ export default function Links({ links, isDraggable, openSettings }) {
           )}
         </div>
       </div>
+      {links !== urls && (
+        <IconButton
+          size="small"
+          style={{ position: 'absolute', right: 0, color: 'green' }}
+          onClick={() => saveChanges()}>
+          <Check></Check>
+        </IconButton>
+      )}
     </Card>
   );
 }

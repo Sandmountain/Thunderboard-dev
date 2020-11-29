@@ -1,0 +1,12 @@
+.animatedBolt {
+  animation: spin 1400ms infinite ease-in-out;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

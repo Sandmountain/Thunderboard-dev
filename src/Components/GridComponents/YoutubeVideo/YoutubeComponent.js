@@ -1,6 +1,7 @@
-import { Card, CircularProgress, makeStyles } from '@material-ui/core';
+import { Card, makeStyles } from '@material-ui/core';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import ProgressBolt from '../../ProgressBolt/ProgressBolt';
 import CardTopLabel from '../CardTopLabel/CardTopLabel';
 import YoutubeVideo from './YoutubeVideo';
 
@@ -8,6 +9,7 @@ const useStyles = makeStyles({
   wrapperCard: {
     height: '100%',
     borderRadius: 0,
+    position: 'relative',
   },
   innerContainer: {
     padding: 5,
@@ -52,14 +54,9 @@ export default function YoutubeComponent({
   const classes = useStyles();
 
   useEffect(() => {
-    fetchYoutubeData(credentials);
-
     async function fetchYoutubeData(credentials) {
       if (!isProduction) {
-        //Move to youtube
         const res = await axios('https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true', credentials);
-
-        //`https://www.googleapis.com/youtube/v3/search`
 
         setYoutubeUserData(res.data.items[0]);
         const youData = await axios(
@@ -71,17 +68,16 @@ export default function YoutubeComponent({
         /*
         GET https://www.googleapis.com/youtube/v3/subscriptions?part=snippet%2CcontentDetails&maxResults=10&mine=true&key=[YOUR_API_KEY] HTTP/1.1
         */
-      } else {
-        //TODO: Production ( remove above when deploy )
-
+      } else if (isProduction) {
         const youData = await axios(
           `https://www.googleapis.com/youtube/v3/videos?part=snippet&part=statistics&part=contentDetails&chart=mostPopular&regionCode=SE&maxResults=${nrOfVideos}`,
           credentials
         );
-        console.log(youData.data.items);
+
         setYoutubeList(youData.data.items);
       }
     }
+    fetchYoutubeData(credentials);
   }, [credentials, isProduction, nrOfVideos]);
 
   return (
@@ -89,7 +85,7 @@ export default function YoutubeComponent({
       <CardTopLabel compName="YouTube" openSettings={openSettings} />
       {!youtubeList && !youtubeUserData && (
         <div className={classes.progressContainer} style={{ paddingTop: '35px' }}>
-          <CircularProgress></CircularProgress>
+          <ProgressBolt />
         </div>
       )}
 

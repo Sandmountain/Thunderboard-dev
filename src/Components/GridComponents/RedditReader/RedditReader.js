@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 import { shuffleArray } from './functions/redditReader';
@@ -6,8 +6,9 @@ import { shuffleArray } from './functions/redditReader';
 import RedditCard from './RedditCard';
 import RedditFilter from './RedditFilter';
 
-import { Card, CircularProgress, makeStyles } from '@material-ui/core';
+import { Card, makeStyles } from '@material-ui/core';
 import CardTopLabel from '../CardTopLabel/CardTopLabel';
+import ProgressBolt from '../../ProgressBolt/ProgressBolt';
 
 const useStyles = makeStyles({
   innerPadding: {
@@ -43,40 +44,40 @@ export default function RedditReader({ subreddits, nrOfPosts, shufflePosts, isDr
   const [contentLoaded, setContentLoaded] = useState(false);
   const classes = useStyles();
 
-  const getRedditData = useCallback(() => {
-    try {
-      const result = [];
-      let subRedditInfo = {};
-
-      subreddits.forEach(async (subreddit) => {
-        result.push(
-          ...(await axios
-            .get(
-              `https://www.reddit.com/r/${subreddit.name}/${activeFilter.type}.json?t=${activeFilter.time}&limit=${nrOfPosts}`
-            )
-            .then((res) => res.data.data.children))
-        );
-        // comments can be retriaw  ved from like: https://www.reddit.com/r/cursedcomments/comments/itacb7/.json
-        subRedditInfo[subreddit.name] = await axios
-          .get(`https://www.reddit.com/r/${subreddit.name}/about.json`)
-          .then((res) => res.data.data.icon_img);
-      });
-
-      //TODO: Remove this code
-      setTimeout(() => {
-        setContentLoaded(true);
-        setRedditInfo(subRedditInfo);
-        setRedditData(result);
-      }, 1000);
-    } catch (error) {
-      console.log(error);
-    }
-  }, [activeFilter, subreddits, nrOfPosts]);
-
   useEffect(() => {
     setContentLoaded(false);
+    const getRedditData = async () => {
+      try {
+        const result = [];
+        let subRedditInfo = {};
+
+        subreddits.forEach(async (subreddit) => {
+          result.push(
+            ...(await axios
+              .get(
+                `https://www.reddit.com/r/${subreddit.name}/${activeFilter.type}.json?t=${activeFilter.time}&limit=${nrOfPosts}`
+              )
+              .then((res) => res.data.data.children))
+          );
+          // comments can be retriaw  ved from like: https://www.reddit.com/r/cursedcomments/comments/itacb7/.json
+          subRedditInfo[subreddit.name] = await axios
+            .get(`https://www.reddit.com/r/${subreddit.name}/about.json`)
+            .then((res) => res.data.data.icon_img);
+        });
+
+        //TODO: Remove this code
+        setTimeout(() => {
+          setContentLoaded(true);
+          setRedditInfo(subRedditInfo);
+          setRedditData(result);
+        }, 1000);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     getRedditData();
-  }, [getRedditData]);
+  }, [activeFilter, subreddits, nrOfPosts]);
 
   return (
     <Card className={classes.wrapperCard}>
@@ -97,7 +98,7 @@ export default function RedditReader({ subreddits, nrOfPosts, shufflePosts, isDr
           </>
         ) : (
           <Card className={classes.progressCircle}>
-            <CircularProgress />
+            <ProgressBolt />
           </Card>
         )}
       </div>

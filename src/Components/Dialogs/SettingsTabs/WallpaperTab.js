@@ -11,6 +11,7 @@ import {
   Radio,
   Button,
 } from '@material-ui/core';
+import { updateFirestoreCollection } from '../../../Firestore/FirestoreFunctions';
 
 export default function WallpaperTab(props) {
   const { settings, setSettings, testChanges } = props;
@@ -30,6 +31,13 @@ export default function WallpaperTab(props) {
         imageType: 'unisplash',
       },
     });
+    updateFirestoreCollection({
+      wallPaperSettings: {
+        ...settings.wallPaperSettings,
+        collectionID: event.target.value,
+        imageType: 'unisplash',
+      },
+    });
   };
 
   const handleCustomURL = (event) => {
@@ -42,12 +50,25 @@ export default function WallpaperTab(props) {
         imageType: 'custom',
       },
     });
+    updateFirestoreCollection({
+      wallPaperSettings: {
+        ...settings.wallPaperSettings,
+        customURL: event.target.value,
+        imageType: 'custom',
+      },
+    });
   };
 
   const handleRadioInput = (e) => {
     setImgType(e.target.value);
     setSettings({
       ...settings,
+      wallPaperSettings: {
+        ...settings.wallPaperSettings,
+        imageType: e.target.value,
+      },
+    });
+    updateFirestoreCollection({
       wallPaperSettings: {
         ...settings.wallPaperSettings,
         imageType: e.target.value,

@@ -7,9 +7,9 @@ import { List } from '@material-ui/core';
 
 export default function GoogleMailComponent({ credentials, isProduction, nrOfMails, isDraggable, openSettings }) {
   const [mailData, setMailData] = useState(null);
-  useEffect(() => {
-    fetchGoogleMailData(credentials);
+  const [unreadMails, setUnreadMails] = useState(0);
 
+  useEffect(() => {
     async function fetchGoogleMailData(credentials) {
       //Move to gmail
       const inboxData = await axios(
@@ -28,12 +28,34 @@ export default function GoogleMailComponent({ credentials, isProduction, nrOfMai
       );
       setMailData(mailData);
     }
+    fetchGoogleMailData(credentials);
   }, [credentials, isProduction, nrOfMails]);
+
+  const nrOfUnreadMails = () => {
+    return mailData.reduce((counter, obj) => {
+      if (obj.labelIds.indexOf('UNREAD') !== -1) {
+        counter += 1;
+      }
+      return counter;
+    }, 0);
+  };
+
+  mailData && !unreadMails && setUnreadMails(nrOfUnreadMails());
 
   return (
     <>
+      <CardTopLabel
+        compName={'Gmail'}
+        leftAlignedInfo={
+          unreadMails > 0 && (
+            <span style={{ fontSize: '0.7rem', verticalAlign: 'text-bottom', lineHeight: '1.2rem' }}>
+              <strong> ({unreadMails}) </strong>
+            </span>
+          )
+        }
+        openSettings={openSettings}
+      />
       <List style={{ padding: 0, width: '100%', height: '100%', overflowY: 'auto', background: 'white' }}>
-        <CardTopLabel compName={'Gmail'} openSettings={openSettings} />
         <div className={`${isDraggable && 'isDraggableContainer'}`} style={{ paddingTop: '35px' }}>
           {mailData &&
             mailData.map((mail, idx) => {

@@ -12,6 +12,7 @@ import YouTube from 'react-youtube';
 const useStyles = makeStyles({
   listCardContainer: {
     width: '100%',
+    height: '100%',
     padding: '5px 0',
     display: 'flex',
     flexFlow: 'column',
@@ -129,7 +130,6 @@ export default function YoutubeVideo(props) {
   const handleClose = () => {
     setOpen(false);
   };
-  console.log(thumbnails);
   return (
     <div className={classes.listCardContainer}>
       <CardActionArea onClick={handleClickOpen}>

@@ -10,6 +10,13 @@ import DashboardTab from './SettingsTabs/DashboardTab';
 import GmailTab from './SettingsTabs/GmailTab';
 import RedditTab from './SettingsTabs/RedditTab';
 import TwitchTab from './SettingsTabs/TwitchTab';
+import FirebaseTab from './SettingsTabs/FirebaseTab';
+import UniversalConverterTab from './SettingsTabs/UniversalConverterTab';
+import WeatherTab from './SettingsTabs/WeatherTab';
+import RssTab from './SettingsTabs/RssTab';
+import CalenderTab from './SettingsTabs/CalenderTab';
+import LinksTab from './SettingsTabs/LinksTab';
+import TodosTab from './SettingsTabs/TodosTab';
 
 function a11yProps(index) {
   return {
@@ -81,7 +88,10 @@ export default function SettingsDialog(props) {
           <Tab label="Universal Converter" {...a11yProps(6)} />
           <Tab label="Weather Widget" {...a11yProps(7)} />
           <Tab label="RSS reader" {...a11yProps(8)} />
-          <Tab label="Todos" {...a11yProps(9)} />
+          <Tab label="Calender" {...a11yProps(9)} />
+          <Tab label="Links" {...a11yProps(10)} />
+          <Tab label="Todos" {...a11yProps(11)} />
+          <Tab label="Storage" {...a11yProps(12)} />
         </Tabs>
       </AppBar>
       <TabPanel value={currentTab} index={0}>
@@ -89,6 +99,7 @@ export default function SettingsDialog(props) {
           settings={tempSettings}
           testChanges={testChanges}
           setSettings={setSettings}
+          scrollToReset={(e) => handleChange('', 10)}
           toggleMovement={toggleMovement}
         />
       </TabPanel>
@@ -108,16 +119,25 @@ export default function SettingsDialog(props) {
         <TwitchTab settings={tempSettings} testChanges={testChanges} setSettings={setTempSettings} />
       </TabPanel>
       <TabPanel value={currentTab} index={6}>
-        <DialogContentText>No settings yet...</DialogContentText>
+        <UniversalConverterTab settings={tempSettings} testChanges={testChanges} setSettings={setTempSettings} />
       </TabPanel>
       <TabPanel value={currentTab} index={7}>
-        <DialogContentText>No settings yet...</DialogContentText>
+        <WeatherTab settings={tempSettings} testChanges={testChanges} setSettings={setTempSettings} />
       </TabPanel>
       <TabPanel value={currentTab} index={8}>
-        <DialogContentText>No settings yet...</DialogContentText>
+        <RssTab settings={tempSettings} testChanges={testChanges} setSettings={setTempSettings} />
       </TabPanel>
       <TabPanel value={currentTab} index={9}>
-        <DialogContentText>No settings yet...</DialogContentText>
+        <CalenderTab settings={tempSettings} testChanges={testChanges} setSettings={setTempSettings} />
+      </TabPanel>
+      <TabPanel value={currentTab} index={10}>
+        <LinksTab settings={tempSettings} testChanges={testChanges} setSettings={setTempSettings} />
+      </TabPanel>
+      <TabPanel value={currentTab} index={11}>
+        <TodosTab settings={tempSettings} testChanges={testChanges} setSettings={setTempSettings} />
+      </TabPanel>
+      <TabPanel value={currentTab} index={12}>
+        <FirebaseTab saveChanges={saveChanges} />
       </TabPanel>
       <DialogActions>
         <Button className="noBorderRadius" onClick={handleClose} color="default">

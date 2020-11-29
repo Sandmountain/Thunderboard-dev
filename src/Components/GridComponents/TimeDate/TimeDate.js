@@ -48,7 +48,7 @@ export default function TimeDateContainer({ calenders, isDraggable, credentials,
   const classes = useStyles();
 
   const smallScreen = useMediaQuery('(min-width:800px)');
-  const mediumScreen = useMediaQuery('(min-width:1305px)');
+  const mediumScreen = useMediaQuery('(min-width:1530px)');
 
   useEffect(() => {
     async function getCalenderData(credentials) {
@@ -80,7 +80,7 @@ export default function TimeDateContainer({ calenders, isDraggable, credentials,
   return (
     <Card className={classes.wrapperCard}>
       <div className={`${isDraggable && 'isDraggableContainer'} ${classes.content}`}>
-        {smallScreen && <CalenderPopUp calenders={calenders} gCalenderData={gCalenderData} />}
+        <CalenderPopUp right={!smallScreen} calenders={calenders} gCalenderData={gCalenderData} />
         <Clock smallScreen={smallScreen} mediumScreen={mediumScreen} />
       </div>
     </Card>

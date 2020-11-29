@@ -31,6 +31,7 @@ const useStyles = makeStyles({
   articleListItem: {
     display: 'flex',
     flexDirection: 'row',
+    whiteSpace: 'nowrap',
   },
   articleListItemText: {
     marginLeft: '0.25em',
@@ -114,7 +115,7 @@ export default function RssCard({
       <Typography variant="body2" component="div">
         <Box className={classes.articleText} onClick={() => openInNewTab(url)}>
           <div className={classes.articleListItem}>
-            <Box fontWeight={'fontWeightBold'}>{date}</Box>
+            <Box>{date}</Box>
             <Box component="a" className={classes.articleListItemText}>
               <strong>{title}</strong>
               <span className={classes.articleListItemTextGray}>{content}</span>

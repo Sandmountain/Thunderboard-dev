@@ -13,7 +13,7 @@ const useStyles = makeStyles({
     lineHeight: '1 !important',
     padding: 0,
     fontWeight: 600,
-    fontSize: '3.2vw',
+    fontSize: '3.1vw',
   },
   timeTextScaled: {
     height: '100%',
@@ -26,7 +26,7 @@ const useStyles = makeStyles({
     display: 'flex',
     fontWeight: 600,
     lineHeight: 1,
-    fontSize: 'calc(4.1vw + 1px)',
+    fontSize: 'calc(3.5vw + 1px)',
   },
   dateMediumContainer: {
     height: '100%',
@@ -38,7 +38,7 @@ const useStyles = makeStyles({
     paddingLeft: 2,
     lineHeight: 1,
     fontWeight: 200,
-    fontSize: '0.85vw',
+    fontSize: '0.8vw',
   },
 });
 
