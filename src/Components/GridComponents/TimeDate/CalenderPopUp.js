@@ -1,6 +1,7 @@
 import { Badge, List, ListItem, makeStyles, Popover, Typography, withStyles } from '@material-ui/core';
-import { CalendarViewDay, EventNote } from '@material-ui/icons';
+import { EventNote } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
+import { openInNewTab } from '../../helperFunctions';
 
 import { getEvents, parseDate, sortEvents, generateColor, getPopUpDate } from './functions/timeDateFunctions';
 
@@ -83,11 +84,19 @@ export default function CalenderPopUp({ gCalenderData, right }) {
           <div style={{ display: 'flex', alignItems: 'start', justifyContent: 'end' }}>
             <Typography onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose}>
               {right ? (
-                <StyledBadgeRight badgeContent={calenderData && calenderData.length} color="secondary">
+                <StyledBadgeRight
+                  badgeContent={calenderData && calenderData.length}
+                  color="secondary"
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => openInNewTab('https://calendar.google.com/calendar')}>
                   <EventNote fontSize={'small'} />
                 </StyledBadgeRight>
               ) : (
-                <StyledBadgeLeft badgeContent={calenderData && calenderData.length} color="secondary">
+                <StyledBadgeLeft
+                  badgeContent={calenderData && calenderData.length}
+                  color="secondary"
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => openInNewTab('https://calendar.google.com/calendar')}>
                   <EventNote fontSize={'small'} />
                 </StyledBadgeLeft>
               )}

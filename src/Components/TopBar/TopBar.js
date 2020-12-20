@@ -1,4 +1,4 @@
-import { Button, makeStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import React from 'react';
 import DashboardSettings from '../DashboardSettings/DashboardSettings';
 
@@ -22,11 +22,7 @@ export default function TopBar({ childRef }) {
   const classes = useStyles();
   return (
     <div className={classes.optionMenu}>
-      <div className={classes.optionMenuBackdrop}>
-        <Button size="small" variant="text">
-          Links
-        </Button>
-      </div>
+      <div className={classes.optionMenuBackdrop}></div>
       <DashboardSettings ref={childRef} />
     </div>
   );

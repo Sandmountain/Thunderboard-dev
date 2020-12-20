@@ -47,7 +47,7 @@ const useStyles = makeStyles({
   },
   linksGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(32px, 1fr))',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(20px, 1fr))',
     width: '100%',
     gap: '5px',
     overflow: 'hidden',
@@ -142,6 +142,7 @@ export default function Links({ links, isDraggable, settings, setSettings }) {
 
         updateFirestoreCollection({
           linksSettings: {
+            ...settings.linksSettings,
             links: [...urls, newUrl],
           },
         });

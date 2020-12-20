@@ -63,7 +63,7 @@ export default function WeatherWidget({ city, isDraggable }) {
               <WeatherWidgetIcon icon={weatherData.weather[0].icon} id={weatherData.weather[0].id}></WeatherWidgetIcon>
             </div>
             <div className={classes.temperatureContainer}>
-              <Typography variant="h4" style={{ lineHeight: 1 }} className={!smallScreen ? classes.smallStyle : ''}>
+              <Typography variant="h5" style={{ lineHeight: 1 }} className={!smallScreen ? classes.smallStyle : ''}>
                 {Math.round(weatherData.main.temp) + '°'}
               </Typography>
               <Typography className={classes.cityName} variant="subtitle2">

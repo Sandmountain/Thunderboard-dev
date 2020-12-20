@@ -46,7 +46,6 @@ export default function WallpaperComponent() {
 
   const handleLoaded = () => {
     if (!imageLoaded) {
-      console.log('klar');
       setImageLoaded(true);
     }
   };
@@ -62,12 +61,7 @@ export default function WallpaperComponent() {
             onLoad={handleLoaded()}
             alt="bg-img"></img>
         ) : (
-          <img
-            src={imageURL}
-            width={windowSize[0]}
-            height={windowSize[1]}
-            className={classes.backgroundImage}
-            alt="bg-img"></img>
+          <img src={imageURL} width={windowSize[0]} height={windowSize[1]} className={classes.backgroundImage}></img>
         )}
       </div>
     </div>

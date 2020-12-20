@@ -1,6 +1,5 @@
 import React, { useContext, useRef, useState } from 'react';
 
-import DashboardSettings from '../DashboardSettings/DashboardSettings.js';
 import GoogleAutentication from '../Authentication/GoogleAuthentication';
 import GoogleMailComponent from '../GridComponents/GoogleMail/GoogleMailComponent.js';
 import YoutubeComponent from '../GridComponents/YoutubeVideo/YoutubeComponent';
@@ -26,6 +25,7 @@ import { updateFirestoreCollection } from '../../Firestore/FirestoreFunctions.js
 import LoadingScreen from '../LoadingScreen/LoadingScreen.js';
 import ProgressBolt from '../ProgressBolt/ProgressBolt.js';
 import TopBar from '../TopBar/TopBar.js';
+import ToolsMenu from '../GridComponents/ToolsMenu/ToolsMenu.js';
 
 // Twitch
 //const twitchToken = '';
@@ -247,6 +247,9 @@ export default function MainDashboard() {
                       isDraggable={dashboardSettings.isDraggable}
                       openSettings={openSettings}
                     />
+                  </div>
+                  <div key="11" className={classes.gridItemCards} hidden={false}>
+                    <ToolsMenu />
                   </div>
                 </ReactGridLayout>
               </div>

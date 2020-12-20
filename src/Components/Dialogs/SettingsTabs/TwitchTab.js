@@ -159,7 +159,8 @@ export default function YoutubeTab({ settings, testChanges, setSettings }) {
     });
   };
 
-  const toggleComponent = () => {
+  const toggleComponent = (e) => {
+    e.preventDefault();
     updateFirestoreCollection({
       twitchSettings: {
         ...settings.redditSettings,
@@ -183,7 +184,7 @@ export default function YoutubeTab({ settings, testChanges, setSettings }) {
       <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
         <FormControlLabel
           labelPlacement="start"
-          control={<Switch checked={inUse} onChange={() => toggleComponent()} />}
+          control={<Switch checked={inUse} onChange={toggleComponent} />}
           label={inUse ? 'Disable Component' : 'Enable Component'}
         />
       </div>
@@ -228,6 +229,11 @@ export default function YoutubeTab({ settings, testChanges, setSettings }) {
                 Click on the button below to autorize Twitch, then copy the access token as highlighted in the image
                 below from the url field in the browser.
               </Typography>
+              <br></br>
+              <Typography variant="caption">
+                <strong>Note:</strong> After your Twitch account is authenticated, you will be redirected to a new page
+                (that can't be loaded) where this url is present.
+              </Typography>
             </DialogContentText>
             <img src={require('./images/url.png')} alt="access-token" width={'100%'} />
             <div style={{ display: 'flex', justifyContent: 'center', margin: 12 }}>
@@ -244,13 +250,13 @@ export default function YoutubeTab({ settings, testChanges, setSettings }) {
             </div>
             <DialogContentText>
               <Typography component="span" align="left">
-                Then enter the acess token in the field below:
+                Then enter the acess token in the field below <i> and press enter</i>:
               </Typography>
             </DialogContentText>
             <form onSubmit={handleSubmitAuthToken} noValidate autoComplete="off">
               <TextField
                 fullWidth
-                label="Enter your copied access token"
+                label="Enter your copied access token and press enter"
                 value={authToken}
                 onChange={(e) => handleInput(e, setAuthToken)}
                 error={errorMessage.isError ? true : false}

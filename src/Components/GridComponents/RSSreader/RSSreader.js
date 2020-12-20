@@ -137,7 +137,6 @@ export default function RSSreader({
               {data.map((article, idx) => {
                 if (idx < nrOfArticles) {
                   return (
-                    //TODO: ParseDate vid dagsbyten, fortsätt visa klockslag
                     <RssList
                       key={idx}
                       title={article.title}

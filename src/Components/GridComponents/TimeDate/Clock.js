@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Typography, makeStyles, useMediaQuery } from '@material-ui/core';
+import { Typography, makeStyles } from '@material-ui/core';
 
 import { parseDate } from './functions/timeDateFunctions';
 

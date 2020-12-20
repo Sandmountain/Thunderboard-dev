@@ -16,12 +16,12 @@ body {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #ff4500;
+  background: #dc3545;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #992900;
+  background: #9e2733;
 }
 
 .isDraggableContainer {

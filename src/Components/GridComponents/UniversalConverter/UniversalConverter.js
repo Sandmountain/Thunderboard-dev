@@ -17,6 +17,11 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     borderRadius: 0,
   },
+  inputRoot: {
+    '& .MuiOutlinedInput-root': {
+      height: '100%',
+    },
+  },
 }));
 
 export default function GoogleTranslate({ currency, language, isDraggable }) {
@@ -70,10 +75,13 @@ export default function GoogleTranslate({ currency, language, isDraggable }) {
           id="outlined-full-width"
           label={result !== '' ? result.label : 'Universal Converter'}
           value={result !== '' ? result.value : loading ? 'loading...' : input}
-          style={{ width: '100%', fontSize: '11pt', margin: 0 }}
+          style={{ width: '100%', fontSize: '11pt', margin: 0, height: '100%' }}
           variant="outlined"
           size="small"
           rows={1}
+          classes={{
+            root: classes.inputRoot,
+          }}
           InputProps={{
             endAdornment: result !== '' && (
               <InputAdornment position="end">

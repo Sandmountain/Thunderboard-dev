@@ -1,10 +1,11 @@
-import { DialogContentText, DialogTitle, FormControlLabel, Switch } from '@material-ui/core';
+import { DialogContent, DialogContentText, DialogTitle, FormControlLabel, Switch, TextField } from '@material-ui/core';
 import React, { useState } from 'react';
 import { updateFirestoreCollection } from '../../../Firestore/FirestoreFunctions';
 
 export default function WeatherTab({ setSettings, settings }) {
   const { city, useComponent } = settings.weatherSettings;
   const [inUse, setInUse] = useState(useComponent);
+  const [input, setInput] = useState('');
 
   const toggleComponent = () => {
     updateFirestoreCollection({
@@ -24,6 +25,19 @@ export default function WeatherTab({ setSettings, settings }) {
 
     setInUse(!inUse);
   };
+  const onChange = (e) => {
+    setInput(e.target.value);
+  };
+  const onSubmit = (e) => {
+    e.preventDefault();
+    setSettings({
+      ...settings,
+      weatherSettings: {
+        ...settings.weatherSettings,
+        city: input,
+      },
+    });
+  };
 
   return (
     <>
@@ -34,8 +48,19 @@ export default function WeatherTab({ setSettings, settings }) {
           label={inUse ? 'Disable Component' : 'Enable Component'}
         />
       </div>
-      <DialogTitle>Clock Settings</DialogTitle>
-      <DialogContentText>No settings yet...</DialogContentText>
+      <DialogTitle>Weather Settings</DialogTitle>
+
+      <DialogContent>
+        <DialogContentText>
+          Enter your town in the field below, then press save changes to change weather destination.
+        </DialogContentText>
+        <form onSubmit={(e) => onSubmit(e)}>
+          <TextField
+            onChange={(e) => onChange(e)}
+            placeholder={'Enter your town name'}
+            helperText={`Currently using ${city}`}></TextField>
+        </form>
+      </DialogContent>
     </>
   );
 }

@@ -50,6 +50,7 @@ const useStyles = makeStyles({
   },
   paper: {
     borderRadius: 0,
+    minHeight: '110px',
   },
   popoverTitleWrapper: {
     padding: 5,

@@ -26,7 +26,7 @@ const useStyles = makeStyles({
   },
   youtubeGrid: {
     height: '100%',
-    padding: '35px 5px',
+    padding: '35px 5px 0px',
     gap: '5px',
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))',

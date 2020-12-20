@@ -51,18 +51,18 @@ export const DefaultSettings = () => {
       nrOfCols: 12,
       rowHeight: 1,
       gridSpacing: [10, 10],
-      compactType: 'vertical',
+      compactType: 'default',
       layout: [
-        { w: 7, h: 21, x: 0, y: 5, i: '1', component: 'Youtube' }, // Youtube
-        { w: 7, h: 23, x: 0, y: 21, i: '2', component: 'GMail' }, // Gmail
-        { w: 5, h: 44, x: 7, y: 22, i: '3', component: 'Reddit' }, // Reddit
-        { w: 1, h: 7, x: 9, y: 0, i: '4', component: 'Weather' }, // Weather
-        { w: 2, h: 7, x: 10, y: 0, i: '5', component: 'Calender' }, // Calender
-        { w: 7, h: 7, x: 0, y: 44, i: '6', component: 'Converter' }, // Uni Converter
-        { w: 7, h: 18, x: 0, y: 51, i: '7', component: 'Twitch' }, // TwitchWidget
-        { w: 2, h: 18, x: 10, y: 7, i: '8', component: 'RSSreader' }, // RSSreader
-        { w: 3, h: 18, x: 7, y: 7, i: '9', component: 'Todos' }, // Todos
-        { w: 3, h: 5, x: 0, y: 0, i: '10', component: 'Links' }, // Links
+        { w: 6, h: 22, x: 0, y: 1, i: '1', component: 'Youtube' }, // Youtube
+        { w: 4, h: 34, x: 0, y: 42, i: '2', component: 'GMail' }, // Gmail
+        { w: 6, h: 43, x: 6, y: 33, i: '3', component: 'Reddit' }, // Reddit
+        { w: 1, h: 7, x: 11, y: 0, i: '4', component: 'Weather' }, // Weather
+        { w: 2, h: 7, x: 9, y: 0, i: '5', component: 'Calender' }, // Calender
+        { w: 3, h: 6, x: 9, y: 7, i: '6', component: 'Converter' }, // Uni Converter
+        { w: 6, h: 19, x: 0, y: 23, i: '7', component: 'Twitch' }, // TwitchWidget
+        { w: 6, h: 20, x: 6, y: 13, i: '8', component: 'RSSreader' }, // RSSreader
+        { w: 2, h: 34, x: 4, y: 42, i: '9', component: 'Todos' }, // Todos
+        { w: 3, h: 6, x: 6, y: 7, i: '10', component: 'Links' }, // Links
       ],
     },
     wallPaperSettings: {

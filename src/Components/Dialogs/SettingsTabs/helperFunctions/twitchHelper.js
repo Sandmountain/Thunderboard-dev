@@ -1,3 +1,5 @@
+import { updateFirestoreCollection } from '../../../../Firestore/FirestoreFunctions';
+
 export const validateTwitch = (url, settings, setIsAuth, setSettings, authToken, setErrorMessage) => {
   setErrorMessage({ isError: false, message: '' });
   fetch(url, {
@@ -12,10 +14,16 @@ export const validateTwitch = (url, settings, setIsAuth, setSettings, authToken,
     })
     .then((data) => {
       if (!data.error) {
-        console.log(data);
         setIsAuth(true);
         setSettings({
           ...settings,
+          twitchSettings: {
+            ...settings.twitchSettings,
+            authenticated: true,
+            authKey: authToken,
+          },
+        });
+        updateFirestoreCollection({
           twitchSettings: {
             ...settings.twitchSettings,
             authenticated: true,

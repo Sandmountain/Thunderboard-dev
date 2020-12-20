@@ -253,11 +253,16 @@ export default function RedditTab({ settings, testChanges, setSettings }) {
       {inUse && (
         <>
           <DialogContent>
+            <DialogContentText>
+              Due to the lack of backend, it's impossible to connect to your Reddit account. Please enter your favorite
+              subreddits down below.
+            </DialogContentText>
             <FormControlLabel
               style={{ width: '40%' }}
               control={<Checkbox checked={shufflePosts} onChange={() => handleCheckbox()} name="Shuffle Posts" />}
               label="Shuffle Posts"
             />
+
             <form onSubmit={handleNewSubreddit} noValidate autoComplete="off">
               <TextField
                 fullWidth
@@ -309,7 +314,7 @@ export default function RedditTab({ settings, testChanges, setSettings }) {
           <DialogContent>
             <DialogContentText>Other options</DialogContentText>
 
-            <Typography gutterBottom>Number of posts per sub</Typography>
+            <Typography gutterBottom>Number of posts per subreddit</Typography>
             <Slider
               value={nrOfPosts}
               onChange={(e, val) => handleSlider(val)}

@@ -1,4 +1,3 @@
-/* global chrome */
 import {
   Button,
   Dialog,
@@ -6,15 +5,12 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  IconButton,
   makeStyles,
   Typography,
 } from '@material-ui/core';
 import { Warning } from '@material-ui/icons';
 import React from 'react';
 import { removeFirebaseSettings } from '../../../Firestore/FirestoreFunctions';
-
-import { GoogleLogout } from 'react-google-login';
 
 const useStyles = makeStyles((theme) => ({
   error: {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, makeStyles, Card, useMediaQuery } from '@material-ui/core';
+import { makeStyles, Card, useMediaQuery } from '@material-ui/core';
 
-import { getMinMaxDate, parseDate, mockData } from './functions/timeDateFunctions.js';
+import { getMinMaxDate, mockData } from './functions/timeDateFunctions.js';
 
 import axios from 'axios';
 import CalenderPopUp from './CalenderPopUp.js';

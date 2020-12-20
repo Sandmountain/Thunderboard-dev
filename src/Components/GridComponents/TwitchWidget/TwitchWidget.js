@@ -1,4 +1,4 @@
-import { Card, makeStyles } from '@material-ui/core';
+import { Button, Card, makeStyles } from '@material-ui/core';
 import React, { useCallback, useEffect, useState } from 'react';
 import ProgressBolt from '../../ProgressBolt/ProgressBolt';
 import CardTopLabel from '../CardTopLabel/CardTopLabel';
@@ -26,6 +26,14 @@ const useStyles = makeStyles({
     gap: '5px',
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
+  },
+  twitchReset: {
+    position: 'relative',
+    height: '100%',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
@@ -71,41 +79,47 @@ export default function TwitchWidget({
 
   const getLiveUserTwitchData = useCallback(
     (followedChannels) => {
-      const getStreams = followedChannels.reduce((prev, curr, idx) => {
-        if (idx === 0) {
-          return '?user_login=' + curr.to_name;
-        } else {
-          return prev + '&user_login=' + curr.to_name;
-        }
-      }, '');
-      //console.log(getStreams);
-
       try {
-        fetch(`https://api.twitch.tv/helix/streams${getStreams}`, {
-          method: 'get',
-          headers: new Headers({
-            Authorization: `Bearer ${authKey}`,
-            'Client-ID': process.env.REACT_APP_TWITCH_CLIENT_KEY,
-          }),
-        })
-          .then(function (res) {
-            return res.json();
+        const getStreams = followedChannels.reduce((prev, curr, idx) => {
+          if (idx === 0) {
+            return '?user_login=' + curr.to_name;
+          } else {
+            return prev + '&user_login=' + curr.to_name;
+          }
+        }, '');
+
+        try {
+          fetch(`https://api.twitch.tv/helix/streams${getStreams}`, {
+            method: 'get',
+            headers: new Headers({
+              Authorization: `Bearer ${authKey}`,
+              'Client-ID': process.env.REACT_APP_TWITCH_CLIENT_KEY,
+            }),
           })
-          .then((res) => {
-            if (res.data.length < nrOfStreams) {
-              getOfflineUserTwitchData(res.data, followedChannels).then((offlineData) => {
-                setTwitchData([...res.data, ...offlineData]);
+            .then(function (res) {
+              return res.json();
+            })
+            .then((res) => {
+              if (res.data.length < nrOfStreams) {
+                getOfflineUserTwitchData(res.data, followedChannels).then((offlineData) => {
+                  setTwitchData([...res.data, ...offlineData]);
+                  setLoadingData(false);
+                });
+              } else {
+                setTwitchData(res.data);
                 setLoadingData(false);
-              });
-            } else {
-              setTwitchData(res.data);
-              setLoadingData(false);
-            }
-          });
+              }
+            });
+        } catch (error) {
+          console.log(error);
+        }
       } catch (error) {
-        console.log(error);
+        console.error('Twitch not autenticated. Try resetting your twitch settings and generate a new key');
+        setLoadingData(false);
+        return;
       }
     },
+
     [authKey, getOfflineUserTwitchData, nrOfStreams]
   );
 
@@ -152,13 +166,16 @@ export default function TwitchWidget({
       <CardTopLabel compName="Twitch" openSettings={openSettings} />
       {!loadingData ? (
         <div
-          className={`${isDraggable && 'isDraggableContainer'} ${classes.streamsGrid} ${
-            scrollbar && classes.scrollbar
-          }`}>
-          {twitchData &&
+          className={`${isDraggable && 'isDraggableContainer'} ${
+            twitchData ? classes.streamsGrid : classes.twitchReset
+          } ${scrollbar && classes.scrollbar}`}>
+          {twitchData ? (
             twitchData.map((stream, idx) => {
               return <TwitchCard key={idx} data={stream} />;
-            })}
+            })
+          ) : (
+            <Button onClick={() => openSettings(5)}> Reset Twitch</Button>
+          )}
         </div>
       ) : (
         <div className={classes.spinnerContainer}>

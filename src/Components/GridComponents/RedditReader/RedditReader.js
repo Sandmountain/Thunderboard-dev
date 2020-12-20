@@ -6,9 +6,10 @@ import { shuffleArray } from './functions/redditReader';
 import RedditCard from './RedditCard';
 import RedditFilter from './RedditFilter';
 
-import { Card, makeStyles } from '@material-ui/core';
+import { Button, Card, makeStyles } from '@material-ui/core';
 import CardTopLabel from '../CardTopLabel/CardTopLabel';
 import ProgressBolt from '../../ProgressBolt/ProgressBolt';
+import { openInNewTab } from '../../helperFunctions';
 
 const useStyles = makeStyles({
   innerPadding: {
@@ -34,6 +35,10 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     alignItems: 'center',
     height: '400px',
+  },
+  goToReddit: {
+    margin: '0 auto 5px',
+    maxWidth: '640px',
   },
 });
 
@@ -95,6 +100,11 @@ export default function RedditReader({ subreddits, nrOfPosts, shufflePosts, isDr
               : redditData.map((item, idx) => {
                   return <RedditCard data={item.data} info={redditInfo} key={idx} />;
                 })}
+            <Card className={classes.goToReddit}>
+              <Button variant="text" fullWidth onClick={() => openInNewTab('http://www.reddit.com')}>
+                Go to reddit
+              </Button>
+            </Card>
           </>
         ) : (
           <Card className={classes.progressCircle}>

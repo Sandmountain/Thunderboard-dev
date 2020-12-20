@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { AppBar, Button, Dialog, DialogActions, DialogContentText, Tab, Tabs } from '@material-ui/core';
+import { AppBar, Button, Dialog, DialogActions, Tab, Tabs } from '@material-ui/core';
 import TabPanel from './TabPanel/TabPanel';
 import '../../App.css';
 import { SettingsContext } from '../../Context/SettingsContext';
