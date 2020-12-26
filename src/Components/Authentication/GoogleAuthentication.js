@@ -22,7 +22,7 @@ export default function GoogleAuthentication({ loggedIn, setIsLoggedIn, setCrede
           contentType: 'json',
         };
 
-        setSettings(await initFirestore(response.googleId));
+        setSettings(await initFirestore(response.googleId, response.accessToken));
 
         setIsLoggedIn(true);
         setCredentials(init);

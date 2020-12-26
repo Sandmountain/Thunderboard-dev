@@ -1,13 +1,17 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+import 'firebase/auth';
 import { DefaultSettings } from '../LoadSettings/DefaultSettings';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIRESTORE_API_KEY,
+  authDomain: 'chrome-dashboard-deploy.firebaseapp.com',
   databaseURL: process.env.REACT_APP_FIRESTORE_DATABASE_URL,
   projectId: process.env.REACT_APP_FIRESTORE_PROJECT_ID,
   storageBucket: process.env.REACT_APP_FIRESTORE_STORAGE_BUCKET,
+  messagingSenderId: '400482503280',
   appId: process.env.REACT_APP_FIRESTORE_APP_ID,
+  measurementId: 'G-920TKH773Z',
 };
 
 // apiKey: 'AIzaSyCihE5p75gUMWIa3cVQujtekOY7bq7OhVk',
@@ -22,12 +26,21 @@ const firebaseConfig = {
 //Gets value on init.
 let userID = '';
 
-export const initFirestore = async (id) => {
-  firebase.initializeApp(firebaseConfig);
+export const initFirestore = async (id, token) => {
   userID = id;
 
-  const db = firebase.firestore();
+  const app = firebase.initializeApp(firebaseConfig);
+  var provider = new firebase.auth.GoogleAuthProvider();
 
+  firebase.auth().onAuthStateChanged(async (user) => {
+    if (user) {
+      return;
+    } else {
+      await app.auth().signInWithPopup(provider);
+    }
+  });
+
+  const db = firebase.firestore();
   const docRef = db.collection('ExtensionSettings').doc(userID);
 
   return await docRef.get().then(function (doc) {
@@ -43,6 +56,14 @@ export const initFirestore = async (id) => {
   });
 };
 
+const logOut = () => {
+  try {
+    firebase.auth().signOut();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const updateFirestoreCollection = (dataToUpdate) => {
   try {
     firebase.firestore().collection('ExtensionSettings').doc(userID).update(dataToUpdate);
@@ -54,6 +75,7 @@ export const updateFirestoreCollection = (dataToUpdate) => {
 export const removeFirebaseSettings = () => {
   try {
     firebase.firestore().collection('ExtensionSettings').doc(userID).delete();
+    logOut();
     return 'Settings were successfully removed';
   } catch (err) {
     console.log(err);

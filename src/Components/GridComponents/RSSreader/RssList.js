@@ -76,7 +76,7 @@ const useStyles = makeStyles({
     width: 'calc(50% - 2.5px)',
   },
   popoverContentImage: {
-    maxHeight: 110,
+    maxHeight: 120,
     width: 'auto',
     maxWidth: '100%',
   },
@@ -166,7 +166,7 @@ export default function RssCard({
               )}
             </div>
             <div className={classes.popoverContentInnerContainer}>
-              <Typography align="left" variant="body2">
+              <Typography align="left" variant="caption">
                 {content}
               </Typography>
             </div>

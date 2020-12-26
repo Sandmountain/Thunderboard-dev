@@ -257,23 +257,21 @@ export default function MainDashboard() {
               <ProgressBolt />
             )}
           </div>
-          <Snackbar open={dashboardSettings?.isDraggable}>
-            <Alert
-              severity="info"
-              variant="filled"
-              action={
-                <>
-                  <IconButton size="small" style={{ color: 'white' }} onClick={handleSaveDraggable}>
-                    <Icon>check</Icon>
-                  </IconButton>
-                  <IconButton size="small" style={{ color: 'white' }} onClick={handleCloseDraggable}>
-                    <Icon>close</Icon>
-                  </IconButton>
-                </>
-              }>
-              The dashboard is unlocked, close to undo changes.
-            </Alert>
-          </Snackbar>
+          <Snackbar
+            color="primary"
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            open={dashboardSettings?.isDraggable}
+            message={'The dashboard is unlocked, press ✓ to save changes.'}
+            action={
+              <>
+                <IconButton size="small" color="secondary" onClick={handleSaveDraggable}>
+                  <Icon>check</Icon>
+                </IconButton>
+                <IconButton size="small" style={{ color: 'white' }} onClick={handleCloseDraggable}>
+                  <Icon>close</Icon>
+                </IconButton>
+              </>
+            }></Snackbar>
         </>
       )}
     </>

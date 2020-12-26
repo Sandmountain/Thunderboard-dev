@@ -273,30 +273,34 @@ export default function YoutubeTab({ settings, testChanges, setSettings }) {
             <FormGroup row component="fieldset" style={{ marginBottom: 20 }}>
               <RadioGroup row aria-label="position" name="position" value={strmType} onChange={handleRadioInput}>
                 <FormControlLabel
-                  value="user"
+                  value="browse"
                   control={<Radio color="primary" />}
-                  label="Use user followed streams"
+                  label="Use browse view"
                   labelPlacement="end"
                 />
                 <FormControlLabel
-                  value="topGames"
+                  value="topStream"
                   control={<Radio color="primary" />}
                   label="Use most viewed streams"
                   labelPlacement="end"
                 />
               </RadioGroup>
             </FormGroup>
-            <DialogContentText>Change the number of streams</DialogContentText>
-            <Typography gutterBottom>Number of streams</Typography>
-            <Slider
-              value={videos}
-              onChange={(e, val) => handleChange(e, val)}
-              valueLabelDisplay="auto"
-              marks={marks(3, 18)}
-              step={1}
-              min={3}
-              max={18}
-            />
+            {strmType === 'topStream' && (
+              <>
+                <DialogContentText>Change the number of streams</DialogContentText>
+                <Typography gutterBottom>Number of streams</Typography>
+                <Slider
+                  value={videos}
+                  onChange={(e, val) => handleChange(e, val)}
+                  valueLabelDisplay="auto"
+                  marks={marks(3, 18)}
+                  step={1}
+                  min={3}
+                  max={18}
+                />
+              </>
+            )}
             <FormControlLabel
               control={<Checkbox checked={scrollbar} onChange={() => handleToggleScrollbar()} name="scrollbar" />}
               label="Use auto scrollbar"

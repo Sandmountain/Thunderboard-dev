@@ -13,14 +13,16 @@ import { openInNewTab } from '../../helperFunctions';
 
 const useStyles = makeStyles({
   innerPadding: {
-    padding: '45px 5px 5px',
+    padding: '5px',
+    margin: '35px 0 5px',
+    overflowY: 'auto',
+    height: '100%',
   },
   wrapperCard: {
     height: '100%',
     borderRadius: 0,
     width: '100%',
-    overflowY: 'auto',
-    backgroundColor: '#dae0e6',
+    backgroundColor: '#efeff1',
   },
   filterContainer: {
     maxWidth: '630px',
