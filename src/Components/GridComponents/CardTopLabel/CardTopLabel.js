@@ -61,6 +61,7 @@ export default function CardTopLabel({
   centerText,
   additionalButton,
   additionalButtons,
+  noGutter,
   openSettings,
 }) {
   const classes = useStyles();
@@ -109,7 +110,7 @@ export default function CardTopLabel({
           {additionalButton && (
             <>
               {' '}
-              <Divider orientation="vertical" style={{ margin: '0 5px' }} />
+              <Divider orientation="vertical" style={noGutter ? { margin: 0 } : { margin: '0 5px' }} />
               {additionalButton}
             </>
           )}
@@ -121,7 +122,7 @@ export default function CardTopLabel({
                 </div>
               );
             })}
-          <Divider orientation="vertical" style={{ margin: '0 5px' }} />
+          <Divider orientation="vertical" style={noGutter ? { marginRight: '5px' } : {}} />
           <IconButton size={'small'} onClick={() => openSettings(getSettingsTab(compName))}>
             <MoreVertIcon fontSize="small" />
           </IconButton>

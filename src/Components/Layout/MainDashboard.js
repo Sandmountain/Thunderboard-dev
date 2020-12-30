@@ -193,9 +193,12 @@ export default function MainDashboard() {
                     {twitchSettings.authenticated ? (
                       <TwitchWidget
                         openSettings={openSettings}
+                        settings={settings}
+                        setSettings={setSettings}
                         authKey={twitchSettings.authKey}
                         nrOfStreams={twitchSettings.nrOfStreams}
                         streamType={twitchSettings.streamType}
+                        openSideBar={twitchSettings.openSideBar}
                         scrollbar={twitchSettings.scrollbar}
                         followedUser={twitchSettings.followedUser}
                         isDraggable={dashboardSettings.isDraggable}

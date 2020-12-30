@@ -42,3 +42,14 @@ body {
   align-items: start !important;
   overflow: hidden;
 }
+
+.flexContainer {
+  display: flex;
+}
+.greyText {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.twitchLiveTextColor {
+  color: #772ce8;
+}

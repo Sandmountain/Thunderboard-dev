@@ -113,6 +113,7 @@ export default function GoogleMail({ data, credentials, isProduction, isDraggabl
       className={` ${classes.mailCard} ${!mailData.unread && classes.readMailCard} ${isHover && classes.mailCardHover} 
         `}
       onMouseEnter={() => setIsHover(true)}
+      onMouseOver={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}>
       <Typography variant="body2" component="div" className={classes.mailGrid}>
         <Box

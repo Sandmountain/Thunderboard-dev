@@ -1,8 +1,8 @@
 import { CardActionArea, makeStyles, Typography } from '@material-ui/core';
 import React from 'react';
 
-import { openInNewTab } from '../../helperFunctions';
-import Image from '../../Image/Image';
+import { openInNewTab } from '../../../helperFunctions';
+import Image from '../../../Image/Image';
 
 const parseViewers = (nr) => {
   return nr.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ');

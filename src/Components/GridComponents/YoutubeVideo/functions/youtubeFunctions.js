@@ -12,5 +12,5 @@ export const viewsCount = (views) => {
   if (views > Math.pow(10, 3)) {
     return views.substring(0, 1) + ' ' + views.substring(1, views.length) + ' views';
   }
-  return views;
+  return views + ' views';
 };

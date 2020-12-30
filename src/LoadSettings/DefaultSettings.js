@@ -74,9 +74,10 @@ export const DefaultSettings = () => {
     twitchSettings: {
       useComponent: true,
       authenticated: true,
+      openSideBar: true,
       authKey: '6elpmslt5pviw30x7x6yb1xczuxwyc',
       nrOfStreams: 6,
-      streamType: 'user',
+      streamType: 'browse',
       followedUser: '240211827',
       scrollbar: false,
     },

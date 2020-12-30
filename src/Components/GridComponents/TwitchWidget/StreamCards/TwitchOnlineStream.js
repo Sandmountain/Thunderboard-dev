@@ -2,8 +2,11 @@ import { Button, CardActionArea, Dialog, makeStyles, Typography } from '@materia
 import React, { useState } from 'react';
 import ReactTwitchEmbedVideo from 'react-twitch-embed-video';
 
-import { openInNewTab } from '../../helperFunctions';
-import Image from '../../Image/Image';
+import { openInNewTab } from '../../../helperFunctions';
+import Image from '../../../Image/Image';
+import TwitchStreamPopup from '../TwitchStreamPopup';
+
+import '../styles/styles.css';
 
 const parseThumbnails = (url) => {
   return url.replace('{width}', 640).replace('{height}', 360);
@@ -20,9 +23,10 @@ const useStyles = makeStyles({
     position: 'relative',
   },
   listVideoThumbnailContainer: {
-    maxHeight: '80px',
-    minWidth: '128px',
-    overflow: 'hidden',
+    width: '100%',
+    height: '80px',
+    //minWidth: '128px',
+    //overflow: 'hidden',
   },
   listVideoThumbnailMaxres: {
     width: '100%',
@@ -48,7 +52,7 @@ const useStyles = makeStyles({
     pointerEvents: 'none',
     height: '12px',
     zIndex: 1,
-    bottom: 0,
+    bottom: 4,
     left: 0,
     color: 'white',
     fontSize: '10px',
@@ -77,11 +81,6 @@ const useStyles = makeStyles({
   youtubeDialog: {
     overflow: 'hidden',
   },
-  dialog: {
-    overflow: 'hidden',
-    background: 'rgba(255,255,255,0)',
-    boxShadow: 'none',
-  },
   backdrop: {
     background: 'rgba(0, 0, 0, 0.85) ',
   },
@@ -93,6 +92,10 @@ const useStyles = makeStyles({
       textDecoration: 'underline',
     },
   },
+  streamThumbnail: {
+    height: 80,
+    width: '100%',
+  },
 });
 
 export default function TwitchOnlineStream(props) {
@@ -101,7 +104,6 @@ export default function TwitchOnlineStream(props) {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
-  const [hideChat, setHideChat] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -111,39 +113,22 @@ export default function TwitchOnlineStream(props) {
     setOpen(false);
   };
 
+  console.log(props.data);
+
   return (
-    <>
+    <div>
       <div>
-        <CardActionArea onClick={() => handleClickOpen()}>
-          <div className={classes.listVideoThumbnailContainer}>
-            <span className={classes.isLiveLabel}>{type}</span>
-            <span className={classes.viewersLabel}>{parseViewers(viewer_count?.toString()) + ' viewers'}</span>
-            <Image src={parseThumbnails(thumbnail_url)} />
+        <div className={`stream ${classes.listVideoThumbnailContainer}`} onClick={() => handleClickOpen()}>
+          <div className={'stream__thumbnail'}>
+            <Typography className={classes.isLiveLabel}>{type}</Typography>
+            <Typography className={classes.viewersLabel}>
+              {parseViewers(viewer_count?.toString()) + ' viewers'}
+            </Typography>
+            <img src={parseThumbnails(thumbnail_url)} alt="thumbnail" className={`${classes.streamThumbnail}`} />
           </div>
-        </CardActionArea>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          maxWidth={false}
-          BackdropProps={{
-            classes: {
-              root: classes.backdrop,
-            },
-          }}
-          classes={{ paper: classes.dialog }}>
-          <span style={{ position: 'relative', display: 'flex', justifyContent: 'flex-end' }}>
-            <Button style={{ color: 'white', borderColor: 'white' }} onClick={() => setHideChat(!hideChat)}>
-              Toggle Chat
-            </Button>
-          </span>
-          <ReactTwitchEmbedVideo
-            width={'1280px'}
-            height={'720px'}
-            layout={hideChat ? 'video' : 'video-with-chat'}
-            style={{ marginBottom: '-4px' }}
-            channel={user_name}
-          />
-        </Dialog>
+        </div>
+
+        <TwitchStreamPopup open={open} handleClose={handleClose} user_name={user_name}></TwitchStreamPopup>
       </div>
       <div className={classes.youtubeContent}>
         <Typography variant="subtitle2" style={{ fontSize: '0.8rem' }} className={classes.listTitleText}>
@@ -157,6 +142,6 @@ export default function TwitchOnlineStream(props) {
           {user_name}
         </Typography>
       </div>
-    </>
+    </div>
   );
 }
