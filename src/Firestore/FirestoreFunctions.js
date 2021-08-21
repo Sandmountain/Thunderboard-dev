@@ -26,17 +26,26 @@ const firebaseConfig = {
 //Gets value on init.
 let userID = '';
 
-export const initFirestore = async (id, token) => {
+export const initFirestore = async (id, token, inProduction) => {
   userID = id;
 
-  const app = firebase.initializeApp(firebaseConfig);
-  var provider = new firebase.auth.GoogleAuthProvider();
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  } else {
+    firebase.app();
+  }
+
+  const credential = new firebase.auth.GoogleAuthProvider();
 
   firebase.auth().onAuthStateChanged(async (user) => {
     if (user) {
       return;
     } else {
-      await app.auth().signInWithPopup(provider);
+      try {
+        firebase.auth().signInWithPopup(credential);
+      } catch (error) {
+        console.log(error);
+      }
     }
   });
 
@@ -50,7 +59,13 @@ export const initFirestore = async (id, token) => {
       return doc.data();
     } else {
       const defaultSettings = DefaultSettings();
-      db.collection('ExtensionSettings').doc(userID).set(defaultSettings);
+      db.collection('ExtensionSettings')
+        .doc(userID)
+        .set(defaultSettings)
+        .then(() => {
+          console.log('loaded collection');
+        })
+        .catch((err) => console.log(err));
       return defaultSettings;
     }
   });

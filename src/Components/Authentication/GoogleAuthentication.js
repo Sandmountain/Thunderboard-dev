@@ -34,7 +34,9 @@ export default function GoogleAuthentication({ loggedIn, setIsLoggedIn, setCrede
 
   useEffect(() => {
     if (!loggedIn && isProduction) {
-      chrome.identity.getAuthToken({ interactive: true }, function (token) {
+      let token = '';
+      chrome.identity.getAuthToken({ interactive: true }, function (googleToken) {
+        token = googleToken;
         const init = {
           method: 'GET',
           async: true,
@@ -45,15 +47,13 @@ export default function GoogleAuthentication({ loggedIn, setIsLoggedIn, setCrede
           contentType: 'json',
         };
 
-        setIsLoggedIn(true);
-        setCredentials(init);
+        chrome.identity.getProfileUserInfo(async (userInfo) => {
+          // Set ID to global state
+          await setSettings(await initFirestore(userInfo.id, token, isProduction));
+          setIsLoggedIn(true);
+          setCredentials(init);
+        });
       });
-      chrome.identity.getProfileUserInfo(async (userInfo) => {
-        // Set ID to global state
-        setSettings(await initFirestore(userInfo.id));
-      });
-    } else if (!loggedIn && !isProduction) {
-      // If not logged in and not
     }
   });
 
