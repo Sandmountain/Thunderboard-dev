@@ -13,8 +13,6 @@ import RSSreader from '../GridComponents/RSSreader/RSSreader';
 import Todos from '../GridComponents/Todos/Todos';
 import Links from '../GridComponents/Links/Links';
 
-import { Alert } from '@material-ui/lab';
-
 import RGL, { WidthProvider } from 'react-grid-layout';
 
 import 'react-grid-layout/css/styles.css';
