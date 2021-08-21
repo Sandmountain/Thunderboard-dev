@@ -122,7 +122,7 @@ export default function CardTopLabel({
                 </div>
               );
             })}
-          <Divider orientation="vertical" style={noGutter ? { marginRight: '5px' } : {}} />
+          <Divider orientation="vertical" style={noGutter ? { marginRight: '5px' } : { margin: '0 5px' }} />
           <IconButton size={'small'} onClick={() => openSettings(getSettingsTab(compName))}>
             <MoreVertIcon fontSize="small" />
           </IconButton>
