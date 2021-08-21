@@ -20,7 +20,7 @@ const useStyles = makeStyles({
   },
   hiddenScrollbar: {
     // 0.8 rem from the icon container, and 5px from its padding
-    height: 'calc(100% - 0.8rem - 5px)',
+    height: 'calc(100% - 0.8em - 5px)',
     overflow: 'auto',
     '&::-webkit-scrollbar': {
       display: 'none',
@@ -115,7 +115,7 @@ export default function TwitchSideBar({ setSettings, authKey, openSideBar, setti
     <div
       ref={sideBarRef}
       className={`${classes.followedChannelsContainer} ${useSideBar ? classes.expanded : classes.minimized}`}>
-      <div style={{ position: 'relative', display: 'flex', height: '0.8rem', margin: '5px 0', alignItems: 'center' }}>
+      <div style={{ position: 'relative', display: 'flex', height: '0.8em', margin: '5px 0', alignItems: 'center' }}>
         {useSideBar && (
           <Typography variant="button" style={{ fontSize: '.65rem', marginLeft: 5 }}>
             FOLLOWED CHANNELS

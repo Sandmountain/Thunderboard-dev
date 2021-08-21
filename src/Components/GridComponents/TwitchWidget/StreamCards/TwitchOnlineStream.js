@@ -113,8 +113,6 @@ export default function TwitchOnlineStream(props) {
     setOpen(false);
   };
 
-  console.log(props.data);
-
   return (
     <div>
       <div>

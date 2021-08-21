@@ -72,7 +72,6 @@ export default function TwitchTopGames({ followedUser, nrOfStreams, authKey }) {
   const getMoreGames = async () => {
     setLoadingData(true);
     const url = `${fetchUrl}&after=${paginationKey}`;
-    console.log(url);
 
     try {
       fetch(url, {

@@ -9,6 +9,9 @@ import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import TwitchSideBar from './SideBar/TwitchSideBar';
 import TwitchTopGames from './Views/TwitchTopGames';
 import TwitchTopStreams from './Views/TwitchTopStreams';
+import { getUserData } from '../../Dialogs/SettingsTabs/helperFunctions/twitchHelper';
+import { resetInvalidToken } from './helperFunctions/fetchTwitchData';
+import { updateFirestoreCollection } from '../../../Firestore/FirestoreFunctions';
 
 const useStyles = makeStyles({
   universalConvContainer: {
@@ -63,14 +66,34 @@ export default function TwitchWidget({
   openSettings,
 }) {
   const [tabIndex, setTabIndex] = useState(streamType);
+  const [isAuthed, setIsAuthed] = useState(false);
+
+  useEffect(() => {
+    // Make sure that the user is authenticated
+    async function getAuthedUser() {
+      try {
+        const data = await getUserData('https://api.twitch.tv/helix/users', authKey);
+        //console.log(data);
+        if (data) {
+          setIsAuthed(true);
+        } else {
+          setIsAuthed(false);
+          resetInvalidToken(setSettings, settings, updateFirestoreCollection);
+        }
+      } catch (error) {
+        resetInvalidToken(setSettings, settings, updateFirestoreCollection);
+      }
+    }
+    if (!isAuthed && authKey !== '') {
+      getAuthedUser();
+    }
+  }, [isAuthed, authKey, setSettings, settings]);
 
   const handleChange = (event, newValue) => {
     setTabIndex(newValue);
   };
 
   const classes = useStyles();
-
-  console.log(tabIndex);
 
   return (
     <Card className={classes.universalConvContainer}>
@@ -118,30 +141,34 @@ export default function TwitchWidget({
         ]}
       />
       <div className={`${isDraggable ? 'isDraggableContainer' : ''} ${classes.universalConvContainer}`}>
-        <TwitchSideBar
-          setSettings={setSettings}
-          openSideBar={openSideBar}
-          authKey={authKey}
-          settings={settings}
-          followedUser={followedUser}></TwitchSideBar>
-        {tabIndex === 'browse' ? (
-          <TwitchTopGames
-            scrollBar={scrollbar}
-            followedUser={followedUser}
-            nrOfStreams={nrOfStreams}
-            authKey={authKey}
-            streamType={streamType}
-            openSettings={openSettings}
-          />
-        ) : (
-          <TwitchTopStreams
-            scrollBar={scrollbar}
-            followedUser={followedUser}
-            nrOfStreams={nrOfStreams}
-            authKey={authKey}
-            streamType={streamType}
-            openSettings={openSettings}
-          />
+        {isAuthed && (
+          <>
+            <TwitchSideBar
+              setSettings={setSettings}
+              openSideBar={openSideBar}
+              authKey={authKey}
+              settings={settings}
+              followedUser={followedUser}></TwitchSideBar>
+            {tabIndex === 'browse' ? (
+              <TwitchTopGames
+                scrollBar={scrollbar}
+                followedUser={followedUser}
+                nrOfStreams={nrOfStreams}
+                authKey={authKey}
+                streamType={streamType}
+                openSettings={openSettings}
+              />
+            ) : (
+              <TwitchTopStreams
+                scrollBar={scrollbar}
+                followedUser={followedUser}
+                nrOfStreams={nrOfStreams}
+                authKey={authKey}
+                streamType={streamType}
+                openSettings={openSettings}
+              />
+            )}
+          </>
         )}
       </div>
     </Card>

@@ -56,7 +56,6 @@ export default function TwitchTopStreams({ scrollbar, followedUser, nrOfStreams,
   const getMoreStreams = async () => {
     setLoadingData(true);
     const url = `https://api.twitch.tv/helix/streams?first=${nrOfStreams}&after=${paginationKey}`;
-    console.log(url);
 
     try {
       fetch(url, {

@@ -100,3 +100,21 @@ const mergeToLiveChannels = (onlineData, offlineData) => {
 
   return [...onlineData, ...filteredOfflineData];
 };
+
+export const resetInvalidToken = (setSettings, settings, updateFirestoreCollection) => {
+  setSettings({
+    ...settings,
+    twitchSettings: {
+      ...settings.twitchSettings,
+      authenticated: false,
+      authKey: '',
+    },
+  });
+  updateFirestoreCollection({
+    twitchSettings: {
+      ...settings.twitchSettings,
+      authenticated: false,
+      authKey: '',
+    },
+  });
+};

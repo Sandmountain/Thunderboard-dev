@@ -124,7 +124,6 @@ function TwitchUserCardClosed({ data, useSideBar }) {
           ) : (
             <Typography className={`${classes.sideBarTextBold}`}>{data.display_name}</Typography>
           )}
-
           <Typography className={classes.popoverTextDescription}>
             {data.title ? data.title : data.description}
           </Typography>

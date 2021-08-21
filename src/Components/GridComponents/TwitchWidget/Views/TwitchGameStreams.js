@@ -14,6 +14,9 @@ export default function TwitchGameStreams({ gameID, authKey, showStreams }) {
   const classes = useStyles();
 
   const getMoreStreams = async () => {
+    //TODO: make sure to check if there is no more data to add if the end is reached!
+    // Makes an error
+
     setLoadingData(true);
     const url = `https://api.twitch.tv/helix/streams?game_id=${gameID}&after=${paginationKey}`;
 
@@ -30,7 +33,6 @@ export default function TwitchGameStreams({ gameID, authKey, showStreams }) {
         })
         .then((data) => {
           setLoadingData(false);
-          console.log('called');
           if (twitchStreamData) {
             setTwitchStreamData([...twitchStreamData, ...data.data]);
             setPaginationKey(data.pagination.cursor);
@@ -61,7 +63,6 @@ export default function TwitchGameStreams({ gameID, authKey, showStreams }) {
             if (isSubscribed) {
               setLoadingData(false);
               setLoadingData(data.data);
-              console.log(data.data);
               setPaginationKey(data.pagination.cursor);
             }
           });

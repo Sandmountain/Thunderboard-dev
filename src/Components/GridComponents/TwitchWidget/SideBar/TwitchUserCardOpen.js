@@ -18,7 +18,7 @@ const useStyles = makeStyles({
     pointerEvents: 'none',
   },
   popoverPaper: {
-    width: 300,
+    width: 200,
     overflow: 'hidden',
     padding: 5,
   },
@@ -102,13 +102,11 @@ function TwitchUserCardOpen({ data, useSideBar }) {
         onMouseLeave={onHoverLeave}
         onClick={handleClickOpen}>
         <div className={`${hoveredCard ? classes.cardOnHover : ''} ${classes.avatarContainer}`}>
-          <Badge color="secondary" variant="dot" overlap="circle" invisible={!isLive || useSideBar}>
-            <Avatar
-              src={data.profile_image_url}
-              className={`${!isLive ? classes.offlineChannel : ''} ${classes.avatarSize}`}
-              alt=""
-            />
-          </Badge>
+          <Avatar
+            src={data.profile_image_url}
+            className={`${!isLive ? classes.offlineChannel : ''} ${classes.avatarSize}`}
+            alt=""
+          />
 
           <>
             <div className={classes.sideBarLiveGameText}>
@@ -146,6 +144,13 @@ function TwitchUserCardOpen({ data, useSideBar }) {
           }}
           onClose={onHoverLeave}
           disableRestoreFocus>
+          {isLive ? (
+            <Typography className={`${classes.sideBarTextBold} ${isLive && 'twitchLiveTextColor'}`}>
+              {data.user_name} - <span className={classes.thinText}>{data.game_name}</span>
+            </Typography>
+          ) : (
+            <Typography className={`${classes.sideBarTextBold}`}>{data.display_name}</Typography>
+          )}
           <Typography className={classes.popoverTextDescription}>
             {data.title ? data.title : data.description}
           </Typography>
