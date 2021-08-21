@@ -156,7 +156,7 @@ export default function Todos({ todos, openSettings, settings, setSettings, isDr
           </div>
         </Collapse>
         <List className={classes.root}>
-          {localTodos.length > 0 ? (
+          {localTodos && localTodos?.length > 0 ? (
             localTodos.map((todo, key) => {
               return (
                 <ListItem

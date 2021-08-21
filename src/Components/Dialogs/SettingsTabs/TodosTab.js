@@ -4,7 +4,7 @@ import { updateFirestoreCollection } from '../../../Firestore/FirestoreFunctions
 
 export default function TodosTab({ setSettings, settings }) {
   const { useComponent } = settings.todosSettings;
-  const [inUse, setInUse] = useState(useComponent);
+  const [inUse, setInUse] = useState(useComponent || false);
 
   const toggleComponent = (e) => {
     e.preventDefault();
