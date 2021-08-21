@@ -100,7 +100,7 @@ export default function Countdown() {
   return (
     <div>
       <Tooltip placement="top" title={'Countdown timer'}>
-        <IconButton aria-describedby={id} variant="contained" color="primary" onClick={handleClick}>
+        <IconButton aria-describedby={id} variant="contained" color="primary" onClick={handleClick} size={'small'}>
           <Badge color="secondary" variant="dot" invisible={!isCounting}>
             <AlarmIcon></AlarmIcon>
           </Badge>
