@@ -1,12 +1,25 @@
-import { IconButton, Popover, Tooltip } from '@material-ui/core';
+import { Fade, IconButton, makeStyles, Popover, Tooltip } from '@material-ui/core';
 import React, { useState } from 'react';
 
 import PaletteIcon from '@material-ui/icons/Palette';
 import { ChromePicker } from 'react-color';
+let theTimeout;
+
+const useStyles = makeStyles({
+  paper: {
+    background: 'transparent',
+  },
+});
 
 export default function ColorPicker() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [pickedColor, setPickedColor] = useState('#FF0000');
+  const [hexColor, setHexColor] = useState('#FF0000');
+
+  const [showColor, setShowColor] = useState(false);
+
+  const classes = useStyles();
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -16,12 +29,24 @@ export default function ColorPicker() {
   };
 
   const handleChange = (colors) => {
-    setPickedColor(colors.hex);
+    setShowColor(false);
+    setPickedColor(colors[colors.source]);
+    console.log(colors);
+    if (colors.rgb.a < 1) {
+      setHexColor(`rgba(${colors.rgb.r},${colors.rgb.g},${colors.rgb.b},${colors.rgb.a}`);
+    } else {
+      setHexColor(colors.hex);
+    }
+    clearTimeout(theTimeout);
   };
 
   const handleChangeComplete = (color, event) => {
-    console.log(color);
-    //this.setState({ background: color.hex });
+    clearTimeout(theTimeout);
+
+    theTimeout = setTimeout(() => {
+      console.log(hexColor);
+      setShowColor(true);
+    }, 1000);
   };
 
   const open = Boolean(anchorEl);
@@ -30,7 +55,7 @@ export default function ColorPicker() {
   return (
     <>
       <Tooltip placement="top" title={'Color picker'}>
-        <IconButton aria-describedby={id} variant="contained" color="primary" onClick={handleClick}>
+        <IconButton aria-describedby={id} variant="contained" color="primary" onClick={handleClick} size={'small'}>
           <PaletteIcon></PaletteIcon>
         </IconButton>
       </Tooltip>
@@ -39,6 +64,9 @@ export default function ColorPicker() {
         open={open}
         anchorEl={anchorEl}
         onClose={handleClose}
+        classes={{
+          paper: classes.paper,
+        }}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'center',
@@ -48,6 +76,8 @@ export default function ColorPicker() {
           horizontal: 'center',
         }}>
         <ChromePicker color={pickedColor} onChange={handleChange} onChangeComplete={handleChangeComplete} />
+
+        {showColor && <div style={{ background: hexColor, height: 40, width: '100%' }}></div>}
       </Popover>
     </>
   );
