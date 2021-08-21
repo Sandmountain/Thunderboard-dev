@@ -95,7 +95,7 @@ export default function RssCard({
 }) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [currentWidth] = useState(rssRef.current.clientWidth);
+  const [currentWidth] = useState(rssRef?.current?.clientWidth);
 
   const handlePopoverClose = () => {
     setAnchorEl(null);
