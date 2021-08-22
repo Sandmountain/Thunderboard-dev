@@ -1,5 +1,5 @@
-import { Card, IconButton, makeStyles } from '@material-ui/core';
-import { Alarm, BarChart, Palette } from '@material-ui/icons';
+import { Card, makeStyles } from '@material-ui/core';
+
 import React from 'react';
 import ColorPicker from './Tools/ColorPicker';
 import Countdown from './Tools/Countdown';
@@ -27,10 +27,6 @@ export default function WeatherWidget({ openSettings, isDraggable }) {
         <div style={{ display: 'flex', width: '100%', justifyContent: 'space-evenly', alignItems: 'center' }}>
           <ColorPicker></ColorPicker>
           <Countdown></Countdown>
-
-          <IconButton size={'small'}>
-            <BarChart />
-          </IconButton>
         </div>
       </div>
     </Card>

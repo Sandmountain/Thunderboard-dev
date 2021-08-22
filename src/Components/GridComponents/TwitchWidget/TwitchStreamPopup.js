@@ -10,8 +10,6 @@ const useStyles = makeStyles({
   },
 });
 
-const isProduction = process.env.NODE_ENV !== 'production' ? false : true;
-
 export default function TwitchStreamPopup({ open, handleClose, user_name }) {
   const [hideChat, setHideChat] = useState(false);
   const classes = useStyles();
@@ -35,7 +33,6 @@ export default function TwitchStreamPopup({ open, handleClose, user_name }) {
       <ReactTwitchEmbedVideo
         width={'1280px'}
         height={'720px'}
-        parent={'chrome-extension://fabaenedklgdkngaibpccpmihcgdodla'}
         layout={hideChat ? 'video' : 'video-with-chat'}
         style={{ marginBottom: '-4px' }}
         channel={user_name}

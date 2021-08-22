@@ -1,9 +1,7 @@
-import { Button, CardActionArea, Dialog, makeStyles, Typography } from '@material-ui/core';
+import { makeStyles, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
-import ReactTwitchEmbedVideo from 'react-twitch-embed-video';
 
 import { openInNewTab } from '../../../helperFunctions';
-import Image from '../../../Image/Image';
 import TwitchStreamPopup from '../TwitchStreamPopup';
 
 import '../styles/styles.css';

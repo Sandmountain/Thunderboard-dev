@@ -1,4 +1,4 @@
-import { Fade, IconButton, makeStyles, Popover, Tooltip } from '@material-ui/core';
+import { IconButton, makeStyles, Popover, Tooltip } from '@material-ui/core';
 import React, { useState } from 'react';
 
 import PaletteIcon from '@material-ui/icons/Palette';

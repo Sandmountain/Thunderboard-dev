@@ -61,7 +61,12 @@ export default function WallpaperComponent() {
             onLoad={handleLoaded()}
             alt="bg-img"></img>
         ) : (
-          <img src={imageURL} width={windowSize[0]} height={windowSize[1]} className={classes.backgroundImage}></img>
+          <img
+            src={imageURL}
+            width={windowSize[0]}
+            height={windowSize[1]}
+            className={classes.backgroundImage}
+            alt="img"></img>
         )}
       </div>
     </div>

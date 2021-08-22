@@ -1,8 +1,6 @@
-import { Button, Card, IconButton, makeStyles, Tab, Tabs, Typography } from '@material-ui/core';
-import React, { useCallback, useEffect, useState } from 'react';
-import ProgressBolt from '../../ProgressBolt/ProgressBolt';
+import { Card, makeStyles, Tab, Tabs } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
 import CardTopLabel from '../CardTopLabel/CardTopLabel';
-import TwitchCard from './StreamCards/TwitchCard';
 
 import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
 import TrendingUpIcon from '@material-ui/icons/TrendingUp';

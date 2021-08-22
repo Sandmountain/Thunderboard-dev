@@ -1,5 +1,4 @@
 import { makeStyles, Typography } from '@material-ui/core';
-import { DataUsageTwoTone } from '@material-ui/icons';
 import React from 'react';
 import '../styles/styles.css';
 

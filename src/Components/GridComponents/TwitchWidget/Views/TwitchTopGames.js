@@ -1,7 +1,6 @@
-import { Avatar, Button, CardActionArea, Divider, Fade, IconButton, makeStyles, Typography } from '@material-ui/core';
+import { Avatar, Divider, Fade, IconButton, makeStyles, Typography } from '@material-ui/core';
 import React, { useEffect, useRef, useState } from 'react';
 import ProgressBolt from '../../../ProgressBolt/ProgressBolt';
-import TwitchCard from '../StreamCards/TwitchCard';
 
 import InfiniteScroll from 'react-infinite-scroller';
 

@@ -1,4 +1,4 @@
-import { Button, Fade, makeStyles } from '@material-ui/core';
+import { Fade, makeStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import ProgressBolt from '../../../ProgressBolt/ProgressBolt';

@@ -1,6 +1,5 @@
 import { Avatar, Badge, makeStyles, Popover, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
-import { viewsCount } from '../../YoutubeVideo/functions/youtubeFunctions';
 import { twitchViewsCount } from '../helperFunctions/getViewCount';
 import TwitchStreamPopup from '../TwitchStreamPopup';
 import RedDot from './icons/RedDot';

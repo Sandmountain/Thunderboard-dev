@@ -1,6 +1,5 @@
-/* global chrome */
 import React, { useEffect } from 'react';
-import GoogleLogin from 'react-google-login';
+import { GoogleLogin, GoogleLogout } from 'react-google-login';
 
 import { initFirestore } from '../../Firestore/FirestoreFunctions';
 
@@ -23,7 +22,6 @@ export default function GoogleAuthentication({ loggedIn, setIsLoggedIn, setCrede
         };
 
         setSettings(await initFirestore(response.googleId, response.accessToken));
-
         setIsLoggedIn(true);
         setCredentials(init);
       } catch (error) {
@@ -33,6 +31,8 @@ export default function GoogleAuthentication({ loggedIn, setIsLoggedIn, setCrede
   };
 
   useEffect(() => {
+    ///* global chrome */
+    /* 
     if (!loggedIn && isProduction) {
       let token = '';
       chrome.identity.getAuthToken({ interactive: true }, function (googleToken) {
@@ -54,21 +54,23 @@ export default function GoogleAuthentication({ loggedIn, setIsLoggedIn, setCrede
           setCredentials(init);
         });
       });
-    }
+    }*/
   });
 
   return (
     <>
-      {!isProduction && (
-        <GoogleLogin
-          clientId={process.env.REACT_APP_GOOGLE_OAUTH_KEY}
-          buttonText="Login"
-          onSuccess={responseGoogle}
-          onFailure={responseGoogle}
-          isSignedIn={true}
-          scope={SCOPES}
-          approvalPrompt="force"></GoogleLogin>
-      )}
+      <GoogleLogin
+        clientId={process.env.REACT_APP_GOOGLE_OAUTH_KEY}
+        buttonText="Login"
+        onSuccess={responseGoogle}
+        onFailure={responseGoogle}
+        isSignedIn={true}
+        scope={SCOPES}
+        approvalPrompt="force"></GoogleLogin>
+      <GoogleLogout
+        clientId={process.env.REACT_APP_GOOGLE_OAUTH_KEY}
+        buttonText="Logout"
+        onLogoutSuccess={() => console.log('logged out')}></GoogleLogout>
     </>
   );
 }

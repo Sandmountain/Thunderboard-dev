@@ -43,7 +43,7 @@ export default function WeatherWidget({ city, isDraggable }) {
     async function getWeatherData() {
       try {
         const res = await axios.get(
-          `http://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${process.env.REACT_APP_WEATHER_KEY}&units=metric`
+          `https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${process.env.REACT_APP_WEATHER_KEY}&units=metric`
         );
 
         setWeatherData(res.data);

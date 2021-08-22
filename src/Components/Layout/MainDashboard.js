@@ -33,7 +33,8 @@ const useStyles = makeStyles({
   twitchAuthButton: { display: 'flex', justifyContent: 'center' },
 });
 
-const isProduction = process.env.NODE_ENV !== 'production' ? false : true;
+//const isProduction = process.env.NODE_ENV !== 'production' ? false : true;
+const isProduction = false;
 
 export default function MainDashboard() {
   const ReactGridLayout = WidthProvider(RGL);
@@ -43,7 +44,7 @@ export default function MainDashboard() {
   const [credentials, setCredentials] = useState(null);
 
   const { settings, setSettings } = useContext(SettingsContext);
-
+  console.log(settings);
   const {
     rssReaderSettings,
     gMailSettings,
