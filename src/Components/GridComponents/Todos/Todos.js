@@ -43,7 +43,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Todos({ todos, openSettings, settings, setSettings, isDraggable }) {
+export default function Todos({ todos = [], openSettings, settings, setSettings, isDraggable }) {
   const classes = useStyles();
   const [input, setInput] = useState('');
   const [newChange, setNewChange] = useState(false);
@@ -61,6 +61,7 @@ export default function Todos({ todos, openSettings, settings, setSettings, isDr
       },
       ...localTodos,
     ];
+
     setNewChange(true);
     setLocalTodos(newTodosList);
     updateFirestoreCollection({
@@ -99,19 +100,20 @@ export default function Todos({ todos, openSettings, settings, setSettings, isDr
 
     updateFirestoreCollection({
       todosSettings: {
+        ...settings.todosSettings,
         todos: todos,
       },
     });
-    console.log(todos);
     setLocalTodos(todos);
   };
 
   const todoDelete = (key) => {
     setNewChange(true);
-    const filteredTodos = localTodos.filter((todo, index) => index !== key);
+    const filteredTodos = localTodos.filter((_todo, index) => index !== key);
 
     updateFirestoreCollection({
       todosSettings: {
+        ...settings.todosSettings,
         todos: filteredTodos,
       },
     });
@@ -146,6 +148,7 @@ export default function Todos({ todos, openSettings, settings, setSettings, isDr
           <div style={{ padding: '5px 5px 0px', borderRadius: 0 }}>
             <form onSubmit={handleInput}>
               <TextField
+                onBlur={() => setOpenAddTodo(false)}
                 value={input}
                 style={{ width: '100%' }}
                 size="small"
