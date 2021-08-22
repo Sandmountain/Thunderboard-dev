@@ -84,6 +84,7 @@ export default function TwitchWidget({
     if (!isAuthed && authKey !== '') {
       getAuthedUser();
     }
+    return () => {};
   }, [isAuthed, authKey, setSettings, settings]);
 
   const handleChange = (event, newValue) => {

@@ -118,20 +118,21 @@ export default function TwitchTopStreams({ scrollbar, followedUser, nrOfStreams,
 
   return (
     <>
-      <div className={classes.gamesContainer}>
-        <InfiniteScroll
-          className={classes.streamsGrid}
-          pageStart={0}
-          initialLoad={false}
-          loadMore={getMoreStreams}
-          hasMore={true || false}
-          useWindow={false}>
-          {twitchData &&
-            twitchData.map((stream, idx) => {
+      {twitchData && (
+        <div className={classes.gamesContainer}>
+          <InfiniteScroll
+            className={classes.streamsGrid}
+            pageStart={0}
+            initialLoad={false}
+            loadMore={getMoreStreams}
+            hasMore={true || false}
+            useWindow={false}>
+            {twitchData.map((stream, idx) => {
               return <TwitchCard key={idx} data={stream} />;
             })}
-        </InfiniteScroll>
-      </div>
+          </InfiniteScroll>
+        </div>
+      )}
 
       <Fade in={loadingData}>
         <div className={classes.spinnerContainer}>
