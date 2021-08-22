@@ -31,7 +31,6 @@ export default function ColorPicker() {
   const handleChange = (colors) => {
     setShowColor(false);
     setPickedColor(colors[colors.source]);
-    console.log(colors);
     if (colors.rgb.a < 1) {
       setHexColor(`rgba(${colors.rgb.r},${colors.rgb.g},${colors.rgb.b},${colors.rgb.a}`);
     } else {
@@ -44,7 +43,6 @@ export default function ColorPicker() {
     clearTimeout(theTimeout);
 
     theTimeout = setTimeout(() => {
-      console.log(hexColor);
       setShowColor(true);
     }, 1000);
   };

@@ -25,9 +25,6 @@ import ProgressBolt from '../ProgressBolt/ProgressBolt.js';
 import TopBar from '../TopBar/TopBar.js';
 import ToolsMenu from '../GridComponents/ToolsMenu/ToolsMenu.js';
 
-// Twitch
-//const twitchToken = '';
-
 const useStyles = makeStyles({
   gridItemCards: {},
   twitchAuthButton: { display: 'flex', justifyContent: 'center' },
@@ -44,7 +41,7 @@ export default function MainDashboard() {
   const [credentials, setCredentials] = useState(null);
 
   const { settings, setSettings } = useContext(SettingsContext);
-  console.log(settings);
+
   const {
     rssReaderSettings,
     gMailSettings,

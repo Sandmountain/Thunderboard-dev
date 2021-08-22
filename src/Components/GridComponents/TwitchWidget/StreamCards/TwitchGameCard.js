@@ -3,7 +3,6 @@ import React from 'react';
 import '../styles/styles.css';
 
 const parseThumbnails = (url) => {
-  //console.log(url);
   return url.replace('{width}', 160).replace('{height}', 210);
 };
 

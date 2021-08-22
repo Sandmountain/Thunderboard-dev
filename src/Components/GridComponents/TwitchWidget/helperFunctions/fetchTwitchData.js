@@ -60,7 +60,6 @@ const getOfflineUserTwitchData = async (data, followedChannels, setFollowedChann
         return res.json();
       })
       .then((res) => {
-        //console.log(mergeToLiveChannels(data, res.data));
         setFollowedChannels(mergeToLiveChannels(data, res.data));
 
         setLoadingUserData(false);

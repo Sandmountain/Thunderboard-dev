@@ -71,7 +71,6 @@ export default function TwitchWidget({
     async function getAuthedUser() {
       try {
         const data = await getUserData('https://api.twitch.tv/helix/users', authKey);
-        //console.log(data);
         if (data) {
           setIsAuthed(true);
         } else {
