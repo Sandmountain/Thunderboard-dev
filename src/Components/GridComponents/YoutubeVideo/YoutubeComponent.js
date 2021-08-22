@@ -79,6 +79,10 @@ export default function YoutubeComponent({
       }
     }
     fetchYoutubeData(credentials);
+    return () => {
+      setYoutubeUserData(null);
+      setYoutubeList(null);
+    };
   }, [credentials, isProduction, nrOfVideos]);
 
   return (

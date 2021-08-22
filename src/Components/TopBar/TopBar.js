@@ -18,12 +18,13 @@ const useStyles = makeStyles({
   },
 });
 
-export default function TopBar({ childRef }) {
+export default function TopBar({ childRef, profileData }) {
   const classes = useStyles();
+
   return (
     <div className={classes.optionMenu}>
       <div className={classes.optionMenuBackdrop}></div>
-      <DashboardSettings ref={childRef} />
+      <DashboardSettings ref={childRef} profileData={profileData} />
     </div>
   );
 }

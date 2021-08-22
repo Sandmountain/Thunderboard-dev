@@ -1,24 +1,34 @@
-import React, { useState, forwardRef, useImperativeHandle } from 'react';
-import { Button, makeStyles, Icon } from '@material-ui/core';
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
+import { IconButton, makeStyles, Icon } from '@material-ui/core';
 
 import '../../App.css';
 
 import SettingsDialog from '../Dialogs/SettingsDialog';
+import Image from '../Image/Image';
 
 const useStyles = makeStyles({
   backgrundContainer: { height: '100%', width: '100%' },
 
   optionMenuBackdrop: {
     background: 'rgba(255, 255, 255, 0.2)',
-    margin: '2px',
+    padding: '2px',
     display: 'flex',
   },
   noBorderRadius: {
     borderRadius: '0!important',
   },
+  profileImageContainer: {
+    background: 'rgba(255, 255, 255, 0.2)',
+    height: '20px',
+    width: '20px',
+    borderRadius: '50%',
+    margin: 2,
+    overflow: 'hidden',
+    opacity: 0.6,
+  },
 });
 
-const DashboardSettings = forwardRef(({ settingsOptions }, ref) => {
+const DashboardSettings = forwardRef(({ settingsOptions, profileData }, ref) => {
   useImperativeHandle(ref, () => ({
     openSettings: openSettings,
   }));
@@ -43,17 +53,18 @@ const DashboardSettings = forwardRef(({ settingsOptions }, ref) => {
 
   return (
     <>
-      <div className={classes.optionMenuBackdrop}>
-        <Button
-          endIcon={<Icon>settings</Icon>}
-          onClick={() => handleChangeCollectionClickOpen()}
-          className="noBorderRadius"
-          size="small">
-          Settings
-        </Button>
-      </div>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div className={classes.optionMenuBackdrop}>
+          <div onClick={() => openSettings(12)} className={classes.profileImageContainer} style={{}}>
+            <img src={profileData.imageUrl} alt="ppic" height="100%" width="100% " />
+          </div>
+          <IconButton onClick={() => handleChangeCollectionClickOpen()} className="noBorderRadius" size="small">
+            <Icon fontSize="small">menu</Icon>
+          </IconButton>
+        </div>
 
-      <SettingsDialog openTab={openTab} open={open} onClose={handleChangeCollectionClose} />
+        <SettingsDialog openTab={openTab} open={open} profileData={profileData} onClose={handleChangeCollectionClose} />
+      </div>
     </>
   );
 });

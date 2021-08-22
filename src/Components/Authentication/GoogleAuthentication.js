@@ -3,13 +3,13 @@ import { GoogleLogin, GoogleLogout } from 'react-google-login';
 
 import { initFirestore } from '../../Firestore/FirestoreFunctions';
 
-export default function GoogleAuthentication({ loggedIn, setIsLoggedIn, setCredentials, setSettings, isProduction }) {
+export default function GoogleAuthentication({ loggedIn, setIsLoggedIn, setCredentials, setSettings, setProfileData }) {
   const SCOPES =
     'profile email https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/gmail.labels https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/datastore';
   //www.googleapis.com/auth/calendar.events';
 
   const responseGoogle = async (response) => {
-    if (!loggedIn && !isProduction) {
+    if (!loggedIn) {
       try {
         const init = {
           method: 'GET',
@@ -20,8 +20,10 @@ export default function GoogleAuthentication({ loggedIn, setIsLoggedIn, setCrede
           },
           contentType: 'json',
         };
-
+        console.log(response);
         setSettings(await initFirestore(response.googleId, response.accessToken));
+
+        setProfileData(response.profileObj);
         setIsLoggedIn(true);
         setCredentials(init);
       } catch (error) {
@@ -65,12 +67,13 @@ export default function GoogleAuthentication({ loggedIn, setIsLoggedIn, setCrede
         onSuccess={responseGoogle}
         onFailure={responseGoogle}
         isSignedIn={true}
+        //autoLoad={!loggedIn}
         scope={SCOPES}
         approvalPrompt="force"></GoogleLogin>
       <GoogleLogout
         clientId={process.env.REACT_APP_GOOGLE_OAUTH_KEY}
         buttonText="Logout"
-        onLogoutSuccess={() => console.log('logged out')}></GoogleLogout>
+        onLogoutSuccess={() => window.location.reload()}></GoogleLogout>
     </>
   );
 }

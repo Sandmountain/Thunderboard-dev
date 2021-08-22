@@ -39,6 +39,7 @@ export default function MainDashboard() {
 
   const [loggedIn, setIsLoggedIn] = useState(null);
   const [credentials, setCredentials] = useState(null);
+  const [profileData, setProfileData] = useState(null);
 
   const { settings, setSettings } = useContext(SettingsContext);
 
@@ -111,18 +112,21 @@ export default function MainDashboard() {
         loggedIn={loggedIn}
         setSettings={setSettings}
         setIsLoggedIn={setIsLoggedIn}
-        setCredentials={setCredentials}></LoadingScreen>
+        setCredentials={setCredentials}
+        setProfileData={setProfileData}
+      />
       {!loggedIn ? (
         <GoogleAuthentication
           loggedIn={loggedIn}
           setSettings={setSettings}
           setIsLoggedIn={setIsLoggedIn}
           setCredentials={setCredentials}
+          setProfileData={setProfileData}
         />
       ) : (
         <>
           <WallpaperComponent />
-          <TopBar childRef={childRef} />
+          <TopBar childRef={childRef} profileData={profileData} />
           <div style={{ position: 'relative', zIndex: '2' }}>
             {loggedIn && credentials ? (
               <div style={{ paddingTop: 60 }}>

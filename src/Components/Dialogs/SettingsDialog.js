@@ -26,7 +26,7 @@ function a11yProps(index) {
 }
 
 export default function SettingsDialog(props) {
-  const { onClose, open } = props;
+  const { onClose, open, profileData } = props;
   const [currentTab, setCurrentTab] = useState(0);
   const { settings, setSettings } = useContext(SettingsContext);
 
@@ -137,7 +137,7 @@ export default function SettingsDialog(props) {
         <TodosTab settings={tempSettings} testChanges={testChanges} setSettings={setTempSettings} />
       </TabPanel>
       <TabPanel value={currentTab} index={12}>
-        <FirebaseTab saveChanges={saveChanges} />
+        <FirebaseTab profileData={profileData} saveChanges={saveChanges} />
       </TabPanel>
       <DialogActions>
         <Button className="noBorderRadius" onClick={handleClose} color="default">

@@ -31,9 +31,31 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '1em',
     justifyContent: 'center',
   },
+  profileImageContainer: {
+    height: '2em',
+    width: '2em',
+    borderRadius: '50%',
+    margin: 2,
+    overflow: 'hidden',
+  },
+  googleContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: '1em',
+  },
+  profileContainer: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  nameSection: {
+    marginLeft: '.5em',
+    flexDirection: 'column',
+    lineHeight: 1,
+  },
 }));
 
-export default function FirebaseTab({ saveChanges }) {
+export default function FirebaseTab({ saveChanges, profileData }) {
   const [open, setOpen] = React.useState(false);
   const classes = useStyles();
 
@@ -56,28 +78,45 @@ export default function FirebaseTab({ saveChanges }) {
       <DialogTitle>Storage and Auth Settings</DialogTitle>
 
       <DialogContent>
-        Authentication
+        <Typography variant="h6"> Authentication </Typography>
         <DialogContentText>
           If you wish to change account, or just log out. Press this button. Your settings will still be present when
           you log in again.
         </DialogContentText>
-        <div>
-          <GoogleLogout
-            clientId={process.env.REACT_APP_GOOGLE_OAUTH_KEY}
-            buttonText="Logout"
-            onLogoutSuccess={() => window.location.reload()}></GoogleLogout>
+        <Typography variant="subtitle2">Current user:</Typography>
+        <div className={classes.googleContainer}>
+          <div className={classes.profileContainer}>
+            <div className={classes.profileImageContainer}>
+              <img src={profileData.imageUrl} height="100%" width="100%" alt="ppic" />
+            </div>
+            <div className={classes.nameSection}>
+              <Typography> {profileData.name}</Typography>
+
+              <Typography variant="caption"> {profileData.email}</Typography>
+            </div>
+          </div>
+          <div>
+            <GoogleLogout
+              clientId={process.env.REACT_APP_GOOGLE_OAUTH_KEY}
+              buttonText="Logout"
+              onLogoutSuccess={() => window.location.reload()}></GoogleLogout>
+          </div>
         </div>
       </DialogContent>
-
-      <DialogContent> Firebase (Storage) </DialogContent>
-      <Typography className={classes.error} align="center" style={{ margin: ' 10 0' }}>
-        <Warning style={{ verticalAlign: 'text-bottom' }} /> Deleting your settings is a permanent action.
-      </Typography>
-      <DialogContent className={classes.deleteContainer}>
-        <Button variant="outlined" className={classes.errorButton} onClick={handleClickOpen}>
-          Delete Settings
-        </Button>
-
+      <DialogContent>
+        <Typography variant="h6"> Firebase (Storage) </Typography>
+        <DialogContentText>
+          This action will whipe all your data from the database. If you reload the app, your dashboard will load the
+          default layout with default settings.
+        </DialogContentText>
+        <Typography className={classes.error} align="center" style={{ margin: ' 10 0' }}>
+          <Warning style={{ verticalAlign: 'text-bottom' }} /> Deleting your settings is a permanent action.
+        </Typography>
+        <DialogContent className={classes.deleteContainer}>
+          <Button variant="outlined" className={classes.errorButton} onClick={handleClickOpen}>
+            Delete Settings
+          </Button>
+        </DialogContent>
         <Dialog
           open={open}
           onClose={handleClose}
