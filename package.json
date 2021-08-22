@@ -1,6 +1,6 @@
 {
   "name": "chrome-ext-dashboard",
-  "homepage": "build/",
+  "homepage": "",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -27,10 +27,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "set INLINE_RUNTIME_CHUNK=false&&react-scripts build",
+    "build": "set INLINE_RUNTIME_CHUNK=false&&set PUBLIC_URL=https://viktorsandberg.com/thunderboard&&react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "postbuild": "move build ../ThunderBoard/build"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
