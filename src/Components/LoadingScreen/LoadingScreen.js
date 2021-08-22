@@ -1,5 +1,6 @@
+import React, { useEffect, useState } from 'react';
 import { Fade, makeStyles, Typography } from '@material-ui/core';
-import React from 'react';
+import GoogleAuthentication from '../Authentication/GoogleAuthentication';
 
 import ProgressBolt from '../ProgressBolt/ProgressBolt';
 
@@ -39,11 +40,22 @@ const useStyles = makeStyles({
   animatedBolt: {},
 });
 
-export default function LoadingScreen({ loggedIn }) {
+export default function LoadingScreen({ loggedIn, setIsLoggedIn, setCredentials, setSettings, setProfileData }) {
   const classes = useStyles();
 
+  const [showLogout, setShowLogout] = useState(false);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setShowLogout(true);
+    }, 10000);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, []);
+
   return (
-    <Fade in={loggedIn} timeout={{ enter: 0, exit: 500 }}>
+    <Fade in={!loggedIn} timeout={{ enter: 0, exit: 500 }}>
       <div className={classes.overlayContainer}>
         <div className={classes.logoContainer}>
           <Typography component="div" className={classes.logoWrapper} variant="h2">
@@ -52,7 +64,20 @@ export default function LoadingScreen({ loggedIn }) {
           </Typography>
         </div>
         <div className={classes.loggingInContainer}>
-          <Typography>Logging in...</Typography>
+          {!showLogout ? (
+            <Typography>Logging in...</Typography>
+          ) : (
+            <>
+              <Typography>Something went wrong. Try relogging</Typography>
+              <GoogleAuthentication
+                loggedIn={loggedIn}
+                setSettings={setSettings}
+                setIsLoggedIn={setIsLoggedIn}
+                setCredentials={setCredentials}
+                setProfileData={setProfileData}
+              />
+            </>
+          )}
         </div>
       </div>
     </Fade>
