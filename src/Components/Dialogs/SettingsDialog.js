@@ -91,7 +91,7 @@ export default function SettingsDialog(props) {
           <Tab label="Calender" {...a11yProps(9)} />
           <Tab label="Links" {...a11yProps(10)} />
           <Tab label="Todos" {...a11yProps(11)} />
-          <Tab label="Storage" {...a11yProps(12)} />
+          <Tab label="Storage & Auth" {...a11yProps(12)} />
         </Tabs>
       </AppBar>
       <TabPanel value={currentTab} index={0}>

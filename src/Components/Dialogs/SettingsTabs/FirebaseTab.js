@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 import { Warning } from '@material-ui/icons';
 import React from 'react';
+import { GoogleLogout } from 'react-google-login';
 import { removeFirebaseSettings } from '../../../Firestore/FirestoreFunctions';
 
 const useStyles = makeStyles((theme) => ({
@@ -52,14 +53,29 @@ export default function FirebaseTab({ saveChanges }) {
 
   return (
     <div>
-      <DialogTitle>Storage Settings</DialogTitle>
+      <DialogTitle>Storage and Auth Settings</DialogTitle>
+
+      <DialogContent>
+        Authentication
+        <DialogContentText>
+          If you wish to change account, or just log out. Press this button. Your settings will still be present when
+          you log in again.
+        </DialogContentText>
+        <div>
+          <GoogleLogout
+            clientId={process.env.REACT_APP_GOOGLE_OAUTH_KEY}
+            buttonText="Logout"
+            onLogoutSuccess={() => window.location.reload()}></GoogleLogout>
+        </div>
+      </DialogContent>
+
+      <DialogContent> Firebase (Storage) </DialogContent>
       <Typography className={classes.error} align="center" style={{ margin: ' 10 0' }}>
         <Warning style={{ verticalAlign: 'text-bottom' }} /> Deleting your settings is a permanent action.
       </Typography>
       <DialogContent className={classes.deleteContainer}>
         <Button variant="outlined" className={classes.errorButton} onClick={handleClickOpen}>
-          {' '}
-          Delete Settings{' '}
+          Delete Settings
         </Button>
 
         <Dialog
