@@ -1,6 +1,6 @@
 import { Box, Card, makeStyles, Popover, Typography } from '@material-ui/core';
 import { OpenInNew } from '@material-ui/icons';
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 import { openInNewTab } from '../../helperFunctions';
 
@@ -54,8 +54,8 @@ const useStyles = makeStyles({
   },
   popoverTitleWrapper: {
     padding: 5,
-    maxHeight: 140,
-    minHeight: 140,
+
+    minHeight: 110,
     overflow: 'hidden',
   },
   popoverTitleContainer: {
@@ -74,6 +74,7 @@ const useStyles = makeStyles({
   },
   popoverContentInnerContainer: {
     width: 'calc(50% - 2.5px)',
+    height: 'auto',
   },
   popoverContentImage: {
     maxHeight: 120,
@@ -88,26 +89,34 @@ export default function RssCard({
   url,
   date,
   content,
-  rssRef,
   anchorOriginHorizontal,
   anchorOriginVertical,
   margin,
 }) {
   const classes = useStyles();
+  const childRef = useRef();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [currentWidth] = useState(rssRef?.current?.clientWidth);
+  const [currentWidth, setCurrentWidth] = useState(0);
 
   const handlePopoverClose = () => {
     setAnchorEl(null);
   };
-  const handlePopoverOpen = (event) => {
-    setAnchorEl(rssRef.current);
+
+  const handlePopoverOpen = () => {
+    setAnchorEl(childRef.current.parentNode.offsetParent);
   };
+
+  useEffect(() => {
+    if (childRef.current) {
+      setCurrentWidth(childRef.current.parentNode.offsetParent.clientWidth);
+    }
+  }, [childRef]);
 
   const open = Boolean(anchorEl);
 
   return (
     <Card
+      ref={childRef}
       aria-haspopup="true"
       className={` ${classes.articleCard} ${open && classes.articleCardHover} 
         `}
@@ -147,7 +156,7 @@ export default function RssCard({
         }}
         onClose={handlePopoverClose}
         disableRestoreFocus>
-        <div className={classes.popoverTitleWrapper} style={{ width: currentWidth - 10 }}>
+        <div className={classes.popoverTitleWrapper} style={{ width: currentWidth + 150 }}>
           <Typography variant="body1" className={classes.popoverTitleContainer}>
             <Box
               component="span"

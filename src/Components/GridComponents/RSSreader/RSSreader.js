@@ -7,8 +7,8 @@ import { parseDate } from '../../helperFunctions';
 import CardTopLabel from '../CardTopLabel/CardTopLabel';
 import { Refresh } from '@material-ui/icons';
 
-let Parser = require('rss-parser');
-let parser = new Parser();
+const Parser = require('rss-parser');
+const parser = new Parser();
 
 const useStyles = makeStyles({
   innerPadding: {
@@ -71,7 +71,6 @@ export default function RSSreader({
   anchorOriginVertical,
   anchorOriginHorizontal,
   isDraggable,
-  rssRef,
   margin,
   openSettings,
 }) {
@@ -150,7 +149,6 @@ export default function RSSreader({
                       anchorOriginVertical={anchorOriginVertical}
                       anchorOriginHorizontal={anchorOriginHorizontal}
                       margin={margin}
-                      rssRef={rssRef}
                     />
                   );
                 } else {

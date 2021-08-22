@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useState } from 'react';
 
-import GoogleAutentication from '../Authentication/GoogleAuthentication';
+import GoogleAuthentication from '../Authentication/GoogleAuthentication';
 import GoogleMailComponent from '../GridComponents/GoogleMail/GoogleMailComponent.js';
 import YoutubeComponent from '../GridComponents/YoutubeVideo/YoutubeComponent';
 import RedditReader from '../GridComponents/RedditReader/RedditReader';
@@ -37,7 +37,7 @@ export default function MainDashboard() {
   const ReactGridLayout = WidthProvider(RGL);
   const classes = useStyles();
 
-  const [loggedIn, setIsLoggedIn] = useState(false);
+  const [loggedIn, setIsLoggedIn] = useState(null);
   const [credentials, setCredentials] = useState(null);
 
   const { settings, setSettings } = useContext(SettingsContext);
@@ -60,7 +60,6 @@ export default function MainDashboard() {
 
   //Settings
   const childRef = useRef();
-  const rssRef = useRef();
 
   const onLayoutChange = (layout) => {
     if (layout !== newLayout && layout) {
@@ -108,17 +107,18 @@ export default function MainDashboard() {
 
   return (
     <>
-      <LoadingScreen loggedIn={!loggedIn}></LoadingScreen>
+      <LoadingScreen
+        loggedIn={loggedIn}
+        setSettings={setSettings}
+        setIsLoggedIn={setIsLoggedIn}
+        setCredentials={setCredentials}></LoadingScreen>
       {!loggedIn ? (
-        <>
-          <GoogleAutentication
-            loggedIn={loggedIn}
-            setSettings={setSettings}
-            setIsLoggedIn={setIsLoggedIn}
-            setCredentials={setCredentials}
-            isProduction={isProduction}
-          />
-        </>
+        <GoogleAuthentication
+          loggedIn={loggedIn}
+          setSettings={setSettings}
+          setIsLoggedIn={setIsLoggedIn}
+          setCredentials={setCredentials}
+        />
       ) : (
         <>
           <WallpaperComponent />
@@ -211,10 +211,9 @@ export default function MainDashboard() {
                       </Card>
                     )}
                   </div>
-                  <div key="8" className={classes.gridItemCards} ref={rssRef} hidden={!rssReaderSettings.useComponent}>
+                  <div key="8" className={classes.gridItemCards} hidden={!rssReaderSettings.useComponent}>
                     <RSSreader
                       openSettings={openSettings}
-                      rssRef={rssRef}
                       url={rssReaderSettings.url}
                       nrOfArticles={rssReaderSettings.nrOfArticles}
                       showContent={rssReaderSettings.showContent}
