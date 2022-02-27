@@ -20,7 +20,7 @@ export default function GoogleAuthentication({ loggedIn, setIsLoggedIn, setCrede
           },
           contentType: 'json',
         };
-        console.log(response);
+        
         setSettings(await initFirestore(response.googleId, response.accessToken));
 
         setProfileData(response.profileObj);
