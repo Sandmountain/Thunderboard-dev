@@ -13,7 +13,6 @@ const useStyles = makeStyles({
     lineHeight: '0.7 !important',
     padding: 0,
     fontWeight: 600,
-    fontSize: '4.1vw',
     color: 'white',
     textShadow: '0 1px 0 rgba(0,0,0,.4)',
   },
@@ -30,7 +29,7 @@ const useStyles = makeStyles({
   dateTexts: {
     lineHeight: 1,
     fontWeight: 200,
-    fontSize: '0.6vw',
+
     color: 'white',
     textShadow: '0 1px 0 rgba(0,0,0,.4)',
   },
@@ -61,7 +60,7 @@ export default function StaticClock() {
   return (
     <div className={classes.clockContainer}>
       <div className={classes.clockInner}>
-        <Typography variant="h2" className={classes.timeText}>
+        <Typography variant="h1" className={classes.timeText}>
           {date.time}
         </Typography>
         <div className={classes.dateMediumContainer}>
