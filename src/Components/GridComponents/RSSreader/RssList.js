@@ -53,8 +53,6 @@ const useStyles = makeStyles({
     minHeight: '110px',
   },
   popoverTitleWrapper: {
-    padding: 5,
-
     minHeight: 110,
     overflow: 'hidden',
   },
@@ -62,11 +60,7 @@ const useStyles = makeStyles({
     display: 'flex',
     marginBottom: 5,
   },
-  popoverTitleText: {
-    whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
-  },
+  popoverTitleText: {},
   popoverContentContainer: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -92,6 +86,7 @@ export default function RssCard({
   anchorOriginHorizontal,
   anchorOriginVertical,
   margin,
+  standAlone,
 }) {
   const classes = useStyles();
   const childRef = useRef();
@@ -121,7 +116,8 @@ export default function RssCard({
       className={` ${classes.articleCard} ${open && classes.articleCardHover} 
         `}
       onMouseEnter={handlePopoverOpen}
-      onMouseLeave={handlePopoverClose}>
+      onMouseLeave={handlePopoverClose}
+    >
       <Typography variant="body2" component="div">
         <Box className={classes.articleText} onClick={() => openInNewTab(url)}>
           <div className={classes.articleListItem}>
@@ -143,35 +139,59 @@ export default function RssCard({
       <Popover
         id="mouse-over-popover"
         className={classes.popover}
-        style={{ margin: margin }}
+        style={{ margin: 0 }}
         elevation={18}
         open={open}
         anchorEl={anchorEl}
         classes={{
           paper: classes.paper,
         }}
+        anchorReference={standAlone ? 'anchorPosition' : 'anchorEl'}
         anchorOrigin={{
           vertical: anchorOriginVertical,
           horizontal: anchorOriginHorizontal,
         }}
+        anchorPosition={{
+          top: window.innerHeight / 2,
+          left:
+            window.innerWidth / 2 -
+            childRef.current?.parentNode.offsetParent.clientWidth / 2 -
+            5,
+        }}
         onClose={handlePopoverClose}
-        disableRestoreFocus>
-        <div className={classes.popoverTitleWrapper} style={{ width: currentWidth + 150 }}>
+        disableRestoreFocus
+      >
+        <div
+          className={classes.popoverTitleWrapper}
+          style={{
+            width: standAlone ? currentWidth : currentWidth + 150,
+            padding: 5,
+          }}
+        >
           <Typography variant="body1" className={classes.popoverTitleContainer}>
             <Box
               component="span"
               className={classes.popoverTitleText}
               fontWeight={'fontWeightBold'}
-              style={{ width: currentWidth - 10 }}>
+              style={{ width: currentWidth - 10 }}
+            >
               {title}
             </Box>
           </Typography>
           <div className={classes.popoverContentContainer}>
             <div className={classes.popoverContentInnerContainer}>
               {src ? (
-                <img src={src} className={classes.popoverContentImage} alt={title} />
+                <img
+                  src={src}
+                  className={classes.popoverContentImage}
+                  alt={title}
+                />
               ) : (
-                <img src={require('./aftonbladet.jpg')} className={classes.popoverContentImage} alt={title} />
+                <img
+                  src={require('./aftonbladet.jpg')}
+                  className={classes.popoverContentImage}
+                  alt={title}
+                />
               )}
             </div>
             <div className={classes.popoverContentInnerContainer}>

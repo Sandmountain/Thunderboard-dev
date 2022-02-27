@@ -77,6 +77,7 @@ export default function RSSreader({
   isDraggable,
   margin,
   openSettings,
+  standAlone = false,
 }) {
   const [data, setData] = useState(null);
   const classes = useStyles();
@@ -104,7 +105,7 @@ export default function RSSreader({
   return (
     <Card className={classes.wrapperCard}>
       <CardTopLabel
-        compName="Aftonbladet"
+        compName="NYT World News"
         openSettings={openSettings}
         additionalButton={
           <IconButton size={'small'} onClick={() => updateLink()}>
@@ -163,6 +164,7 @@ export default function RSSreader({
                       anchorOriginVertical={anchorOriginVertical}
                       anchorOriginHorizontal={anchorOriginHorizontal}
                       margin={margin}
+                      standAlone={standAlone}
                     />
                   );
                 } else {

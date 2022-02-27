@@ -80,7 +80,7 @@ export default function CardTopLabel({
 
   const getLogo = (compName) => {
     switch (compName.toLowerCase()) {
-      case 'aftonbladet':
+      case 'nyt world news':
         return <RssFeedIcon htmlColor={'#979797'} fontSize="small" />;
       case 'gmail':
         return <MailIcon htmlColor={'#979797'} fontSize="small" />;
