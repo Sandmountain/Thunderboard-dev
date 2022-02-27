@@ -52,6 +52,7 @@ export const DefaultSettings = () => {
       rowHeight: 1,
       gridSpacing: [10, 10],
       compactType: 'default',
+      minimalMode: true,
       customLayout: [
         {
           static: false,
