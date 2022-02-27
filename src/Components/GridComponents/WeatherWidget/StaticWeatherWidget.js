@@ -6,12 +6,8 @@ import WeatherWidgetIcon from './WeatherWidgetIcon/WeatherWidgetIcon';
 
 const useStyles = makeStyles({
   wrapperCard: {
-    display: 'flex',
-    justifyContent: 'center',
     marginTop: '5vh',
     borderRadius: 0,
-    height: '100%',
-    width: '100%',
   },
   smallStyle: {
     fontSize: '3vw',
@@ -61,6 +57,7 @@ export default function StaticWeatherWidget({ city }) {
           >
             <Typography
               variant="h4"
+              className="textShadow"
               style={{ lineHeight: 1, color: 'white', marginTop: 10 }}
             >
               <WeatherWidgetIcon
@@ -71,14 +68,14 @@ export default function StaticWeatherWidget({ city }) {
               {Math.round(weatherData.main.temp) + '°'}
             </Typography>
             <Typography
-              className={classes.description}
+              className={`textShadow ${classes.description}`}
               variant="subtitle1"
               style={{ lineHeight: 1, color: 'white' }}
             >
               {weatherData.weather[0].description}
             </Typography>
             <Typography
-              className={`${classes.cityName} ${classes.description}`}
+              className={`${classes.cityName} ${classes.description} textShadow`}
               variant="caption"
             >
               {city}

@@ -10,11 +10,10 @@ const useStyles = makeStyles({
     display: 'flex',
     alignItems: 'center',
     margin: 0,
-    lineHeight: '0.7 !important',
+    lineHeight: '0.8 !important',
     padding: 0,
     fontWeight: 600,
     color: 'white',
-    textShadow: '0 1px 0 rgba(0,0,0,.4)',
   },
   timeTextMedium: {
     display: 'flex',
@@ -31,7 +30,6 @@ const useStyles = makeStyles({
     fontWeight: 200,
 
     color: 'white',
-    textShadow: '0 1px 0 rgba(0,0,0,.4)',
   },
   clockContainer: {
     marginTop: '5vw',
@@ -58,16 +56,14 @@ export default function StaticClock() {
   };
 
   return (
-    <div className={classes.clockContainer}>
-      <div className={classes.clockInner}>
-        <Typography variant="h1" className={classes.timeText}>
-          {date.time}
+    <div className={classes.clockInner}>
+      <Typography variant="h1" className={`textShadow ${classes.timeText}`}>
+        {date.time}
+      </Typography>
+      <div className={classes.dateMediumContainer}>
+        <Typography className={`textShadow ${classes.dateTexts}`}>
+          {date.weekday} {date.day + ' ' + date.month} {date.year}
         </Typography>
-        <div className={classes.dateMediumContainer}>
-          <Typography className={classes.dateTexts}>
-            {date.weekday} {date.day + ' ' + date.month} {date.year}
-          </Typography>
-        </div>
       </div>
     </div>
   );

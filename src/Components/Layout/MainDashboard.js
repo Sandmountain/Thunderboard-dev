@@ -3,8 +3,6 @@ import React, { useContext, useRef, useState } from 'react';
 import GoogleAuthentication from '../Authentication/GoogleAuthentication';
 import WallpaperComponent from '../GridComponents/WallpaperComponent/WallpaperComponent';
 
-import RGL, { WidthProvider } from 'react-grid-layout';
-
 import 'react-grid-layout/css/styles.css';
 
 import { Icon, IconButton, Snackbar } from '@material-ui/core';
@@ -68,13 +66,13 @@ export default function MainDashboard() {
 
   return (
     <>
-      <LoadingScreen
+      {/* <LoadingScreen
         loggedIn={loggedIn}
         setSettings={setSettings}
         setIsLoggedIn={setIsLoggedIn}
         setCredentials={setCredentials}
         setProfileData={setProfileData}
-      />
+      /> */}
       {!loggedIn ? (
         <GoogleAuthentication
           loggedIn={loggedIn}
@@ -85,7 +83,9 @@ export default function MainDashboard() {
         />
       ) : (
         <>
-          <WallpaperComponent />
+          <WallpaperComponent
+            overlay={settings.dashboardSettings?.minimalMode}
+          />
           <TopBar childRef={childRef} profileData={profileData} />
           <div style={{ position: 'relative', zIndex: '2' }}>
             {loggedIn && credentials ? (
