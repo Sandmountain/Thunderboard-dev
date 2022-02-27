@@ -1,5 +1,17 @@
-import { Card, Divider, IconButton, makeStyles, Typography } from '@material-ui/core';
+import {
+  Card,
+  Divider,
+  IconButton,
+  makeStyles,
+  Typography,
+} from '@material-ui/core';
 import React from 'react';
+
+import RedditIcon from '@material-ui/icons/Reddit';
+import YouTubeIcon from '@material-ui/icons/YouTube';
+import MailIcon from '@material-ui/icons/Mail';
+import TwitchIcon from '../Icons/TwitchIcon';
+import RssFeedIcon from '@material-ui/icons/RssFeed';
 
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { AssignmentTurnedIn, Link, Subject } from '@material-ui/icons';
@@ -69,15 +81,15 @@ export default function CardTopLabel({
   const getLogo = (compName) => {
     switch (compName.toLowerCase()) {
       case 'aftonbladet':
-        return <img src={require('./logos/aftonbladet-s.png')} alt={compName} className={classes.logoStyle} />;
+        return <RssFeedIcon htmlColor={'#979797'} fontSize="small" />;
       case 'gmail':
-        return <img src={require('./logos/gmail-s.png')} alt={compName} className={classes.logoStyle} />;
+        return <MailIcon htmlColor={'#979797'} fontSize="small" />;
       case 'reddit':
-        return <img src={require('./logos/reddit-s.png')} alt={compName} className={classes.logoStyle} />;
+        return <RedditIcon htmlColor={'#979797'} fontSize="small" />;
       case 'twitch':
-        return <img src={require('./logos/twitch-s.png')} alt={compName} className={classes.logoStyle} />;
+        return <TwitchIcon htmlColor={'#979797'} fontSize="small" />;
       case 'youtube':
-        return <img src={require('./logos/youtube-s.png')} alt={compName} className={classes.logoStyle} />;
+        return <YouTubeIcon htmlColor={'#979797'} fontSize="small" />;
       case 'todos':
         return <AssignmentTurnedIn htmlColor={'#979797'} fontSize="small" />;
       case 'notes':
@@ -110,7 +122,10 @@ export default function CardTopLabel({
           {additionalButton && (
             <>
               {' '}
-              <Divider orientation="vertical" style={noGutter ? { margin: 0 } : { margin: '0 5px' }} />
+              <Divider
+                orientation="vertical"
+                style={noGutter ? { margin: 0 } : { margin: '0 5px' }}
+              />
               {additionalButton}
             </>
           )}
@@ -122,8 +137,14 @@ export default function CardTopLabel({
                 </div>
               );
             })}
-          <Divider orientation="vertical" style={noGutter ? { marginRight: '5px' } : { margin: '0 5px' }} />
-          <IconButton size={'small'} onClick={() => openSettings(getSettingsTab(compName))}>
+          <Divider
+            orientation="vertical"
+            style={noGutter ? { marginRight: '5px' } : { margin: '0 5px' }}
+          />
+          <IconButton
+            size={'small'}
+            onClick={() => openSettings(getSettingsTab(compName))}
+          >
             <MoreVertIcon fontSize="small" />
           </IconButton>
         </div>
