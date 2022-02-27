@@ -1,4 +1,4 @@
-import React, { useRef, useContext } from 'react';
+import React, { useContext } from 'react';
 
 import GoogleMailComponent from '../GridComponents/GoogleMail/GoogleMailComponent.js';
 import YoutubeComponent from '../GridComponents/YoutubeVideo/YoutubeComponent';
