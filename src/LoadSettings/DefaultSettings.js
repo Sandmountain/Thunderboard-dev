@@ -2,7 +2,7 @@ export const DefaultSettings = () => {
   const settings = {
     rssReaderSettings: {
       useComponent: true,
-      url: 'https://rss.aftonbladet.se/rss2/small/pages/sections/nyheter/',
+      url: 'https://rss.nytimes.com/services/xml/rss/nyt/World.xml',
       nrOfArticles: 10,
       showContent: true,
       showImage: true,

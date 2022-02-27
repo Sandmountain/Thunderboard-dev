@@ -45,7 +45,17 @@ const cropContentText = (text) => {
   }
 };
 
-export default function RssCard({ showContent, showImage, showTitle, title, src, url, layout, date, content }) {
+export default function RssCard({
+  showContent,
+  showImage,
+  showTitle,
+  title,
+  src,
+  url,
+  layout,
+  date,
+  content,
+}) {
   const classes = useStyles();
 
   return (
@@ -72,14 +82,16 @@ export default function RssCard({ showContent, showImage, showTitle, title, src,
           variant="subtitle2"
           style={{ fontSize: '0.8rem' }}
           className={classes.listTitleText}
-          onClick={() => openInNewTab(url)}>
+          onClick={() => openInNewTab(url)}
+        >
           {showTitle && title}
         </Typography>
 
         <Typography
           variant="body2"
           style={{ fontSize: '0.7rem' }}
-          className={`${classes.listInfoText} ${classes.secondaryColor}`}>
+          className={`${classes.listInfoText} ${classes.secondaryColor}`}
+        >
           {showContent && cropContentText(content)}
         </Typography>
       </div>
