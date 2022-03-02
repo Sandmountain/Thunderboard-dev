@@ -91,7 +91,11 @@ export default function MainDashboard() {
             {loggedIn && credentials ? (
               <div style={{ paddingTop: 60 }}>
                 {settings.dashboardSettings.minimalMode ? (
-                  <MinimalDashboard />
+                  <MinimalDashboard
+                    credentials={credentials}
+                    childRef={childRef}
+                    isProduction={isProduction}
+                  />
                 ) : (
                   <CustomDashboard
                     credentials={credentials}
