@@ -10,9 +10,10 @@ import Countdown from '../ToolsMenu/Tools/Countdown';
 
 const useStyles = makeStyles({
   wrapperCard: {
+    display: 'flex',
+    justifyContent: 'center',
     marginTop: 12,
     borderRadius: 0,
-    height: '100%',
     overflowY: 'auto',
     width: '100%',
   },
