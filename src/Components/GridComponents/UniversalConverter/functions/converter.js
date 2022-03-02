@@ -14,6 +14,7 @@ export const defineText = async (text, defaultCurrency, language) => {
   try {
     const splitInput = text.trim().match(/[\d.]+|\D+/g);
     const units = splitInput[1].match(/\b[^\s]+\b/g);
+
     if (units !== null) {
       const exchangeCurrencies = { base: validateCurrency(units[0]) };
       // Exchange
@@ -21,7 +22,9 @@ export const defineText = async (text, defaultCurrency, language) => {
         exchangeCurrencies['target'] = validateCurrency(units[2]);
         if (exchangeCurrencies.target.valid) {
           return {
-            value: `${splitInput[0]} ${exchangeCurrencies.base.currency[0]} is ${await retriveExchange(
+            value: `${splitInput[0]} ${
+              exchangeCurrencies.base.currency[0]
+            } is ${await retriveExchange(
               exchangeCurrencies.base.currency,
               exchangeCurrencies.target.currency,
               splitInput[0]
@@ -32,7 +35,9 @@ export const defineText = async (text, defaultCurrency, language) => {
         } else {
           exchangeCurrencies['target'] = validateCurrency(defaultCurrency);
           return {
-            value: `${splitInput[0]} ${exchangeCurrencies.base.currency[0]} is ${await retriveExchange(
+            value: `${splitInput[0]} ${
+              exchangeCurrencies.base.currency[0]
+            } is ${await retriveExchange(
               exchangeCurrencies.base.currency,
               exchangeCurrencies.target.currency,
               splitInput[0]
@@ -47,7 +52,8 @@ export const defineText = async (text, defaultCurrency, language) => {
       const conversionTable = conversionFormulas[units[0]];
 
       if (conversionTable && conversionTable.value !== 'farenheit') {
-        const converted = Math.round(splitInput[0] * conversionTable.value * 100) / 100;
+        const converted =
+          Math.round(splitInput[0] * conversionTable.value * 100) / 100;
 
         return {
           value: `${splitInput[0]} ${units[0]} is ${converted} ${conversionTable.si} `,
@@ -62,6 +68,8 @@ export const defineText = async (text, defaultCurrency, language) => {
           type: 'conversion',
         };
       }
+    } else {
+      throw text;
     }
   } catch (error) {
     // Calculator
@@ -76,10 +84,14 @@ export const defineText = async (text, defaultCurrency, language) => {
     // Translate
     if (text.substring(0, 9) === 'translate') {
       try {
-        let res = await Promise.resolve(translateText(text.substring(10, text.length), language));
+        let res = await Promise.resolve(
+          translateText(text.substring(10, text.length), language)
+        );
         return {
           value: res.text,
-          label: `Translated text from ${languages[res.from.language.iso]} to ${language} `,
+          label: `Translated text from ${
+            languages[res.from.language.iso]
+          } to ${language} `,
           type: 'translate',
         };
       } catch (error) {
@@ -100,8 +112,12 @@ export const defineText = async (text, defaultCurrency, language) => {
 };
 
 const validateCurrency = (curr) => {
-  const isValid = Object.entries(availableCurrencies).find((currency, idx) => currency[1].synonyms.includes(curr));
-  return isValid ? { currency: isValid, valid: true } : { currency: '', valid: false };
+  const isValid = Object.entries(availableCurrencies).find((currency, idx) =>
+    currency[1].synonyms.includes(curr)
+  );
+  return isValid
+    ? { currency: isValid, valid: true }
+    : { currency: '', valid: false };
 };
 
 const retriveExchange = async (base, target, amount) => {
@@ -110,7 +126,11 @@ const retriveExchange = async (base, target, amount) => {
   );
 
   if (res.status === 200) {
-    return Math.round(((res.data.rates[target[0]] * amount) / res.data.rates[base[0]]) * 100) / 100;
+    return (
+      Math.round(
+        ((res.data.rates[target[0]] * amount) / res.data.rates[base[0]]) * 100
+      ) / 100
+    );
   } else {
     return res.statusText;
   }
