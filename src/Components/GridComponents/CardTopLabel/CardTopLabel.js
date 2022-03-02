@@ -14,7 +14,13 @@ import TwitchIcon from '../Icons/TwitchIcon';
 import RssFeedIcon from '@material-ui/icons/RssFeed';
 
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { AssignmentTurnedIn, Link, Subject } from '@material-ui/icons';
+import {
+  AssignmentTurnedIn,
+  ExpandLess,
+  ExpandMore,
+  Link,
+  Subject,
+} from '@material-ui/icons';
 
 const getSettingsTab = (compName) => {
   switch (compName.toLowerCase()) {
@@ -75,12 +81,15 @@ export default function CardTopLabel({
   additionalButtons,
   noGutter,
   openSettings,
+  standAlone,
+  isMinimized,
+  minimizeComponent,
 }) {
   const classes = useStyles();
 
   const getLogo = (compName) => {
     switch (compName.toLowerCase()) {
-      case 'nyt world news':
+      case 'world news':
         return <RssFeedIcon htmlColor={'#979797'} fontSize="small" />;
       case 'gmail':
         return <MailIcon htmlColor={'#979797'} fontSize="small" />;
@@ -119,9 +128,20 @@ export default function CardTopLabel({
           </div>
         )}
         <div className={classes.buttonsContainer}>
-          {additionalButton && (
+          {additionalButton.length > 0 ? (
+            additionalButton.map((btn) => {
+              return (
+                <>
+                  <Divider
+                    orientation="vertical"
+                    style={noGutter ? { margin: 0 } : { margin: '0 5px' }}
+                  />
+                  {btn}
+                </>
+              );
+            })
+          ) : (
             <>
-              {' '}
               <Divider
                 orientation="vertical"
                 style={noGutter ? { margin: 0 } : { margin: '0 5px' }}
@@ -147,6 +167,21 @@ export default function CardTopLabel({
           >
             <MoreVertIcon fontSize="small" />
           </IconButton>
+          {standAlone && (
+            <>
+              <Divider
+                orientation="vertical"
+                style={noGutter ? { marginRight: '5px' } : { margin: '0 5px' }}
+              />
+              <IconButton size={'small'} onClick={minimizeComponent}>
+                {!isMinimized ? (
+                  <ExpandMore fontSize="small" />
+                ) : (
+                  <ExpandLess fontSize="small" />
+                )}
+              </IconButton>
+            </>
+          )}
         </div>
       </Card>
     </div>
