@@ -8,7 +8,11 @@ import CardTopLabel from '../CardTopLabel/CardTopLabel';
 import { Refresh } from '@material-ui/icons';
 
 const Parser = require('rss-parser');
-const parser = new Parser();
+const parser = new Parser({
+  customFields: {
+    item: [['media:content', 'media:content', { keepArray: true }]],
+  },
+});
 
 const useStyles = makeStyles({
   innerPadding: {
@@ -73,6 +77,7 @@ export default function RSSreader({
   isDraggable,
   margin,
   openSettings,
+  standAlone = false,
 }) {
   const [data, setData] = useState(null);
   const classes = useStyles();
@@ -92,14 +97,13 @@ export default function RSSreader({
 
   const updateLink = async () => {
     const data = await parser.parseURL(url);
-    console.log(data);
     setData(data.items);
   };
 
   return (
     <Card className={classes.wrapperCard}>
       <CardTopLabel
-        compName="Aftonbladet"
+        compName="NYT World News"
         openSettings={openSettings}
         additionalButton={
           <IconButton size={'small'} onClick={() => updateLink()}>
@@ -111,7 +115,11 @@ export default function RSSreader({
       {data && (
         <>
           {layout === 'card' ? (
-            <div className={`${isDraggable && 'isDraggableContainer'} ${classes.innerPadding}`}>
+            <div
+              className={`${isDraggable && 'isDraggableContainer'} ${
+                classes.innerPadding
+              }`}
+            >
               {data.map((article, idx) => {
                 if (idx < nrOfArticles) {
                   return (
@@ -119,7 +127,7 @@ export default function RSSreader({
                       key={idx}
                       title={article.title}
                       url={article.link}
-                      src={article.enclosure?.url}
+                      src={article['media:content'][0].$.url}
                       date={article.isoDate}
                       showContent={showContent}
                       showImage={showImage}
@@ -132,7 +140,12 @@ export default function RSSreader({
               })}
             </div>
           ) : (
-            <List dense className={`${isDraggable && 'isDraggableContainer'} ${classes.noPadding}`}>
+            <List
+              dense
+              className={`${isDraggable && 'isDraggableContainer'} ${
+                classes.noPadding
+              }`}
+            >
               {data.map((article, idx) => {
                 if (idx < nrOfArticles) {
                   return (
@@ -140,7 +153,7 @@ export default function RSSreader({
                       key={idx}
                       title={article.title}
                       url={article.link}
-                      src={article.enclosure?.url}
+                      src={article['media:content'][0].$.url}
                       date={parseDate(Date.parse(article.isoDate))}
                       content={article.content}
                       showContent={showContent}
@@ -149,6 +162,7 @@ export default function RSSreader({
                       anchorOriginVertical={anchorOriginVertical}
                       anchorOriginHorizontal={anchorOriginHorizontal}
                       margin={margin}
+                      standAlone={standAlone}
                     />
                   );
                 } else {

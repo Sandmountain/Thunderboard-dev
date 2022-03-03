@@ -1,4 +1,4 @@
-import { Card, makeStyles, Tab, Tabs } from '@material-ui/core';
+import { Card, makeStyles, Tab, Tabs, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import CardTopLabel from '../CardTopLabel/CardTopLabel';
 
@@ -70,7 +70,10 @@ export default function TwitchWidget({
     // Make sure that the user is authenticated
     async function getAuthedUser() {
       try {
-        const data = await getUserData('https://api.twitch.tv/helix/users', authKey);
+        const data = await getUserData(
+          'https://api.twitch.tv/helix/users',
+          authKey
+        );
         if (data) {
           setIsAuthed(true);
         } else {
@@ -110,7 +113,7 @@ export default function TwitchWidget({
             indicatorColor="secondary"
             textColor="primary"
             onChange={handleChange}
-            aria-label="disabled tabs example">
+          >
             <Tab
               key="browse"
               classes={{
@@ -119,7 +122,7 @@ export default function TwitchWidget({
                 labelIcon: classes.labelIcon,
                 selected: classes.selectedText,
               }}
-              label="Browse"
+              label={<Typography variant="button">Browse</Typography>}
               value="browse"
               icon={<SportsEsportsIcon fontSize="small" />}
             />
@@ -131,14 +134,18 @@ export default function TwitchWidget({
                 labelIcon: classes.labelIcon,
                 selected: classes.selectedText,
               }}
-              label="Top Streams"
+              label={<Typography variant="button">Top Streams</Typography>}
               value="topGames"
               icon={<TrendingUpIcon fontSize="small" />}
             />
           </Tabs>,
         ]}
       />
-      <div className={`${isDraggable ? 'isDraggableContainer' : ''} ${classes.universalConvContainer}`}>
+      <div
+        className={`${isDraggable ? 'isDraggableContainer' : ''} ${
+          classes.universalConvContainer
+        }`}
+      >
         {isAuthed && (
           <>
             <TwitchSideBar
@@ -146,7 +153,8 @@ export default function TwitchWidget({
               openSideBar={openSideBar}
               authKey={authKey}
               settings={settings}
-              followedUser={followedUser}></TwitchSideBar>
+              followedUser={followedUser}
+            ></TwitchSideBar>
             {tabIndex === 'browse' ? (
               <TwitchTopGames
                 scrollBar={scrollbar}

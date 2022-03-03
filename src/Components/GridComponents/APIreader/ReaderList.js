@@ -1,6 +1,6 @@
 import { Box, Card, makeStyles, Popover, Typography } from '@material-ui/core';
 import { OpenInNew } from '@material-ui/icons';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 
 import { openInNewTab } from '../../helperFunctions';
 
@@ -24,7 +24,6 @@ const useStyles = makeStyles({
     cursor: 'pointer',
     zIndex: 2,
     position: 'relative',
-    padding: '4px',
     boxShadow:
       '0px 2px 3px -1px rgba(0,0,0,0.2), 0px -2px 3px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12), inset 0 0 0 1px #f1f1f1',
   },
@@ -53,11 +52,12 @@ const useStyles = makeStyles({
     minHeight: '110px',
   },
   popoverTitleWrapper: {
-    minHeight: 110,
+    height: 215,
     overflow: 'hidden',
   },
   popoverTitleContainer: {
     display: 'flex',
+    justifyContent: 'space-between',
     marginBottom: 5,
   },
   popoverTitleText: {},
@@ -69,6 +69,7 @@ const useStyles = makeStyles({
   popoverContentInnerContainer: {
     width: 'calc(50% - 2.5px)',
     height: 'auto',
+    maxHeight: 150,
   },
   popoverContentImage: {
     maxHeight: 120,
@@ -77,12 +78,13 @@ const useStyles = makeStyles({
   },
 });
 
-export default function RssCard({
+export default function ReaderList({
   title,
   src,
   url,
   date,
   content,
+  source,
   anchorOriginHorizontal,
   anchorOriginVertical,
   margin,
@@ -98,14 +100,10 @@ export default function RssCard({
   };
 
   const handlePopoverOpen = () => {
+    setCurrentWidth(childRef.current?.parentNode.offsetParent.clientWidth);
+
     setAnchorEl(childRef.current.parentNode.offsetParent);
   };
-
-  useEffect(() => {
-    if (childRef.current) {
-      setCurrentWidth(childRef.current.parentNode.offsetParent.clientWidth);
-    }
-  }, [childRef]);
 
   const open = Boolean(anchorEl);
 
@@ -139,7 +137,7 @@ export default function RssCard({
       <Popover
         id="mouse-over-popover"
         className={classes.popover}
-        style={{ margin: 0 }}
+        style={{ margin: 0, padding: 0 }}
         elevation={18}
         open={open}
         anchorEl={anchorEl}
@@ -152,11 +150,10 @@ export default function RssCard({
           horizontal: anchorOriginHorizontal,
         }}
         anchorPosition={{
-          top: window.innerHeight / 2,
-          left:
-            window.innerWidth / 2 -
-            childRef.current?.parentNode.offsetParent.clientWidth / 2 -
-            5,
+          top:
+            document.getElementById('newsContainer').getBoundingClientRect()
+              .top - 222,
+          left: window.innerWidth / 2 - currentWidth / 2,
         }}
         onClose={handlePopoverClose}
         disableRestoreFocus
@@ -165,39 +162,40 @@ export default function RssCard({
           className={classes.popoverTitleWrapper}
           style={{
             width: standAlone ? currentWidth : currentWidth + 150,
-            padding: 5,
           }}
         >
-          <Typography variant="body1" className={classes.popoverTitleContainer}>
-            <Box
-              component="span"
-              className={classes.popoverTitleText}
-              fontWeight={'fontWeightBold'}
-              style={{ width: currentWidth - 10 }}
+          <div style={{ padding: 5 }}>
+            <Typography
+              variant="body1"
+              className={classes.popoverTitleContainer}
             >
-              {title}
-            </Box>
-          </Typography>
-          <div className={classes.popoverContentContainer}>
-            <div className={classes.popoverContentInnerContainer}>
-              {src ? (
-                <img
-                  src={src}
-                  className={classes.popoverContentImage}
-                  alt={title}
-                />
-              ) : (
-                <img
-                  src={require('./aftonbladet.jpg')}
-                  className={classes.popoverContentImage}
-                  alt={title}
-                />
-              )}
-            </div>
-            <div className={classes.popoverContentInnerContainer}>
-              <Typography align="left" variant="caption">
-                {content}
-              </Typography>
+              <Box
+                component="span"
+                className={classes.popoverTitleText}
+                fontWeight={'fontWeightBold'}
+                style={{ width: currentWidth - 10 }}
+              >
+                {title}
+              </Box>
+            </Typography>
+            <div className={classes.popoverContentContainer}>
+              <div className={classes.popoverContentInnerContainer}>
+                {src && (
+                  <img
+                    src={src}
+                    className={classes.popoverContentImage}
+                    alt={title}
+                  />
+                )}
+                <Typography align="left" variant="overline">
+                  Source: {source}
+                </Typography>
+              </div>
+              <div className={classes.popoverContentInnerContainer}>
+                <Typography align="left" variant="caption">
+                  {content}
+                </Typography>
+              </div>
             </div>
           </div>
         </div>

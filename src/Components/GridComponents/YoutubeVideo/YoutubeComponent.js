@@ -57,7 +57,10 @@ export default function YoutubeComponent({
   useEffect(() => {
     async function fetchYoutubeData(credentials) {
       if (!isProduction) {
-        const res = await axios('https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true', credentials);
+        const res = await axios(
+          'https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true',
+          credentials
+        );
 
         setYoutubeUserData(res.data.items[0]);
         const youData = await axios(
@@ -78,6 +81,7 @@ export default function YoutubeComponent({
         setYoutubeList(youData.data.items);
       }
     }
+
     fetchYoutubeData(credentials);
     return () => {
       setYoutubeUserData(null);
@@ -89,14 +93,18 @@ export default function YoutubeComponent({
     <Card className={classes.wrapperCard}>
       <CardTopLabel compName="YouTube" openSettings={openSettings} />
       {!youtubeList && !youtubeUserData && (
-        <div className={classes.progressContainer} style={{ paddingTop: '35px' }}>
+        <div
+          className={classes.progressContainer}
+          style={{ paddingTop: '35px' }}
+        >
           <ProgressBolt />
         </div>
       )}
 
       <div
         className={`${isDraggable && 'isDraggableContainer'}
-        ${scrollbar && classes.scrollbar} ${classes.youtubeGrid}`}>
+        ${scrollbar && classes.scrollbar} ${classes.youtubeGrid}`}
+      >
         {youtubeList &&
           youtubeList.map((video, idx) => {
             return <YoutubeVideo data={video} key={idx} showInfo={showInfo} />;

@@ -1,8 +1,26 @@
-import { Card, Divider, IconButton, makeStyles, Typography } from '@material-ui/core';
+import {
+  Card,
+  Divider,
+  IconButton,
+  makeStyles,
+  Typography,
+} from '@material-ui/core';
 import React from 'react';
 
+import RedditIcon from '@material-ui/icons/Reddit';
+import YouTubeIcon from '@material-ui/icons/YouTube';
+import MailIcon from '@material-ui/icons/Mail';
+import TwitchIcon from '../Icons/TwitchIcon';
+import RssFeedIcon from '@material-ui/icons/RssFeed';
+
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { AssignmentTurnedIn, Link, Subject } from '@material-ui/icons';
+import {
+  AssignmentTurnedIn,
+  ExpandLess,
+  ExpandMore,
+  Link,
+  Subject,
+} from '@material-ui/icons';
 
 const getSettingsTab = (compName) => {
   switch (compName.toLowerCase()) {
@@ -63,21 +81,24 @@ export default function CardTopLabel({
   additionalButtons,
   noGutter,
   openSettings,
+  standAlone,
+  isMinimized,
+  minimizeComponent,
 }) {
   const classes = useStyles();
 
   const getLogo = (compName) => {
     switch (compName.toLowerCase()) {
-      case 'aftonbladet':
-        return <img src={require('./logos/aftonbladet-s.png')} alt={compName} className={classes.logoStyle} />;
+      case 'world news':
+        return <RssFeedIcon htmlColor={'#979797'} fontSize="small" />;
       case 'gmail':
-        return <img src={require('./logos/gmail-s.png')} alt={compName} className={classes.logoStyle} />;
+        return <MailIcon htmlColor={'#979797'} fontSize="small" />;
       case 'reddit':
-        return <img src={require('./logos/reddit-s.png')} alt={compName} className={classes.logoStyle} />;
+        return <RedditIcon htmlColor={'#979797'} fontSize="small" />;
       case 'twitch':
-        return <img src={require('./logos/twitch-s.png')} alt={compName} className={classes.logoStyle} />;
+        return <TwitchIcon htmlColor={'#979797'} fontSize="small" />;
       case 'youtube':
-        return <img src={require('./logos/youtube-s.png')} alt={compName} className={classes.logoStyle} />;
+        return <YouTubeIcon htmlColor={'#979797'} fontSize="small" />;
       case 'todos':
         return <AssignmentTurnedIn htmlColor={'#979797'} fontSize="small" />;
       case 'notes':
@@ -107,12 +128,20 @@ export default function CardTopLabel({
           </div>
         )}
         <div className={classes.buttonsContainer}>
-          {additionalButton && (
-            <>
-              {' '}
-              <Divider orientation="vertical" style={noGutter ? { margin: 0 } : { margin: '0 5px' }} />
-              {additionalButton}
-            </>
+          {additionalButton?.length > 0 ? (
+            additionalButton.map((btn, idx) => {
+              return (
+                <div key={idx}>
+                  <Divider
+                    orientation="vertical"
+                    style={noGutter ? { margin: 0 } : { margin: '0 5px' }}
+                  />
+                  {btn}
+                </div>
+              );
+            })
+          ) : (
+            <>{additionalButton}</>
           )}
           {additionalButtons &&
             additionalButtons.map((button, key) => {
@@ -122,10 +151,31 @@ export default function CardTopLabel({
                 </div>
               );
             })}
-          <Divider orientation="vertical" style={noGutter ? { marginRight: '5px' } : { margin: '0 5px' }} />
-          <IconButton size={'small'} onClick={() => openSettings(getSettingsTab(compName))}>
+          <Divider
+            orientation="vertical"
+            style={noGutter ? { marginRight: '5px' } : { margin: '0 5px' }}
+          />
+          <IconButton
+            size={'small'}
+            onClick={() => openSettings(getSettingsTab(compName))}
+          >
             <MoreVertIcon fontSize="small" />
           </IconButton>
+          {standAlone && (
+            <>
+              <Divider
+                orientation="vertical"
+                style={noGutter ? { marginRight: '5px' } : { margin: '0 5px' }}
+              />
+              <IconButton size={'small'} onClick={minimizeComponent}>
+                {!isMinimized ? (
+                  <ExpandMore fontSize="small" />
+                ) : (
+                  <ExpandLess fontSize="small" />
+                )}
+              </IconButton>
+            </>
+          )}
         </div>
       </Card>
     </div>

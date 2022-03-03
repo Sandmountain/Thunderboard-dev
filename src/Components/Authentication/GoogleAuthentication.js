@@ -3,10 +3,15 @@ import { GoogleLogin, GoogleLogout } from 'react-google-login';
 
 import { initFirestore } from '../../Firestore/FirestoreFunctions';
 
-export default function GoogleAuthentication({ loggedIn, setIsLoggedIn, setCredentials, setSettings, setProfileData }) {
+export default function GoogleAuthentication({
+  loggedIn,
+  setIsLoggedIn,
+  setCredentials,
+  setSettings,
+  setProfileData,
+}) {
   const SCOPES =
-    'profile email https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/gmail.labels https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/datastore';
-  //www.googleapis.com/auth/calendar.events';
+    'profile email https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/gmail.labels https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events.readonly https://www.googleapis.com/auth/datastore';
 
   const responseGoogle = async (response) => {
     if (!loggedIn) {
@@ -20,8 +25,10 @@ export default function GoogleAuthentication({ loggedIn, setIsLoggedIn, setCrede
           },
           contentType: 'json',
         };
-        console.log(response);
-        setSettings(await initFirestore(response.googleId, response.accessToken));
+
+        setSettings(
+          await initFirestore(response.googleId, response.accessToken)
+        );
 
         setProfileData(response.profileObj);
         setIsLoggedIn(true);
@@ -69,11 +76,13 @@ export default function GoogleAuthentication({ loggedIn, setIsLoggedIn, setCrede
         isSignedIn={true}
         //autoLoad={!loggedIn}
         scope={SCOPES}
-        approvalPrompt="force"></GoogleLogin>
+        approvalPrompt="force"
+      ></GoogleLogin>
       <GoogleLogout
         clientId={process.env.REACT_APP_GOOGLE_OAUTH_KEY}
         buttonText="Logout"
-        onLogoutSuccess={() => window.location.reload()}></GoogleLogout>
+        onLogoutSuccess={() => window.location.reload()}
+      ></GoogleLogout>
     </>
   );
 }

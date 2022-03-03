@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { Card, IconButton, InputAdornment, makeStyles, TextField } from '@material-ui/core';
+import {
+  Card,
+  IconButton,
+  InputAdornment,
+  makeStyles,
+  TextField,
+} from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 
 import { defineText } from './functions/converter.js';
@@ -11,8 +17,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   universalConvContainer: {
-    height: '100%',
     width: '100%',
+
     display: 'flex',
     justifyContent: 'center',
     borderRadius: 0,
@@ -66,15 +72,16 @@ export default function GoogleTranslate({ currency, language, isDraggable }) {
         style={{ width: '100%', margin: 8 }}
         noValidate
         autoComplete="off"
-        onSubmit={handleInput}>
+        onSubmit={handleInput}
+      >
         <TextField
           autoFocus
           onChange={handleChange}
           onKeyDown={handleRemoveInput}
-          error={result.type === 'error' && true}
+          error={result?.type === 'error' && true}
           id="outlined-full-width"
-          label={result !== '' ? result.label : 'Universal Converter'}
-          value={result !== '' ? result.value : loading ? 'loading...' : input}
+          label={result !== '' ? result?.label : 'Universal Converter'}
+          value={result !== '' ? result?.value : loading ? 'loading...' : input}
           style={{ width: '100%', fontSize: '11pt', margin: 0, height: '100%' }}
           variant="outlined"
           size="small"
@@ -90,7 +97,8 @@ export default function GoogleTranslate({ currency, language, isDraggable }) {
                 </IconButton>
               </InputAdornment>
             ),
-          }}></TextField>
+          }}
+        ></TextField>
       </form>
     </Card>
   );

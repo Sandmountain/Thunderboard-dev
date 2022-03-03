@@ -11,7 +11,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ColorPicker() {
+export default function ColorPicker({ size = 'small' }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [pickedColor, setPickedColor] = useState('#FF0000');
   const [hexColor, setHexColor] = useState('#FF0000');
@@ -32,7 +32,9 @@ export default function ColorPicker() {
     setShowColor(false);
     setPickedColor(colors[colors.source]);
     if (colors.rgb.a < 1) {
-      setHexColor(`rgba(${colors.rgb.r},${colors.rgb.g},${colors.rgb.b},${colors.rgb.a}`);
+      setHexColor(
+        `rgba(${colors.rgb.r},${colors.rgb.g},${colors.rgb.b},${colors.rgb.a}`
+      );
     } else {
       setHexColor(colors.hex);
     }
@@ -53,7 +55,13 @@ export default function ColorPicker() {
   return (
     <>
       <Tooltip placement="top" title={'Color picker'}>
-        <IconButton aria-describedby={id} variant="contained" color="primary" onClick={handleClick} size={'small'}>
+        <IconButton
+          aria-describedby={id}
+          variant="contained"
+          color="primary"
+          onClick={handleClick}
+          size={size}
+        >
           <PaletteIcon></PaletteIcon>
         </IconButton>
       </Tooltip>
@@ -72,10 +80,19 @@ export default function ColorPicker() {
         transformOrigin={{
           vertical: 'top',
           horizontal: 'center',
-        }}>
-        <ChromePicker color={pickedColor} onChange={handleChange} onChangeComplete={handleChangeComplete} />
+        }}
+      >
+        <ChromePicker
+          color={pickedColor}
+          onChange={handleChange}
+          onChangeComplete={handleChangeComplete}
+        />
 
-        {showColor && <div style={{ background: hexColor, height: 40, width: '100%' }}></div>}
+        {showColor && (
+          <div
+            style={{ background: hexColor, height: 40, width: '100%' }}
+          ></div>
+        )}
       </Popover>
     </>
   );

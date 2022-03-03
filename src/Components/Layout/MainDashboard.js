@@ -1,72 +1,34 @@
 import React, { useContext, useRef, useState } from 'react';
 
 import GoogleAuthentication from '../Authentication/GoogleAuthentication';
-import GoogleMailComponent from '../GridComponents/GoogleMail/GoogleMailComponent.js';
-import YoutubeComponent from '../GridComponents/YoutubeVideo/YoutubeComponent';
-import RedditReader from '../GridComponents/RedditReader/RedditReader';
-import WeatherWidget from '../GridComponents/WeatherWidget/WeatherWidget';
-import TimeDate from '../GridComponents/TimeDate/TimeDate';
-import UniversalConverter from '../GridComponents/UniversalConverter/UniversalConverter';
-import TwitchWidget from '../GridComponents/TwitchWidget/TwitchWidget';
 import WallpaperComponent from '../GridComponents/WallpaperComponent/WallpaperComponent';
-import RSSreader from '../GridComponents/RSSreader/RSSreader';
-import Todos from '../GridComponents/Todos/Todos';
-import Links from '../GridComponents/Links/Links';
-
-import RGL, { WidthProvider } from 'react-grid-layout';
 
 import 'react-grid-layout/css/styles.css';
 
-import { Button, Card, Icon, IconButton, makeStyles, Snackbar } from '@material-ui/core';
+import { Icon, IconButton, Snackbar } from '@material-ui/core';
 import { SettingsContext } from '../../Context/SettingsContext.js';
 import { updateFirestoreCollection } from '../../Firestore/FirestoreFunctions.js';
 import LoadingScreen from '../LoadingScreen/LoadingScreen.js';
 import ProgressBolt from '../ProgressBolt/ProgressBolt.js';
 import TopBar from '../TopBar/TopBar.js';
-import ToolsMenu from '../GridComponents/ToolsMenu/ToolsMenu.js';
+import MinimalDashboard from './MinimalDashboard';
+import CustomDashboard from './CustomDashboard';
 
-const useStyles = makeStyles({
-  gridItemCards: {},
-  twitchAuthButton: { display: 'flex', justifyContent: 'center' },
-});
-
-//const isProduction = process.env.NODE_ENV !== 'production' ? false : true;
 const isProduction = false;
 
 export default function MainDashboard() {
-  const ReactGridLayout = WidthProvider(RGL);
-  const classes = useStyles();
+  const { settings, setSettings } = useContext(SettingsContext);
+  const { dashboardSettings } = settings;
 
   const [loggedIn, setIsLoggedIn] = useState(null);
   const [credentials, setCredentials] = useState(null);
   const [profileData, setProfileData] = useState(null);
 
-  const { settings, setSettings } = useContext(SettingsContext);
-
-  const {
-    rssReaderSettings,
-    gMailSettings,
-    dashboardSettings,
-    redditSettings,
-    youtubeSettings,
-    twitchSettings,
-    calenderSettings,
-    todosSettings,
-    linksSettings,
-    weatherSettings,
-    universalConverter,
-  } = settings;
-
+  // Having the layout as a state causes constant updates. This is not pretty, but works
   let newLayout = dashboardSettings?.layout;
 
   //Settings
   const childRef = useRef();
-
-  const onLayoutChange = (layout) => {
-    if (layout !== newLayout && layout) {
-      newLayout = layout;
-    }
-  };
 
   const handleCloseDraggable = () => {
     setSettings({
@@ -102,10 +64,6 @@ export default function MainDashboard() {
     });
   };
 
-  const openSettings = (val) => {
-    childRef.current.openSettings(val);
-  };
-
   return (
     <>
       <LoadingScreen
@@ -125,135 +83,27 @@ export default function MainDashboard() {
         />
       ) : (
         <>
-          <WallpaperComponent />
+          <WallpaperComponent
+            overlay={settings.dashboardSettings?.minimalMode}
+          />
           <TopBar childRef={childRef} profileData={profileData} />
           <div style={{ position: 'relative', zIndex: '2' }}>
             {loggedIn && credentials ? (
               <div style={{ paddingTop: 60 }}>
-                <ReactGridLayout
-                  isDraggable={dashboardSettings.isDraggable}
-                  isResizable={dashboardSettings.isDraggable}
-                  isBounded
-                  layout={dashboardSettings.customLayout ? dashboardSettings.customLayout : dashboardSettings.layout}
-                  className="layout"
-                  onLayoutChange={(e) => onLayoutChange(e)}
-                  cols={dashboardSettings.nrOfCols}
-                  margin={dashboardSettings.gridSpacing}
-                  containerPadding={dashboardSettings.gridSpacing}
-                  rowHeight={dashboardSettings.rowHeight}
-                  useCSSTransforms={false}
-                  measureBeforeMount={true}
-                  compactType={dashboardSettings.compactType === 'default' ? null : dashboardSettings.compactType}
-                  width={'100%'}>
-                  {/* All Grid Components here */}
-                  <div key="1" className={classes.gridItemCards} hidden={!youtubeSettings.useComponent}>
-                    <YoutubeComponent
-                      openSettings={openSettings}
-                      credentials={credentials}
-                      isProduction={isProduction}
-                      isDraggable={dashboardSettings.isDraggable}
-                      nrOfVideos={youtubeSettings.nrOfVideos}
-                      scrollbar={youtubeSettings.scrollbar}
-                      showInfo={youtubeSettings.youtubeVideoInfo}
-                    />
-                  </div>
-                  <div key="2" className={classes.gridItemCards} hidden={!gMailSettings.useComponent}>
-                    <GoogleMailComponent
-                      openSettings={openSettings}
-                      credentials={credentials}
-                      isProduction={isProduction}
-                      nrOfMails={gMailSettings.nrOfMails}
-                      isDraggable={dashboardSettings.isDraggable}
-                    />
-                  </div>
-                  <div key="3" className={classes.gridItemCards} hidden={!redditSettings.useComponent}>
-                    <RedditReader
-                      openSettings={openSettings}
-                      subreddits={redditSettings.subreddits}
-                      nrOfPosts={redditSettings.nrOfPosts}
-                      shufflePosts={redditSettings.shufflePosts}
-                      isDraggable={dashboardSettings.isDraggable}
-                    />
-                  </div>
-                  <div key="4" className={classes.gridItemCards} hidden={!weatherSettings.useComponent}>
-                    <WeatherWidget city={weatherSettings.city} isDraggable={dashboardSettings.isDraggable} />
-                  </div>
-                  <div key="5" className={classes.gridItemCards} hidden={!calenderSettings.useComponent}>
-                    <TimeDate
-                      calenders={calenderSettings.calenders}
-                      isDraggable={dashboardSettings.isDraggable}
-                      isProduction={isProduction}
-                      credentials={credentials}
-                    />
-                  </div>
-                  <div key="6" className={classes.gridItemCards} hidden={!universalConverter.useComponent}>
-                    <UniversalConverter isDraggable={dashboardSettings.isDraggable} />
-                  </div>
-                  <div key="7" className={classes.gridItemCards} hidden={!twitchSettings.useComponent}>
-                    {twitchSettings.authenticated ? (
-                      <TwitchWidget
-                        openSettings={openSettings}
-                        settings={settings}
-                        setSettings={setSettings}
-                        authKey={twitchSettings.authKey}
-                        nrOfStreams={twitchSettings.nrOfStreams}
-                        streamType={twitchSettings.streamType}
-                        openSideBar={twitchSettings.openSideBar}
-                        scrollbar={twitchSettings.scrollbar}
-                        followedUser={twitchSettings.followedUser}
-                        isDraggable={dashboardSettings.isDraggable}
-                      />
-                    ) : (
-                      <Card className={classes.twitchAuthButton}>
-                        <Button
-                          variant="text"
-                          onClick={() => {
-                            openSettings(5);
-                          }}>
-                          Authorize Twitch
-                        </Button>
-                      </Card>
-                    )}
-                  </div>
-                  <div key="8" className={classes.gridItemCards} hidden={!rssReaderSettings.useComponent}>
-                    <RSSreader
-                      openSettings={openSettings}
-                      url={rssReaderSettings.url}
-                      nrOfArticles={rssReaderSettings.nrOfArticles}
-                      showContent={rssReaderSettings.showContent}
-                      showImage={rssReaderSettings.showImage}
-                      showTitle={rssReaderSettings.showTitle}
-                      margin={rssReaderSettings.margin}
-                      layout={rssReaderSettings.layout}
-                      anchorOriginVertical={rssReaderSettings.anchorOriginVertical}
-                      anchorOriginHorizontal={rssReaderSettings.anchorOriginHorizontal}
-                      isDraggable={dashboardSettings.isDraggable}
-                    />
-                  </div>
-                  <div key="9" className={classes.gridItemCards} hidden={!todosSettings.useComponent}>
-                    <Todos
-                      todos={todosSettings.todos}
-                      showTodos={todosSettings.showTodos}
-                      notes={todosSettings.notes}
-                      settings={settings}
-                      setSettings={setSettings}
-                      isDraggable={dashboardSettings.isDraggable}
-                      openSettings={openSettings}
-                    />
-                  </div>
-                  <div key="10" className={classes.gridItemCards} hidden={!linksSettings.useComponent}>
-                    <Links
-                      links={linksSettings.links}
-                      settings={settings}
-                      setSettings={setSettings}
-                      isDraggable={dashboardSettings.isDraggable}
-                      openSettings={openSettings}
-                    />
-                  </div>
-                  <div key="11" className={classes.gridItemCards} hidden={false}>
-                    <ToolsMenu />
-                  </div>
-                </ReactGridLayout>
+                {settings.dashboardSettings.minimalMode ? (
+                  <MinimalDashboard
+                    credentials={credentials}
+                    childRef={childRef}
+                    isProduction={isProduction}
+                  />
+                ) : (
+                  <CustomDashboard
+                    credentials={credentials}
+                    isProduction={isProduction}
+                    childRef={childRef}
+                    newLayout={newLayout}
+                  />
+                )}
               </div>
             ) : (
               <ProgressBolt />
@@ -266,14 +116,23 @@ export default function MainDashboard() {
             message={'The dashboard is unlocked, press ✓ to save changes.'}
             action={
               <>
-                <IconButton size="small" color="secondary" onClick={handleSaveDraggable}>
+                <IconButton
+                  size="small"
+                  color="secondary"
+                  onClick={handleSaveDraggable}
+                >
                   <Icon>check</Icon>
                 </IconButton>
-                <IconButton size="small" style={{ color: 'white' }} onClick={handleCloseDraggable}>
+                <IconButton
+                  size="small"
+                  style={{ color: 'white' }}
+                  onClick={handleCloseDraggable}
+                >
                   <Icon>close</Icon>
                 </IconButton>
               </>
-            }></Snackbar>
+            }
+          ></Snackbar>
         </>
       )}
     </>

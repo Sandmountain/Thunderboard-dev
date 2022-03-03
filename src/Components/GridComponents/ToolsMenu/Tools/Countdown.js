@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Badge, Button, IconButton, InputAdornment, makeStyles, Popover, TextField, Tooltip } from '@material-ui/core';
+import {
+  Badge,
+  Button,
+  IconButton,
+  InputAdornment,
+  makeStyles,
+  Popover,
+  TextField,
+  Tooltip,
+} from '@material-ui/core';
 
 import AlarmIcon from '@material-ui/icons/Alarm';
 
@@ -35,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 const documentTitle = document.title;
 const audio = new Audio(require('./alarm.mp3'));
 
-export default function Countdown() {
+export default function Countdown({ size = 'small' }) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [isCounting, setIsCounting] = useState(false);
@@ -59,7 +68,9 @@ export default function Countdown() {
     e.preventDefault();
 
     setIsCounting(!isCounting);
-    setParsedTime(new Date(input * 60 * 1000).toISOString().substr(11, 8).toString());
+    setParsedTime(
+      new Date(input * 60 * 1000).toISOString().substr(11, 8).toString()
+    );
     startCountdown(input);
   };
 
@@ -78,7 +89,10 @@ export default function Countdown() {
     const timeout = setTimeout(() => {
       if (time > 0 && isCounting) {
         setTime(time - 1);
-        let parsed = new Date((time - 1) * 1000).toISOString().substr(11, 8).toString();
+        let parsed = new Date((time - 1) * 1000)
+          .toISOString()
+          .substr(11, 8)
+          .toString();
         setParsedTime(parsed);
         if (time < 3600) {
           document.title = parsed.substr(3, 5);
@@ -98,9 +112,15 @@ export default function Countdown() {
   const id = open ? 'simple-popover' : undefined;
 
   return (
-    <div>
+    <>
       <Tooltip placement="top" title={'Countdown timer'}>
-        <IconButton aria-describedby={id} variant="contained" color="primary" onClick={handleClick} size={'small'}>
+        <IconButton
+          aria-describedby={id}
+          variant="contained"
+          color="primary"
+          onClick={handleClick}
+          size={size}
+        >
           <Badge color="secondary" variant="dot" invisible={!isCounting}>
             <AlarmIcon></AlarmIcon>
           </Badge>
@@ -123,7 +143,8 @@ export default function Countdown() {
         transformOrigin={{
           vertical: 'top',
           horizontal: 'center',
-        }}>
+        }}
+      >
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <form onSubmit={onSubmit}>
             <TextField
@@ -136,9 +157,12 @@ export default function Countdown() {
                 root: isCounting && classes.root,
               }}
               InputProps={{
-                endAdornment: !isCounting && <InputAdornment position="end">min</InputAdornment>,
+                endAdornment: !isCounting && (
+                  <InputAdornment position="end">min</InputAdornment>
+                ),
               }}
-              variant="outlined"></TextField>
+              variant="outlined"
+            ></TextField>
           </form>
 
           <div style={{ padding: '0 5px 5px' }}>
@@ -146,13 +170,13 @@ export default function Countdown() {
               fullWidth
               className={isCounting ? classes.error : classes.start}
               variant="outlined"
-              onClick={onSubmit}>
-              {' '}
+              onClick={onSubmit}
+            >
               {isCounting ? 'Stop Timer' : 'Start Timer'}
             </Button>
           </div>
         </div>
       </Popover>
-    </div>
+    </>
   );
 }

@@ -53,3 +53,35 @@ body {
 .twitchLiveTextColor {
   color: #772ce8;
 }
+
+.textShadow {
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+}
+
+.miniDash-btnContainer {
+  width: 25%;
+  position: relative;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap');
+
+.insultText {
+  font-family: 'Reenie Beanie', cursive;
+  color: white;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+  font-size: 20pt;
+  width: 30%;
+  text-align: center;
+  margin-top: 5vh;
+}
+
+@media (max-width: 1200px) {
+  .miniDash-btnContainer {
+    width: 30%;
+  }
+}
+@media (max-width: 600px) {
+  .miniDash-btnContainer {
+    width: 40%;
+  }
+}

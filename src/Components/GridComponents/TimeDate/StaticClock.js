@@ -1,59 +1,51 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles, Card, useMediaQuery } from '@material-ui/core';
 
-import { getMinMaxDate } from './functions/timeDateFunctions.js';
-
-import axios from 'axios';
 import CalenderPopUp from './CalenderPopUp.js';
-import Clock from './Clock.js';
+import { Typography, makeStyles } from '@material-ui/core';
+import { getMinMaxDate } from './functions/timeDateFunctions.js';
+import { parseDate } from './functions/timeDateFunctions';
+import axios from 'axios';
 
 const useStyles = makeStyles({
-  wrapperCard: {
-    borderRadius: 0,
-
-    height: '100%',
-  },
-  content: {
-    padding: '0 5px',
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'flex-end',
-    placeContent: 'center',
-  },
   timeText: {
     height: '100%',
     display: 'flex',
     alignItems: 'center',
     margin: 0,
-    lineHeight: '1 !important',
+    lineHeight: '0.8 !important',
     padding: 0,
     fontWeight: 600,
-    fontSize: 'calc(3.75rem + 1px)',
+    color: 'white',
   },
-  dateContainer: {
-    height: '100%',
+  timeTextMedium: {
     display: 'flex',
-    flexDirection: 'column',
-    placeContent: 'center',
+    fontWeight: 600,
+    lineHeight: 1,
+    fontSize: 'calc(3.5vw + 1px)',
+  },
+  dateMediumContainer: {
+    display: 'flex',
+    justifyContent: 'center',
   },
   dateTexts: {
-    paddingLeft: 2,
     lineHeight: 1,
     fontWeight: 200,
+
+    color: 'white',
   },
+  clockContainer: {
+    marginTop: '5vw',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  clockInner: {},
 });
 
-export default function TimeDateContainer({
-  calenders,
-  isDraggable,
-  credentials,
-  isProduction,
-}) {
+export default function StaticClock({ calenders, credentials }) {
+  const [date, setDate] = useState(parseDate(new Date()));
   const [gCalenderData, setGCalenderData] = useState(undefined);
-  const classes = useStyles();
 
-  const smallScreen = useMediaQuery('(min-width:800px)');
-  const mediumScreen = useMediaQuery('(min-width:1530px)');
+  const classes = useStyles();
 
   useEffect(() => {
     async function getCalenderData(credentials) {
@@ -81,20 +73,33 @@ export default function TimeDateContainer({
     }
   }, [gCalenderData, calenders, credentials]);
 
+  useEffect(() => {
+    let timerID = setInterval(() => tick(), 1000);
+    return () => {
+      clearInterval(timerID);
+    };
+  });
+
+  const tick = () => {
+    setDate(parseDate(new Date()));
+  };
+
   return (
-    <Card className={classes.wrapperCard}>
-      <div
-        className={`${isDraggable && 'isDraggableContainer'} ${
-          classes.content
-        }`}
-      >
+    <div className={classes.clockInner}>
+      <Typography variant="h1" className={`textShadow ${classes.timeText}`}>
+        {date.time}
+      </Typography>
+      <div className={classes.dateMediumContainer}>
+        <Typography className={`textShadow ${classes.dateTexts}`}>
+          {date.weekday} {date.day + ' ' + date.month} {date.year}
+        </Typography>
         <CalenderPopUp
-          right={!smallScreen}
+          right={true}
           calenders={calenders}
           gCalenderData={gCalenderData}
+          standAlone={true}
         />
-        <Clock smallScreen={smallScreen} mediumScreen={mediumScreen} />
       </div>
-    </Card>
+    </div>
   );
 }

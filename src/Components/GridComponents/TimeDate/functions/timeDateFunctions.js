@@ -12,7 +12,15 @@ const months = [
   'NOVEMBER',
   'DECEMBER',
 ];
-const days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+const days = [
+  'SUNDAY',
+  'MONDAY',
+  'TUESDAY',
+  'WEDNESDAY',
+  'THURSDAY',
+  'FRIDAY',
+  'SATURDAY',
+];
 
 export const parseDate = (date) => {
   let hours = date.getHours();
@@ -65,7 +73,9 @@ export const getPopUpDate = () => {
   if (today.getHours() < 19) {
     return `${months[today.getMonth()] + ' ' + today.getDate()}`;
   } else {
-    return `${'Tomorrow ' + tomorrow.getDate() + '/' + (tomorrow.getMonth() + 1)}`;
+    return `${
+      'Tomorrow ' + tomorrow.getDate() + '/' + (tomorrow.getMonth() + 1)
+    }`;
   }
 };
 
@@ -92,7 +102,8 @@ export const sortEvents = (events) => {
 
   //remove duplicates if reoccuring event
   const onlyUniques = parsedData.filter(
-    (v, i, a) => a.findIndex((t) => t.creator === v.creator && t.name === v.name) === i
+    (v, i, a) =>
+      a.findIndex((t) => t.creator === v.creator && t.name === v.name) === i
   );
 
   const sortedByTime = onlyUniques.sort((a, b) => {
@@ -114,7 +125,10 @@ const findSelf = (event) => {
 };
 
 export const generateColor = (calenders) => {
-  return calenders.reduce((prev, curr, idx) => ({ ...prev, [curr.summary]: generateColorData(idx) }), {});
+  return calenders.reduce(
+    (prev, curr, idx) => ({ ...prev, [curr.summary]: generateColorData(idx) }),
+    {}
+  );
 };
 
 const generateColorData = (idx) => {
@@ -148,7 +162,8 @@ export const mockData = [
         etag: '"3207494304084000"',
         id: '0taanvrk4vlbqqsidr6lp9h17u',
         status: 'confirmed',
-        htmlLink: 'https://www.google.com/calendar/event?eid=MHRhYW52cms0dmxicXFzaWRyNmxwOWgxN3Ugc2FuZHRhaW5AbQ',
+        htmlLink:
+          'https://www.google.com/calendar/event?eid=MHRhYW52cms0dmxicXFzaWRyNmxwOWgxN3Ugc2FuZHRhaW5AbQ',
         created: '2020-10-26T21:18:59.000Z',
         updated: '2020-10-26T21:19:12.120Z',
         summary: 'Test event',
@@ -207,7 +222,8 @@ export const mockData = [
           email: 'kenan.tulic@digiexam.se',
         },
         organizer: {
-          email: 'digiexam.se_mec2n7umgboj9jbs7ffscbatvc@group.calendar.google.com',
+          email:
+            'digiexam.se_mec2n7umgboj9jbs7ffscbatvc@group.calendar.google.com',
           displayName: 'Tech',
         },
         start: {
@@ -293,7 +309,8 @@ export const mockData = [
           email: 'kenan.tulic@digiexam.se',
         },
         organizer: {
-          email: 'digiexam.se_mec2n7umgboj9jbs7ffscbatvc@group.calendar.google.com',
+          email:
+            'digiexam.se_mec2n7umgboj9jbs7ffscbatvc@group.calendar.google.com',
           displayName: 'Tech',
         },
         start: {
@@ -378,8 +395,7 @@ export const mockData = [
       {
         kind: 'calendar#event',
         etag: '"3207495770306000"',
-        id:
-          '_60q30c1g60o30e1i60o4ac1g60rj8gpl88rj2c1h84s34h9g60s30c1g60o30c1g611j6dho6h138h2485148dhg64o30c1g60o30c1g60o30c1g60o32c1g60o30c1g6l146hhp6oojic216co30c1k610jah246h1jichj8l332g9h8kr0',
+        id: '_60q30c1g60o30e1i60o4ac1g60rj8gpl88rj2c1h84s34h9g60s30c1g60o30c1g611j6dho6h138h2485148dhg64o30c1g60o30c1g60o30c1g60o32c1g60o30c1g6l146hhp6oojic216co30c1k610jah246h1jichj8l332g9h8kr0',
         status: 'confirmed',
         htmlLink:
           'https://www.google.com/calendar/event?eid=XzYwcTMwYzFnNjBvMzBlMWk2MG80YWMxZzYwcmo4Z3BsODhyajJjMWg4NHMzNGg5ZzYwczMwYzFnNjBvMzBjMWc2MTFqNmRobzZoMTM4aDI0ODUxNDhkaGc2NG8zMGMxZzYwbzMwYzFnNjBvMzBjMWc2MG8zMmMxZzYwbzMwYzFnNmwxNDZoaHA2b29qaWMyMTZjbzMwYzFrNjEwamFoMjQ2aDFqaWNoajhsMzMyZzloOGtyMCAwYThiYTI5amw0MTU2MnFqMmFycGpwMXZsM3M2OG80YUBp',

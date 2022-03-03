@@ -3,7 +3,6 @@ import { Tooltip, SvgIcon } from '@material-ui/core';
 
 const colorDay = 'rgb(153, 153, 153, 0.87)';
 const colorNight = 'rgba(68, 72, 77, 1)';
-//const colorNight2 = '#ebc150';
 
 const weatherIconList = {
   '01d': {
@@ -395,10 +394,17 @@ const weatherDescriptionList = {
   },
 };
 
-export default function WeatherWidgetIcon({ icon, id }) {
+export default function WeatherWidgetIcon({ icon, id, standalone }) {
   return (
     <Tooltip placement="top" title={weatherDescriptionList[id]?.description}>
-      <SvgIcon style={{ position: 'absolute', right: 0, top: 0, color: `${weatherIconList[icon].color}` }}>
+      <SvgIcon
+        style={{
+          position: standalone ? 'relative' : 'absolute',
+          right: 0,
+          top: 0,
+          color: `${standalone ? 'white' : weatherIconList[icon].color}`,
+        }}
+      >
         {weatherIconList[icon].svg}
       </SvgIcon>
     </Tooltip>

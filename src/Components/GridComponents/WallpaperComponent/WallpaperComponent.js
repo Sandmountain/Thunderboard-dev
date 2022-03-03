@@ -18,14 +18,24 @@ const useStyles = makeStyles({
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center center',
     backgroundSize: 'cover',
+    minWidth: '100%',
+    minHeight: '100%',
+  },
+  overlay: {
+    height: '100vh',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    background: 'rgba(0,0,0,.3)',
   },
 });
 
-export default function WallpaperComponent() {
+export default function WallpaperComponent({ overlay }) {
   const classes = useStyles();
 
   const { settings } = useContext(SettingsContext);
-  const { collectionID, windowSize, customURL, imageType } = settings?.wallPaperSettings;
+  const { collectionID, windowSize, customURL, imageType } =
+    settings?.wallPaperSettings;
   const [imageURL, setImageURL] = useState('');
   const [imageLoaded, setImageLoaded] = useState(false);
 
@@ -53,20 +63,23 @@ export default function WallpaperComponent() {
   return (
     <div className={classes.backgrundContainer}>
       <div className={classes.backgroundImageContainer}>
+        {overlay && <div className={classes.overlay} />}
         {imageType === 'unisplash' ? (
           <img
             style={{ display: imageLoaded ? 'block' : 'none' }}
             src={imageURL}
             className={classes.backgroundImage}
             onLoad={handleLoaded()}
-            alt="bg-img"></img>
+            alt="bg-img"
+          ></img>
         ) : (
           <img
             src={imageURL}
             width={windowSize[0]}
             height={windowSize[1]}
             className={classes.backgroundImage}
-            alt="img"></img>
+            alt="img"
+          ></img>
         )}
       </div>
     </div>
