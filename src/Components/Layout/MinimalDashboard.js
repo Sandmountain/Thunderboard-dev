@@ -16,7 +16,8 @@ import GoogleMailComponent from '../GridComponents/GoogleMail/GoogleMailComponen
 import RedditReader from '../GridComponents/RedditReader/RedditReader';
 import YoutubeComponent from '../GridComponents/YoutubeVideo/YoutubeComponent';
 import APIreader from '../GridComponents/APIreader/APIreader';
-import Todos from '../GridComponents/Todos/Todos';
+
+import RareInsult from '../GridComponents/RareInsult/RareInsult';
 
 const useStyles = makeStyles({
   mainContainer: {
@@ -75,7 +76,6 @@ export default function MinimalDashboard({
     youtubeSettings,
     twitchSettings,
     calenderSettings,
-    todosSettings,
     weatherSettings,
   } = settings;
 
@@ -170,20 +170,20 @@ export default function MinimalDashboard({
     );
   };
 
-  const renderTodos = () => {
-    return (
-      <Todos
-        todos={todosSettings.todos}
-        showTodos={todosSettings.showTodos}
-        notes={todosSettings.notes}
-        settings={settings}
-        setSettings={setSettings}
-        isDraggable={false}
-        openSettings={openSettings}
-        standAlone={true}
-      />
-    );
-  };
+  // const renderTodos = () => {
+  //   return (
+  //     <Todos
+  //       todos={todosSettings.todos}
+  //       showTodos={todosSettings.showTodos}
+  //       notes={todosSettings.notes}
+  //       settings={settings}
+  //       setSettings={setSettings}
+  //       isDraggable={false}
+  //       openSettings={openSettings}
+  //       standAlone={true}
+  //     />
+  //   );
+  // };
 
   const onRightClick = (e, idx) => {
     e.preventDefault();
@@ -218,8 +218,6 @@ export default function MinimalDashboard({
     }
   }, [smallScreen]);
 
-  console.log(smallScreen);
-
   const renderContent = (idx) => {
     switch (idx) {
       case 0:
@@ -244,6 +242,9 @@ export default function MinimalDashboard({
         />
         <StaticWeatherWidget city={weatherSettings.city} />
       </div>
+
+      <RareInsult />
+
       <div className={classes.leftContainer}>
         {activeLeft !== undefined && renderContent(activeLeft)}
       </div>
