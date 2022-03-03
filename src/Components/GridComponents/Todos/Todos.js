@@ -43,12 +43,20 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Todos({ todos = [], openSettings, settings, setSettings, isDraggable }) {
+export default function Todos({
+  todos = [],
+  openSettings,
+  settings,
+  setSettings,
+  isDraggable,
+  standAlone,
+}) {
   const classes = useStyles();
   const [input, setInput] = useState('');
   const [newChange, setNewChange] = useState(false);
   const [localTodos, setLocalTodos] = useState(todos);
   const [openAddTodo, setOpenAddTodo] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(true);
 
   const handleInput = async (e) => {
     e.preventDefault();
@@ -120,93 +128,132 @@ export default function Todos({ todos = [], openSettings, settings, setSettings,
     setLocalTodos(filteredTodos);
   };
 
+  const minimizeComponent = () => {
+    setIsMinimized((prev) => !prev);
+  };
+
+  const addTodo = () => {
+    if (!openAddTodo) {
+      setIsMinimized(false);
+    }
+    setOpenAddTodo((prev) => !prev);
+  };
+
+  const addTodoToSettings = () => {
+    saveChanges();
+  };
+
   return (
-    <Card className={classes.wrapperCard}>
-      <CardTopLabel
-        compName={'Todos'}
-        openSettings={openSettings}
-        additionalButtons={[
-          newChange && (
+    <Collapse in={!isMinimized} collapsedHeight={34}>
+      <Card className={classes.wrapperCard}>
+        <CardTopLabel
+          compName={'Todos'}
+          standAlone={standAlone}
+          isMinimized={isMinimized}
+          minimizeComponent={minimizeComponent}
+          openSettings={openSettings}
+          additionalButtons={[
+            newChange && (
+              <>
+                <Divider orientation="vertical" style={{ margin: '0 5px' }} />
+                <IconButton size={'small'} onClick={() => saveChanges()}>
+                  <Check fontSize="small" />
+                </IconButton>
+              </>
+            ),
             <>
               <Divider orientation="vertical" style={{ margin: '0 5px' }} />
-              <IconButton size={'small'} onClick={() => saveChanges()}>
-                <Check fontSize="small" />
+              <IconButton size={'small'} onClick={addTodo}>
+                {!openAddTodo ? (
+                  <Add fontSize="small" />
+                ) : (
+                  <Remove fontSize="small"></Remove>
+                )}
               </IconButton>
-            </>
-          ),
-          <>
-            <Divider orientation="vertical" style={{ margin: '0 5px' }} />
-            <IconButton size={'small'} onClick={() => setOpenAddTodo(!openAddTodo)}>
-              {!openAddTodo ? <Add fontSize="small" /> : <Remove fontSize="small"></Remove>}
-            </IconButton>
-          </>,
-        ]}
-      />
+            </>,
+          ]}
+        />
 
-      <div className={`${isDraggable && 'isDraggableContainer'} ${classes.innerPadding}`}>
-        <Collapse in={openAddTodo}>
-          <div style={{ padding: '5px 5px 0px', borderRadius: 0 }}>
-            <form onSubmit={handleInput}>
-              <TextField
-                onBlur={() => setOpenAddTodo(false)}
-                value={input}
-                style={{ width: '100%' }}
-                size="small"
-                onChange={handleChange}
-                placeholder="Enter a todo.."
-                variant="outlined"></TextField>
-            </form>
-          </div>
-        </Collapse>
-        <List className={classes.root}>
-          {localTodos && localTodos?.length > 0 ? (
-            localTodos.map((todo, key) => {
-              return (
-                <ListItem
-                  key={key}
-                  role={undefined}
-                  dense
-                  button
-                  onClick={() => handeClickTodo(key)}
-                  style={{ padding: 0 }}>
-                  <ListItemIcon>
-                    <Checkbox
-                      size="small"
-                      edge="end"
-                      onChange={() => handeClickTodo(key)}
-                      checked={todo.checked}
-                      tabIndex={-1}
-                      disableRipple
+        <div
+          className={`${isDraggable && 'isDraggableContainer'} ${
+            classes.innerPadding
+          }`}
+        >
+          <Collapse in={openAddTodo}>
+            <div style={{ padding: '5px 5px 0px', borderRadius: 0 }}>
+              <form onSubmit={handleInput}>
+                <TextField
+                  onBlur={() => setOpenAddTodo(false)}
+                  value={input}
+                  style={{ width: '100%' }}
+                  size="small"
+                  onChange={handleChange}
+                  onSubmit={addTodoToSettings}
+                  placeholder="Enter a todo.."
+                  variant="outlined"
+                ></TextField>
+              </form>
+            </div>
+          </Collapse>
+          <List className={classes.root}>
+            {localTodos && localTodos?.length > 0 ? (
+              localTodos.map((todo, key) => {
+                return (
+                  <ListItem
+                    key={key}
+                    role={undefined}
+                    dense
+                    button
+                    onClick={() => handeClickTodo(key)}
+                    style={{ padding: 0 }}
+                  >
+                    <ListItemIcon>
+                      <Checkbox
+                        size="small"
+                        edge="end"
+                        onChange={() => handeClickTodo(key)}
+                        checked={todo.checked}
+                        tabIndex={-1}
+                        disableRipple
+                      />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={todo.name}
+                      className={todo.checked ? classes.done : ''}
                     />
-                  </ListItemIcon>
-                  <ListItemText primary={todo.name} className={todo.checked ? classes.done : ''} />
-                  {todo.checked && (
-                    <ListItemSecondaryAction onClick={() => todoDelete(key)}>
-                      <IconButton size="small">
-                        <Delete size="small" edge="end" htmlColor={'#8c8c8c'} />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  )}
-                </ListItem>
-              );
-            })
-          ) : (
-            <>
-              {!openAddTodo && (
-                <Fade in={!openAddTodo}>
-                  <Button
-                    variant="text"
-                    fullWidth
-                    startIcon={<Add fontSize="small" />}
-                    onClick={() => setOpenAddTodo(!openAddTodo)}>
-                    Add Todo
-                  </Button>
-                </Fade>
-              )}
-            </>
-          )}
-        </List>
-      </div>
-    </Card>
+                    {todo.checked && (
+                      <ListItemSecondaryAction onClick={() => todoDelete(key)}>
+                        <IconButton size="small">
+                          <Delete
+                            size="small"
+                            edge="end"
+                            htmlColor={'#8c8c8c'}
+                          />
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    )}
+                  </ListItem>
+                );
+              })
+            ) : (
+              <>
+                {!openAddTodo && (
+                  <Fade in={!openAddTodo}>
+                    <Button
+                      variant="text"
+                      fullWidth
+                      startIcon={<Add fontSize="small" />}
+                      onClick={() => setOpenAddTodo(!openAddTodo)}
+                    >
+                      Add Todo
+                    </Button>
+                  </Fade>
+                )}
+              </>
+            )}
+          </List>
+        </div>
+      </Card>
+    </Collapse>
   );
 }

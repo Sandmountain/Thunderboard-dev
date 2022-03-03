@@ -12,6 +12,7 @@ import ReaderList from './ReaderList';
 import { parseDate } from '../../helperFunctions';
 import CardTopLabel from '../CardTopLabel/CardTopLabel';
 import { Refresh } from '@material-ui/icons';
+import { Divider } from '@material-ui/core';
 
 const useStyles = makeStyles({
   innerPadding: {
@@ -90,11 +91,14 @@ export default function APIreader({
           minimizeComponent={minimizeComponent}
           isMinimized={isMinimized}
           openSettings={openSettings}
-          additionalButton={
-            <IconButton size={'small'} onClick={() => updateLink()}>
-              {<Refresh fontSize={'small'} />}
-            </IconButton>
-          }
+          additionalButtons={[
+            <>
+              <Divider orientation="vertical" style={{ margin: '0 5px' }} />
+              <IconButton size={'small'} onClick={() => updateLink()}>
+                {<Refresh fontSize={'small'} />}
+              </IconButton>
+            </>,
+          ]}
         />
         {data && (
           <>

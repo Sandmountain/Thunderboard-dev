@@ -10,6 +10,7 @@ import GoogleMailComponent from '../GridComponents/GoogleMail/GoogleMailComponen
 import RedditReader from '../GridComponents/RedditReader/RedditReader';
 import YoutubeComponent from '../GridComponents/YoutubeVideo/YoutubeComponent';
 import APIreader from '../GridComponents/APIreader/APIreader';
+import Todos from '../GridComponents/Todos/Todos';
 
 const useStyles = makeStyles({
   mainContainer: {
@@ -60,14 +61,12 @@ export default function MinimalDashboard({
 
   const {
     rssReaderSettings,
-
     dashboardSettings,
     redditSettings,
     youtubeSettings,
     twitchSettings,
     calenderSettings,
     todosSettings,
-
     weatherSettings,
   } = settings;
 
@@ -162,6 +161,21 @@ export default function MinimalDashboard({
     );
   };
 
+  const renderTodos = () => {
+    return (
+      <Todos
+        todos={todosSettings.todos}
+        showTodos={todosSettings.showTodos}
+        notes={todosSettings.notes}
+        settings={settings}
+        setSettings={setSettings}
+        isDraggable={false}
+        openSettings={openSettings}
+        standAlone={true}
+      />
+    );
+  };
+
   const onRightClick = (e, idx) => {
     e.preventDefault();
 
@@ -215,21 +229,17 @@ export default function MinimalDashboard({
         <StaticWeatherWidget city={weatherSettings.city} />
       </div>
       <div className={classes.leftContainer}>
-        {/* <Collapse in={typeof activeLeft !== 'undefined'}> */}
         {activeLeft !== undefined && renderContent(activeLeft)}
-        {/* </Collapse> */}
       </div>
       <div className={classes.rightContainer}>
-        {/* <Collapse in={typeof activeRight !== 'undefined'}> */}
-
         {activeRight !== undefined && renderContent(activeRight)}
-
-        {/* </Collapse> */}
       </div>
       <div className={classes.bottomContainer}>
         <div className="miniDash-btnContainer">
           <div style={{ marginBottom: 12 }}>{renderRss()}</div>
+
           <UniversalConverter />
+
           <AppBar
             activeLeft={activeLeft}
             activeRight={activeRight}
