@@ -16,47 +16,58 @@ const useStyles = makeStyles({
     borderRadius: 0,
     overflowY: 'auto',
     width: '100%',
+    padding: '5px 0',
+  },
+  active: {
+    backgroundColor: '#3a3a3a40',
   },
 });
 
-export default function AppBar() {
+export default function AppBar({
+  onLeftClick,
+  onRightClick,
+  activeRight,
+  activeLeft,
+}) {
   const classes = useStyles();
-
-  const onRightClick = (e) => {
-    e.preventDefault();
-    console.log('right clicked!');
-  };
-
-  const onLeftMouse = (e, idx) => {
-    e.preventDefault();
-    console.log('left mouse!');
-  };
 
   return (
     <Card className={classes.wrapperCard}>
       <IconButton
-        onClick={(e) => onLeftMouse(e, 0)}
+        className={`${
+          activeLeft === 0 || activeRight === 0 ? classes.active : ''
+        }`}
+        onClick={(e) => onLeftClick(e, 0)}
         onContextMenu={(e) => onRightClick(e, 0)}
         color="primary"
       >
         <MailIcon />
       </IconButton>
       <IconButton
-        onClick={(e) => onLeftMouse(e, 1)}
+        className={`${
+          activeLeft === 1 || activeRight === 1 ? classes.active : ''
+        }`}
+        onClick={(e) => onLeftClick(e, 1)}
         onContextMenu={(e) => onRightClick(e, 1)}
         color="primary"
       >
         <RedditIcon />
       </IconButton>
       <IconButton
-        onClick={(e) => onLeftMouse(e, 2)}
+        className={`${
+          activeLeft === 2 || activeRight === 2 ? classes.active : ''
+        }`}
+        onClick={(e) => onLeftClick(e, 2)}
         onContextMenu={(e) => onRightClick(e, 2)}
         color="primary"
       >
         <TwitchIcon />
       </IconButton>
       <IconButton
-        onClick={(e) => onLeftMouse(e, 3)}
+        className={`${
+          activeLeft === 3 || activeRight === 3 ? classes.active : ''
+        }`}
+        onClick={(e) => onLeftClick(e, 3)}
         onContextMenu={(e) => onRightClick(e, 3)}
         color="primary"
       >
