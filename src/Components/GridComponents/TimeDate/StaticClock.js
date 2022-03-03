@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
+import CalenderPopUp from './CalenderPopUp.js';
 import { Typography, makeStyles } from '@material-ui/core';
-
+import { getMinMaxDate } from './functions/timeDateFunctions.js';
 import { parseDate } from './functions/timeDateFunctions';
+import axios from 'axios';
 
 const useStyles = makeStyles({
   timeText: {
@@ -39,10 +41,37 @@ const useStyles = makeStyles({
   clockInner: {},
 });
 
-export default function StaticClock() {
+export default function StaticClock({ calenders, credentials }) {
   const [date, setDate] = useState(parseDate(new Date()));
+  const [gCalenderData, setGCalenderData] = useState(undefined);
 
   const classes = useStyles();
+
+  useEffect(() => {
+    async function getCalenderData(credentials) {
+      const { minDate, maxDate } = getMinMaxDate();
+
+      try {
+        const calenderData = await Promise.all(
+          calenders.map(async (calender) => {
+            return await axios(
+              `https://www.googleapis.com/calendar/v3/calendars/${calender}/events?timeMax=${maxDate}&timeMin=${minDate}`,
+              credentials
+            ).then((res) => {
+              return res.data;
+            });
+          })
+        );
+
+        setGCalenderData(calenderData);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    if (gCalenderData === undefined) {
+      getCalenderData(credentials);
+    }
+  }, [gCalenderData, calenders, credentials]);
 
   useEffect(() => {
     let timerID = setInterval(() => tick(), 1000);
@@ -64,6 +93,12 @@ export default function StaticClock() {
         <Typography className={`textShadow ${classes.dateTexts}`}>
           {date.weekday} {date.day + ' ' + date.month} {date.year}
         </Typography>
+        <CalenderPopUp
+          right={true}
+          calenders={calenders}
+          gCalenderData={gCalenderData}
+          standAlone={true}
+        />
       </div>
     </div>
   );

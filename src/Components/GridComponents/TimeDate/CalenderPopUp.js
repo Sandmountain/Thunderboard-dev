@@ -1,9 +1,23 @@
-import { Badge, List, ListItem, makeStyles, Popover, Typography, withStyles } from '@material-ui/core';
+import {
+  Badge,
+  List,
+  ListItem,
+  makeStyles,
+  Popover,
+  Typography,
+  withStyles,
+} from '@material-ui/core';
 import { EventNote } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
 import { openInNewTab } from '../../helperFunctions';
 
-import { getEvents, parseDate, sortEvents, generateColor, getPopUpDate } from './functions/timeDateFunctions';
+import {
+  getEvents,
+  parseDate,
+  sortEvents,
+  generateColor,
+  getPopUpDate,
+} from './functions/timeDateFunctions';
 
 const useStyles = makeStyles((theme) => ({
   popover: {
@@ -24,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
   eventName: {
     marginLeft: '0.2em',
   },
+  standAloneIcon: {
+    color: 'white',
+  },
 }));
 
 const StyledBadgeLeft = withStyles((theme) => ({
@@ -37,14 +54,16 @@ const StyledBadgeLeft = withStyles((theme) => ({
 
 const StyledBadgeRight = withStyles((theme) => ({
   badge: {
-    right: -3,
-    top: 13,
-    border: `2px solid ${theme.palette.background.paper}`,
+    right: -2,
+    top: 11,
+    height: 16,
+    minWidth: 16,
+    border: `1px solid ${theme.palette.background.paper}`,
     padding: '0 4px',
   },
 }))(Badge);
 
-export default function CalenderPopUp({ gCalenderData, right }) {
+export default function CalenderPopUp({ gCalenderData, right, standAlone }) {
   const [parsedCalenderData, setParsedCalenderData] = useState(null);
   const [colors, getColors] = useState(null);
   const [calenderData, setCalenderDate] = useState(null);
@@ -81,22 +100,43 @@ export default function CalenderPopUp({ gCalenderData, right }) {
     <>
       {calenderData && calenderData.length > 0 && (
         <>
-          <div style={{ display: 'flex', alignItems: 'start', justifyContent: 'end' }}>
-            <Typography onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'start',
+              justifyContent: 'end',
+            }}
+          >
+            <Typography
+              style={{ lineHeight: 1, marginLeft: 2 }}
+              onMouseEnter={handlePopoverOpen}
+              onMouseLeave={handlePopoverClose}
+            >
               {right ? (
                 <StyledBadgeRight
                   badgeContent={calenderData && calenderData.length}
                   color="secondary"
                   style={{ cursor: 'pointer' }}
-                  onClick={() => openInNewTab('https://calendar.google.com/calendar')}>
-                  <EventNote fontSize={'small'} />
+                  onClick={() =>
+                    openInNewTab('https://calendar.google.com/calendar')
+                  }
+                >
+                  <EventNote
+                    style={{ fontSize: '1em' }}
+                    className={`${standAlone && classes.standAloneIcon} ${
+                      standAlone && 'textShadow'
+                    }`}
+                  />
                 </StyledBadgeRight>
               ) : (
                 <StyledBadgeLeft
                   badgeContent={calenderData && calenderData.length}
                   color="secondary"
                   style={{ cursor: 'pointer' }}
-                  onClick={() => openInNewTab('https://calendar.google.com/calendar')}>
+                  onClick={() =>
+                    openInNewTab('https://calendar.google.com/calendar')
+                  }
+                >
                   <EventNote fontSize={'small'} />
                 </StyledBadgeLeft>
               )}
@@ -119,21 +159,28 @@ export default function CalenderPopUp({ gCalenderData, right }) {
               horizontal: 'left',
             }}
             onClose={handlePopoverClose}
-            disableRestoreFocus>
+            disableRestoreFocus
+          >
             <Typography align="center">{getPopUpDate()}</Typography>
             <List dense style={{ padding: 0, margin: 0 }}>
               {calenderData &&
                 calenderData.map((calEvent, idx) => {
                   return (
                     <ListItem key={idx} style={{ padding: 0, margin: 0 }}>
-                      <Typography component="div" style={{ display: 'flex', fontSize: '10pt' }}>
+                      <Typography
+                        component="div"
+                        style={{ display: 'flex', fontSize: '10pt' }}
+                      >
                         <span
                           className={classes.popUpEvents}
                           style={{
                             background: `${colors[calEvent.calenderName]}`,
-                          }}></span>
+                          }}
+                        ></span>
                         {parseDate(calEvent.startTime).time}{' '}
-                        <strong className={classes.eventName}>{calEvent.name}</strong>
+                        <strong className={classes.eventName}>
+                          {calEvent.name}
+                        </strong>
                       </Typography>
                     </ListItem>
                   );
