@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
-import CardTopLabel from "../CardTopLabel/CardTopLabel";
-import GoogleMail from "./GoogleMail";
-import { List } from "@material-ui/core";
-import ProgressBolt from "../../ProgressBolt/ProgressBolt";
+import CardTopLabel from '../CardTopLabel/CardTopLabel';
+import GoogleMail from './GoogleMail';
+import { List } from '@material-ui/core';
+import ProgressBolt from '../../ProgressBolt/ProgressBolt';
 
 export default function GoogleMailComponent({
   credentials,
@@ -41,7 +41,7 @@ export default function GoogleMailComponent({
 
   const nrOfUnreadMails = () => {
     return mailData.reduce((counter, obj) => {
-      if (obj.labelIds.indexOf("UNREAD") !== -1) {
+      if (obj.labelIds.indexOf('UNREAD') !== -1) {
         counter += 1;
       }
       return counter;
@@ -53,14 +53,14 @@ export default function GoogleMailComponent({
   return (
     <>
       <CardTopLabel
-        compName={"Gmail"}
+        compName={'Gmail'}
         leftAlignedInfo={
           unreadMails > 0 && (
             <span
               style={{
-                fontSize: "0.7rem",
-                verticalAlign: "text-bottom",
-                lineHeight: "1.2rem",
+                fontSize: '0.7rem',
+                verticalAlign: 'text-bottom',
+                lineHeight: '1.2rem',
               }}
             >
               <strong> ({unreadMails}) </strong>
@@ -72,15 +72,15 @@ export default function GoogleMailComponent({
       <List
         style={{
           padding: 0,
-          width: "100%",
-          height: "100%",
-          overflowY: "auto",
-          background: "white",
+          width: '100%',
+          height: '100%',
+          overflowY: 'auto',
+          background: 'white',
         }}
       >
         <div
-          className={`${isDraggable && "isDraggableContainer"}`}
-          style={{ paddingTop: "35px", height: "100%" }}
+          className={`${isDraggable && 'isDraggableContainer'}`}
+          style={{ paddingTop: '35px', height: '100%' }}
         >
           {mailData ? (
             mailData.map((mail, idx) => {
@@ -96,10 +96,10 @@ export default function GoogleMailComponent({
           ) : (
             <div
               style={{
-                display: "flex",
-                height: "100%",
-                justifyContent: "center",
-                alignItems: "center",
+                display: 'flex',
+                height: '100%',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
             >
               <ProgressBolt />

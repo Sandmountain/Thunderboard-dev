@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
   universalConvContainer: {
     width: '100%',
+
     display: 'flex',
     justifyContent: 'center',
     borderRadius: 0,

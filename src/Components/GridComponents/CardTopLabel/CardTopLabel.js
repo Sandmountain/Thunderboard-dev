@@ -128,26 +128,20 @@ export default function CardTopLabel({
           </div>
         )}
         <div className={classes.buttonsContainer}>
-          {additionalButton.length > 0 ? (
-            additionalButton.map((btn) => {
+          {additionalButton?.length > 0 ? (
+            additionalButton.map((btn, idx) => {
               return (
-                <>
+                <div key={idx}>
                   <Divider
                     orientation="vertical"
                     style={noGutter ? { margin: 0 } : { margin: '0 5px' }}
                   />
                   {btn}
-                </>
+                </div>
               );
             })
           ) : (
-            <>
-              <Divider
-                orientation="vertical"
-                style={noGutter ? { margin: 0 } : { margin: '0 5px' }}
-              />
-              {additionalButton}
-            </>
+            <>{additionalButton}</>
           )}
           {additionalButtons &&
             additionalButtons.map((button, key) => {

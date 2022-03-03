@@ -165,7 +165,7 @@ export default function DashboardTab(props) {
               color="primary"
             />
           }
-          label="Primary"
+          label="Minimalistic Mode"
         />
       </DialogContent>
 

@@ -24,6 +24,7 @@ const useStyles = makeStyles({
     maxHeight: '100%',
     borderRadius: 0,
     width: '100%',
+    minWidth: 288,
     overflowY: 'auto',
     backgroundColor: '#dae0e6',
   },
@@ -33,13 +34,12 @@ const useStyles = makeStyles({
 });
 
 // https://rss.aftonbladet.se/rss2/small/pages/sections/aftonbladet/
-export default function RSSreader({
+export default function APIreader({
   nrOfArticles,
   showContent,
   showImage,
   showTitle,
   url,
-  layout,
   anchorOriginVertical,
   anchorOriginHorizontal,
   isDraggable,

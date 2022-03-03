@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Card, Typography, makeStyles, useMediaQuery } from '@material-ui/core';
+import { Typography, makeStyles } from '@material-ui/core';
 
 import WeatherWidgetIcon from './WeatherWidgetIcon/WeatherWidgetIcon';
 
@@ -43,7 +43,7 @@ export default function StaticWeatherWidget({ city }) {
     }
     getWeatherData();
   }, [city]);
-  console.log(weatherData);
+
   return (
     <div className={classes.wrapperCard}>
       {weatherData && (

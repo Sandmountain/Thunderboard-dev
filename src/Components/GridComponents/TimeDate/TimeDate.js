@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles, Card, useMediaQuery } from '@material-ui/core';
 
-import { getMinMaxDate, mockData } from './functions/timeDateFunctions.js';
+import { getMinMaxDate } from './functions/timeDateFunctions.js';
 
 import axios from 'axios';
 import CalenderPopUp from './CalenderPopUp.js';
@@ -43,8 +43,13 @@ const useStyles = makeStyles({
   },
 });
 
-export default function TimeDateContainer({ calenders, isDraggable, credentials, isProduction }) {
-  const [gCalenderData, setGCalenderData] = useState(null);
+export default function TimeDateContainer({
+  calenders,
+  isDraggable,
+  credentials,
+  isProduction,
+}) {
+  const [gCalenderData, setGCalenderData] = useState(undefined);
   const classes = useStyles();
 
   const smallScreen = useMediaQuery('(min-width:800px)');
@@ -65,22 +70,29 @@ export default function TimeDateContainer({ calenders, isDraggable, credentials,
             });
           })
         );
+
         setGCalenderData(calenderData);
       } catch (err) {
         console.log(err);
       }
     }
-    if (isProduction) {
+    if (gCalenderData === undefined) {
       getCalenderData(credentials);
-    } else {
-      setGCalenderData(mockData);
     }
-  }, [gCalenderData, isProduction, calenders, credentials]);
+  }, [gCalenderData, calenders, credentials]);
 
   return (
     <Card className={classes.wrapperCard}>
-      <div className={`${isDraggable && 'isDraggableContainer'} ${classes.content}`}>
-        <CalenderPopUp right={!smallScreen} calenders={calenders} gCalenderData={gCalenderData} />
+      <div
+        className={`${isDraggable && 'isDraggableContainer'} ${
+          classes.content
+        }`}
+      >
+        <CalenderPopUp
+          right={!smallScreen}
+          calenders={calenders}
+          gCalenderData={gCalenderData}
+        />
         <Clock smallScreen={smallScreen} mediumScreen={mediumScreen} />
       </div>
     </Card>

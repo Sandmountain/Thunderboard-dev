@@ -90,7 +90,6 @@ export default function RSSreader({
   useEffect(() => {
     async function loadRSS() {
       const data = await parser.parseURL(url);
-      console.log(data);
       setData(data.items);
     }
     loadRSS();
@@ -98,7 +97,6 @@ export default function RSSreader({
 
   const updateLink = async () => {
     const data = await parser.parseURL(url);
-    console.log(data);
     setData(data.items);
   };
 
