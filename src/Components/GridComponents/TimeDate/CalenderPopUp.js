@@ -177,10 +177,10 @@ export default function CalenderPopUp({ gCalenderData, right, standAlone }) {
                             background: `${colors[calEvent.calenderName]}`,
                           }}
                         ></span>
-                        {parseDate(calEvent.startTime).time}{' '}
-                        <strong className={classes.eventName}>
+                        <strong>{parseDate(calEvent.startTime).time} </strong>
+                        <span className={classes.eventName}>
                           {calEvent.name}
-                        </strong>
+                        </span>
                       </Typography>
                     </ListItem>
                   );
