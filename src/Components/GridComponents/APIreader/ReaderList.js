@@ -69,6 +69,7 @@ const useStyles = makeStyles({
   popoverContentInnerContainer: {
     width: 'calc(50% - 2.5px)',
     height: 'auto',
+    maxHeight: 150,
   },
   popoverContentImage: {
     maxHeight: 120,
@@ -186,6 +187,9 @@ export default function ReaderList({
                     alt={title}
                   />
                 )}
+                <Typography align="left" variant="overline">
+                  Source: {source}
+                </Typography>
               </div>
               <div className={classes.popoverContentInnerContainer}>
                 <Typography align="left" variant="caption">
@@ -193,9 +197,6 @@ export default function ReaderList({
                 </Typography>
               </div>
             </div>
-            <Typography align="left" variant="overline">
-              Source: {source}
-            </Typography>
           </div>
         </div>
       </Popover>
