@@ -1,6 +1,12 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import StaticClock from '../GridComponents/TimeDate/StaticClock';
-import { Card, Button, makeStyles } from '@material-ui/core';
+import {
+  Card,
+  Button,
+  makeStyles,
+  useMediaQuery,
+  Collapse,
+} from '@material-ui/core';
 import StaticWeatherWidget from '../GridComponents/WeatherWidget/StaticWeatherWidget';
 import UniversalConverter from '../GridComponents/UniversalConverter/UniversalConverter';
 import AppBar from '../GridComponents/AppBar/AppBar';
@@ -58,6 +64,9 @@ export default function MinimalDashboard({
   const [activeRight, setActiveRight] = useState(undefined);
 
   const { settings, setSettings } = useContext(SettingsContext);
+
+  // If width <810px Close apps.
+  const smallScreen = useMediaQuery('(max-width:1000px)');
 
   const {
     rssReaderSettings,
@@ -202,7 +211,14 @@ export default function MinimalDashboard({
     }
   };
 
-  // If width <810px Close apps.
+  useEffect(() => {
+    if (smallScreen) {
+      setActiveLeft(undefined);
+      setActiveRight(undefined);
+    }
+  }, [smallScreen]);
+
+  console.log(smallScreen);
 
   const renderContent = (idx) => {
     switch (idx) {
@@ -239,13 +255,14 @@ export default function MinimalDashboard({
           <div style={{ marginBottom: 12 }}>{renderRss()}</div>
 
           <UniversalConverter />
-
-          <AppBar
-            activeLeft={activeLeft}
-            activeRight={activeRight}
-            onLeftClick={onLeftClick}
-            onRightClick={onRightClick}
-          ></AppBar>
+          <Collapse in={!smallScreen}>
+            <AppBar
+              activeLeft={activeLeft}
+              activeRight={activeRight}
+              onLeftClick={onLeftClick}
+              onRightClick={onRightClick}
+            />
+          </Collapse>
         </div>
       </div>
     </div>

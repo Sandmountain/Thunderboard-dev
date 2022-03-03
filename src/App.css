@@ -65,11 +65,11 @@ body {
 
 @media (max-width: 1200px) {
   .miniDash-btnContainer {
-    width: 40%;
+    width: 30%;
   }
 }
 @media (max-width: 600px) {
   .miniDash-btnContainer {
-    width: 80%;
+    width: 40%;
   }
 }

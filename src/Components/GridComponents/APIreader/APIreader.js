@@ -66,7 +66,6 @@ export default function APIreader({
 
   useEffect(() => {
     async function loadRSS() {
-      //const data = await parser.parseURL(url);
       const { data } = await fetchData();
       setData(data.articles);
     }
