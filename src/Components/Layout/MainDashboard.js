@@ -66,13 +66,13 @@ export default function MainDashboard() {
 
   return (
     <>
-      {/* <LoadingScreen
+      <LoadingScreen
         loggedIn={loggedIn}
         setSettings={setSettings}
         setIsLoggedIn={setIsLoggedIn}
         setCredentials={setCredentials}
         setProfileData={setProfileData}
-      /> */}
+      />
       {!loggedIn ? (
         <GoogleAuthentication
           loggedIn={loggedIn}
