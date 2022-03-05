@@ -1,4 +1,4 @@
-import axios from 'axios';
+// import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
 export default function RareInsult() {
@@ -6,18 +6,20 @@ export default function RareInsult() {
 
   useEffect(() => {
     const fetchInsult = async () => {
-      try {
-        const res = await axios.get(
-          'https://evilinsult.com/generate_insult.php?lang=en&type=json',
-          {
-            headers: { 'Access-Control-Allow-Origin': '*' },
-          }
-        );
-        setInsult(res.data.insult);
-      } catch (error) {
-        const insults = require('./insults.json');
-        setInsult(insults[Math.floor(Math.random() * insults.length)]);
-      }
+      // Doesn't work :(
+      // try {
+      //   const res = await axios.get(
+      //     'https://evilinsult.com/generate_insult.php?lang=en&type=json',
+      //     {
+      //       headers: { 'Access-Control-Allow-Origin': '*' },
+      //     }
+      //   );
+      //   setInsult(res.data.insult);
+      // } catch (error) {
+
+      // }
+      const insults = require('./insults.json');
+      setInsult(insults[Math.floor(Math.random() * insults.length)]);
     };
 
     if (!insult) {

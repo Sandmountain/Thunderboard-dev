@@ -7,12 +7,19 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import axios from 'axios';
 import ReaderList from './ReaderList';
 import { parseDate } from '../../helperFunctions';
 import CardTopLabel from '../CardTopLabel/CardTopLabel';
 import { Refresh } from '@material-ui/icons';
 import { Divider } from '@material-ui/core';
+
+const Parser = require('rss-parser');
+const parser = new Parser({
+  // If using NY times.
+  // customFields: {
+  //   item: [['media:content', 'media:content', { keepArray: true }]],
+  // },
+});
 
 const useStyles = makeStyles({
   innerPadding: {
@@ -25,7 +32,7 @@ const useStyles = makeStyles({
     maxHeight: '100%',
     borderRadius: 0,
     width: '100%',
-    minWidth: 288,
+
     overflowY: 'auto',
     backgroundColor: '#dae0e6',
   },
@@ -48,33 +55,42 @@ export default function APIreader({
   openSettings,
   standAlone = false,
 }) {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState(undefined);
   const [isMinimized, setIsMinimized] = useState(true);
 
   const classes = useStyles();
 
-  const fetchData = async () => {
-    try {
-      return await axios.get(
-        `https://newsapi.org/v2/top-headlines?sources=bbc-news,reuters,google-news&apiKey=${process.env.REACT_APP_NEWS_API}`
-      );
-    } catch (error) {
-      console.error("couldn't fetch news", error);
-      return undefined;
-    }
-  };
+  // const fetchData = async () => {
+  //   Only works on localhost :(
+  //   try {
+  //     return await axios.get(
+  //       `https://newsapi.org/v2/top-headlines?sources=bbc-news,reuters,google-news&apiKey=${process.env.REACT_APP_NEWS_API}`
+  //     );
+  //   } catch (error) {
+  //     console.error("couldn't fetch news", error);
+  //     return undefined;
+  //   }
+  //   Load RSS Instead
+  // };
 
   useEffect(() => {
     async function loadRSS() {
-      const { data } = await fetchData();
-      setData(data.articles);
+      // const { data } = await fetchData();
+      // setData(data.articles);
+      const data = await parser.parseURL(url);
+      console.log(data);
+      setData(data.items);
     }
-    loadRSS();
-  }, [url]);
+    if (data === undefined) {
+      loadRSS();
+    }
+  }, [data, url]);
 
   const updateLink = async () => {
-    const { data } = await fetchData();
-    setData(data.articles);
+    // const { data } = await fetchData();
+    // setData(data.articles);
+    const data = await parser.parseURL(url);
+    setData(data.items);
   };
 
   const minimizeComponent = () => {
@@ -85,7 +101,7 @@ export default function APIreader({
     <Collapse in={!isMinimized} collapsedHeight={34}>
       <Card className={`${classes.wrapperCard}`} id="newsContainer">
         <CardTopLabel
-          compName="World News"
+          compName="Aftonbladet"
           standAlone={standAlone}
           minimizeComponent={minimizeComponent}
           isMinimized={isMinimized}
@@ -93,7 +109,7 @@ export default function APIreader({
           additionalButtons={[
             <>
               <Divider orientation="vertical" style={{ margin: '0 5px' }} />
-              <IconButton size={'small'} onClick={() => updateLink()}>
+              <IconButton size={'small'} onClick={updateLink}>
                 {<Refresh fontSize={'small'} />}
               </IconButton>
             </>,
@@ -110,14 +126,30 @@ export default function APIreader({
               {data.map((article, idx) => {
                 if (idx < nrOfArticles) {
                   return (
+                    // If using API
+                    // <ReaderList
+                    //   key={idx}
+                    //   title={article.title}
+                    //   url={article.url}
+                    //   src={article.urlToImage}
+                    //   source={article.source.name}
+                    //   date={parseDate(Date.parse(article.publishedAt))}
+                    //   content={article.description}
+                    //   showContent={showContent}
+                    //   showImage={showImage}
+                    //   showTitle={showTitle}
+                    //   anchorOriginVertical={anchorOriginVertical}
+                    //   anchorOriginHorizontal={anchorOriginHorizontal}
+                    //   margin={margin}
+                    //   standAlone={standAlone}
+                    // />
                     <ReaderList
                       key={idx}
                       title={article.title}
                       url={article.url}
-                      src={article.urlToImage}
-                      source={article.source.name}
-                      date={parseDate(Date.parse(article.publishedAt))}
-                      content={article.description}
+                      src={article.enclosure.url}
+                      date={parseDate(Date.parse(article.isoDate))}
+                      content={article.content}
                       showContent={showContent}
                       showImage={showImage}
                       showTitle={showTitle}

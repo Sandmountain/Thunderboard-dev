@@ -75,6 +75,12 @@ body {
   margin-top: 5vh;
 }
 
+.rssNewsContent-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
 @media (max-width: 1200px) {
   .miniDash-btnContainer {
     width: 30%;

@@ -49,27 +49,27 @@ const useStyles = makeStyles({
   },
   paper: {
     borderRadius: 0,
-    minHeight: '110px',
+    //minHeight: '110px',
   },
   popoverTitleWrapper: {
-    height: 215,
+    minHeight: 95,
     overflow: 'hidden',
   },
   popoverTitleContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginBottom: 5,
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   },
   popoverTitleText: {},
   popoverContentContainer: {
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
     overflow: 'hidden',
   },
   popoverContentInnerContainer: {
-    width: 'calc(50% - 2.5px)',
-    height: 'auto',
-    maxHeight: 150,
+    // width: 'calc(50% - 2.5px)',
+    // height: 'auto',
+    // maxHeight: 150,
   },
   popoverContentImage: {
     maxHeight: 120,
@@ -84,7 +84,7 @@ export default function ReaderList({
   url,
   date,
   content,
-  source,
+  source = '',
   anchorOriginHorizontal,
   anchorOriginVertical,
   margin,
@@ -152,7 +152,7 @@ export default function ReaderList({
         anchorPosition={{
           top:
             document.getElementById('newsContainer').getBoundingClientRect()
-              .top - 222,
+              .top - 102,
           left: window.innerWidth / 2 - currentWidth / 2,
         }}
         onClose={handlePopoverClose}
@@ -164,7 +164,7 @@ export default function ReaderList({
             width: standAlone ? currentWidth : currentWidth + 150,
           }}
         >
-          <div style={{ padding: 5 }}>
+          <div style={{ padding: '5px 5px 0px 5px' }}>
             <Typography
               variant="body1"
               className={classes.popoverTitleContainer}
@@ -179,7 +179,10 @@ export default function ReaderList({
               </Box>
             </Typography>
             <div className={classes.popoverContentContainer}>
-              <div className={classes.popoverContentInnerContainer}>
+              <div
+                className={classes.popoverContentInnerContainer}
+                style={{ marginRight: 6, minWidth: 80 }}
+              >
                 {src && (
                   <img
                     src={src}
@@ -187,11 +190,13 @@ export default function ReaderList({
                     alt={title}
                   />
                 )}
-                <Typography align="left" variant="overline">
-                  Source: {source}
-                </Typography>
+                {source !== '' && (
+                  <Typography align="left" variant="overline">
+                    Source: {source}
+                  </Typography>
+                )}
               </div>
-              <div className={classes.popoverContentInnerContainer}>
+              <div className="rssNewsContent-text">
                 <Typography align="left" variant="caption">
                   {content}
                 </Typography>
