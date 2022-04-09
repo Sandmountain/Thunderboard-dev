@@ -78,7 +78,6 @@ export default function APIreader({
       // const { data } = await fetchData();
       // setData(data.articles);
       const data = await parser.parseURL(url);
-      console.log(data);
       setData(data.items);
     }
     if (data === undefined) {
@@ -147,7 +146,7 @@ export default function APIreader({
                       key={idx}
                       title={article.title}
                       url={article.url}
-                      src={article.enclosure.url}
+                      src={article.enclosure?.url ?? ''}
                       date={parseDate(Date.parse(article.isoDate))}
                       content={article.content}
                       showContent={showContent}
