@@ -6,7 +6,7 @@ Thunderboard is a utility dashboard that combines your favourite internet apps i
 See the project here: https://viktorsandberg.com/thunderboard/
 
 There are currently 2 different modes the apps can use, either the customizable grid- or the minimalist view. And currently supports apps with integrations such as:  
-  - Redit
+  - Reddit
   - Twitch
   - G-mail
   - G-calender
